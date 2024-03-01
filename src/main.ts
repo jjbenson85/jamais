@@ -20,6 +20,10 @@ const specialClass = computed(count, () =>
   ]),
 );
 
+// watch
+specialClass.addWatcher(() => console.log("watch", specialClass.value));
+count.addWatcher(() => console.log("watch", count.value));
+
 computed(count, () => console.log("watch", count.value));
 setup(() => ({
   formatDouble,
@@ -33,4 +37,5 @@ setup(() => ({
     const target = e.target as HTMLInputElement;
     count.value = parseInt(target.value);
   },
-}));
+})).attach("#app");
+
