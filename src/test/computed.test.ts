@@ -46,4 +46,15 @@ describe("computed", () => {
     a.value = 1;
     expect(cb).not.toHaveBeenCalled();
   });
+
+  it("should use a setFn if passed", () => {
+    const a = ref(1);
+    const r = computed(
+      a,
+      () => a.value * 2,
+      (value) => (a.value = value)
+    );
+    r.value = 2;
+    expect(a.value).toBe(2);
+  });
 });
