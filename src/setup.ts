@@ -1,5 +1,7 @@
 import type { Ref } from "./ref";
 import { isRef } from "./ref";
+import { ProcessQueue } from "./processQueue";
+const processQueue = new ProcessQueue();
 
 type SetupMethods = ((...args: any[]) => string) | ((...args: any[]) => void);
 type SetupBits = Ref<any> | SetupMethods;
@@ -7,24 +9,33 @@ type SetupBits = Ref<any> | SetupMethods;
 export function setup(
   setupFn: () => Record<string, SetupBits>,
   _document: Document = document
-) {
+): {
+  attach: (attachStr: string) => void;
+} {
   const data = setupFn();
   const dataEntries = Object.entries(data);
-
-  handleRefs(dataEntries, _document);
-  handleMethods(dataEntries, _document);
+  return {
+    attach: (attachStr: string) => {
+      const _document = document.querySelector(attachStr);
+      if (!_document) throw new Error("No element found");
+      handleRefs(dataEntries, _document);
+      handleMethods(dataEntries, _document);
+    },
+  };
 }
 
 const bindText = (value: Ref<any>) => {
   return (el: Element) => {
     const fn = () => (el.textContent = String(value.value));
-    value.addWatcher(fn);
+    value.addWatcher(() => processQueue.add(fn));
     fn();
   };
 };
+
 const toOriginalType = (value: Ref<unknown>, target: HTMLInputElement) => {
   return typeof value.value === "number" ? Number(target.value) : target.value;
 };
+
 const bindModels = (value: Ref<any>) => {
   return (el: Element) => {
     if (!(el instanceof HTMLInputElement)) return;
@@ -32,9 +43,8 @@ const bindModels = (value: Ref<any>) => {
       if (!(e.target instanceof HTMLInputElement)) return;
       value.value = toOriginalType(value, e.target);
     });
-    value.addWatcher(() => {
-      el.value = String(value.value);
-    });
+    const fn = () => (el.value = String(value.value));
+    value.addWatcher(() => () => processQueue.add(fn));
   };
 };
 
@@ -45,7 +55,7 @@ const bindClasses = (value: Ref<unknown>) => (el: Element) => {
     prev && prev.split(" ").forEach((cls) => el.classList.remove(cls));
     curr && curr.split(" ").forEach((cls) => el.classList.add(cls));
   };
-  value.addWatcher(fn);
+  value.addWatcher(() => processQueue.add(fn));
   fn();
 };
 
@@ -53,7 +63,7 @@ const isRefEntry = (
   entry: [string, SetupBits]
 ): entry is [string, Ref<unknown>] => isRef(entry[1]);
 
-function handleRefs(dataEntries: [string, SetupBits][], _document: Document) {
+function handleRefs(dataEntries: [string, SetupBits][], _document: Element) {
   const refs = dataEntries.filter(isRefEntry);
 
   for (const [key, value] of refs) {
@@ -74,10 +84,7 @@ const isMethodEntry = (
 ): entry is [string, (() => string) | (() => void)] =>
   typeof entry[1] === "function";
 
-function handleMethods(
-  dataEntries: [string, SetupBits][],
-  _document: Document
-) {
+function handleMethods(dataEntries: [string, SetupBits][], _document: Element) {
   const eventTypes = ["click"] as const;
   const methods = dataEntries.filter(isMethodEntry);
 
