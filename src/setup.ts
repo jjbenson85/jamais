@@ -15,10 +15,10 @@ export function setup(
   const dataEntries = Object.entries(data);
   return {
     attach: (attachStr: string) => {
-      const _document = document.querySelector(attachStr);
-      if (!_document) throw new Error("No element found");
-      setupRefs(dataEntries, _document);
-      setupMethods(dataEntries, _document);
+      const el = _document.querySelector(attachStr);
+      if (!el) throw new Error("No element found");
+      setupRefs(dataEntries, el);
+      setupMethods(dataEntries, el);
     },
   };
 }

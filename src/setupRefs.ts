@@ -29,9 +29,7 @@ const bindModels = (value: Ref<any>) => {
 };
 
 const bindClasses = (value: Ref<unknown>) => (el: Element) => {
-  console.log("bindClasses");
   const fn = () => {
-    console.log("apply classes");
     const curr = String(value.value).trim();
     const prev = String(value.previousValue).trim();
     prev && prev.split(" ").forEach((cls) => el.classList.remove(cls));
