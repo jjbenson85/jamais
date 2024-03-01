@@ -1,0 +1,23 @@
+import { ref } from "../ref";
+
+import { describe, it, expect, vi } from "vitest";
+describe("ref", () => {
+  it("should create a ref", () => {
+    const r = ref(1);
+    expect(r.value).toBe(1);
+  });
+
+  it("should update the ref", () => {
+    const r = ref(1);
+    r.value = 2;
+    expect(r.value).toBe(2);
+  });
+
+  it("should call watchers", () => {
+    const r = ref(1);
+    const cb = vi.fn();
+    r.addWatcher(cb);
+    r.value = 2;
+    expect(cb).toHaveBeenCalledOnce();
+  });
+});
