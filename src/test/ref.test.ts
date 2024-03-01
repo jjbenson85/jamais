@@ -20,4 +20,12 @@ describe("ref", () => {
     r.value = 2;
     expect(cb).toHaveBeenCalledOnce();
   });
+
+  it("should not call watchers if the value is the same", () => {
+    const r = ref(1);
+    const cb = vi.fn();
+    r.addWatcher(cb);
+    r.value = 1;
+    expect(cb).not.toHaveBeenCalled();
+  });
 });

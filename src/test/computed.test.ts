@@ -29,12 +29,21 @@ describe("computed", () => {
     expect(r.value).toBe(6);
   });
 
-  it.only("should call its watcher when a ref value update", () => {
+  it("should call its watcher when a ref value update", () => {
     const a = ref(1);
     const r = computed(a, () => a.value * 2);
     const cb = vi.fn();
     r.addWatcher(cb);
     a.value = 2;
     expect(cb).toHaveBeenCalledOnce();
+  });
+
+  it("should not call its watcher if the value is the same", () => {
+    const a = ref(1);
+    const r = computed(a, () => a.value * 2);
+    const cb = vi.fn();
+    r.addWatcher(cb);
+    a.value = 1;
+    expect(cb).not.toHaveBeenCalled();
   });
 });
