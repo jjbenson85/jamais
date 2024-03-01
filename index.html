@@ -1,0 +1,38 @@
+<!doctype html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <link rel="icon" type="image/svg+xml" href="/vite.svg" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <script type="module" src="/src/main.ts"></script>
+        <title>Vite + TS</title>
+    </head>
+
+    <body>
+        <!-- <div id="app">
+            <div>
+                <div>message: {{ message }}</div>
+                <div>message 1: {{ message1 }}</div>
+                <div>super duper message 2: {{ message2 }}</div>
+                <div>count: {{ count }}</div>
+
+                <button j-onclick="increment">increment</button>
+                <button j-onclick="decrement">decrement</button>
+            </div>
+        </div> -->
+        <div id="app">
+            <div data-class="countClass" class="{{specialClass}}">
+                Count: <span data-text="count"> {{ count }}</span>
+            </div>
+            <button data-class="specialClass" data-click="increment">
+                increment <span data-text="count"></span>
+            </button>
+            <button class="bg-red-500" data-click="decrement">
+                decrement <span data-text="count"></span>
+            </button>
+            <!-- <div>Double: <span data-text="double"></span></div>
+            <div data-text="formatDouble"></div>
+            <input data-model="count" type="number" /> -->
+        </div>
+    </body>
+</html>
