@@ -19,7 +19,8 @@ export class Computed<T> extends Ref<T> {
   }
   set value(_value: T) {
     if (!this._setFn) {
-      throw new Error("Cannot set a computed value");
+      console.warn("Cannot set a computed value");
+      return;
     }
     this._setFn(_value);
   }
