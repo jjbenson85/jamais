@@ -18,4 +18,23 @@ describe("computed", () => {
     r.value = 2;
     expect(mockConsoleWarn).toHaveBeenCalledWith("Cannot set a computed value");
   });
+
+  it("should update when a ref value update", () => {
+    const a = ref(1);
+    const r = computed(a, () => a.value * 2);
+    expect(r.value).toBe(2);
+    a.value = 2;
+    expect(r.value).toBe(4);
+    a.value = 3;
+    expect(r.value).toBe(6);
+  });
+
+  it.only("should call its watcher when a ref value update", () => {
+    const a = ref(1);
+    const r = computed(a, () => a.value * 2);
+    const cb = vi.fn();
+    r.addWatcher(cb);
+    a.value = 2;
+    expect(cb).toHaveBeenCalledOnce();
+  });
 });
