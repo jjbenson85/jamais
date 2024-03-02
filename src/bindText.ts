@@ -11,6 +11,7 @@ export function bindText(
     ({ el, value, getDeepValue }) => {
       const setElementText = () => {
         el.textContent = String(getDeepValue());
+        insideFor && console.log("setElementText", el.textContent);
       };
 
       //   Is not a ref if insideFor and using $VALUE in template
@@ -22,7 +23,6 @@ export function bindText(
         // TODO: Handle functions as values
         return;
       }
-
       setElementText();
     }
   );

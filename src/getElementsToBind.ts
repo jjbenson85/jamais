@@ -1,7 +1,7 @@
 import { getPropertyFromPath, isObject, toPrevValue, toValue } from "./helpers";
 import { SetupBits } from "./setup";
 
-export type BindType = "text" | "class" | "model";
+export type BindType = "text" | "class" | "model" | "in";
 
 type ElementToBindItem = {
   el: Element;
@@ -23,6 +23,9 @@ export const getElementsToBind = (
 
     const attrValue = _attrValue.replace("$", "__data-for__");
     const [key, restKey] = attrValue.split(".", 2);
+    
+    if (!(key in data)) return acc;
+
     const value = data[key];
 
     const obj: ElementToBindItem = {
