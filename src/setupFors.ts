@@ -1,7 +1,7 @@
 import type { SetupBits } from "./setup";
 import { globalQueue } from "./processQueue";
 import { Ref } from "./ref";
-import { bindText2 } from "./setupRefs";
+import { bindText } from "./bindText";
 
 function isForEntry(entry: [string, SetupBits]): entry is [string, Ref<any[]>] {
   const value = entry[1];
@@ -35,7 +35,7 @@ export function setupFors(dataEntries: [string, SetupBits][], el: Element) {
         const newEl = el.cloneNode(true) as Element;
         newEl.removeAttribute("data-for");
 
-        bindText2(newEl, { [key]: item }, true);
+        bindText(newEl, { [key]: item }, true);
 
         newEl.querySelectorAll(`[data-class=${key}]`).forEach((el) => {
           el.className = el.classList + " " + item;
