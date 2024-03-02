@@ -4,8 +4,8 @@ import { isRef } from "./ref";
 import { SetupBits } from "./setup";
 
 export function bindText(
-  el: Element,
   data: Record<string, SetupBits>,
+  el: Element,
   insideFor = false
 ) {
   getElementsToBind(el, "text", data, insideFor).forEach(

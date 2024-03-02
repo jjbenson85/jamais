@@ -1,7 +1,9 @@
 import type { Ref } from "./ref";
 import { setupFors } from "./setupFors";
 import { setupMethods } from "./setupMethods";
-import { setupRefs } from "./setupRefs";
+import { bindClasses } from "./bindClasses";
+import { bindModels } from "./bindModels";
+import { bindText } from "./bindText";
 
 type SetupMethods = ((...args: any[]) => string) | ((...args: any[]) => void);
 export type SetupBits = Ref<any> | SetupMethods;
@@ -19,9 +21,12 @@ export function setup(
       const el = _document.querySelector(attachStr);
       if (!el) throw new Error("No element found");
       setupFors(dataEntries, el);
-      setupRefs(dataEntries, el);
+
+      bindText(data, el);
+      bindClasses(data, el);
+      bindModels(data, el);
+
       setupMethods(dataEntries, el);
     },
   };
 }
-

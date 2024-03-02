@@ -35,7 +35,7 @@ export function setupFors(dataEntries: [string, SetupBits][], el: Element) {
         const newEl = el.cloneNode(true) as Element;
         newEl.removeAttribute("data-for");
 
-        bindText(newEl, { [key]: item }, true);
+        bindText({ [key]: item }, newEl, true);
 
         newEl.querySelectorAll(`[data-class=${key}]`).forEach((el) => {
           el.className = el.classList + " " + item;

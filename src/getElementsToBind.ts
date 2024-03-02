@@ -1,7 +1,7 @@
 import { getPropertyFromPath } from "./helpers";
 import { SetupBits } from "./setup";
 
-export type BindType = "text" | "class";
+export type BindType = "text" | "class" | "model";
 export const getElementsToBind = (
   el: Element,
   bindType: BindType,
