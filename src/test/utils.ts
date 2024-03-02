@@ -3,6 +3,8 @@ export const wait = async (ms: number = 0) =>
 
 
 export const prettyHTML = (_str: string) => {
+  if (typeof _str !== "string") return Error("prettyHTML only accepts strings");
+  
   const str = _str
     .trim()
     .replaceAll(/[\n\t]/g, "")

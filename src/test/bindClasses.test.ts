@@ -10,7 +10,7 @@ describe("bindClasses", () => {
     const el = JSDOM.fragment('<div data-class="message"></div>')
       .firstChild as Element;
 
-    bindClasses(el, { message }, false);
+    bindClasses({ message }, el, false);
     expect(el.className).toBe("test");
 
     message.value = "new value";

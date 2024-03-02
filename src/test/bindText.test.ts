@@ -12,7 +12,7 @@ describe("bindText", () => {
     const el = JSDOM.fragment('<div data-text="message"></div>')
       .firstChild as Element;
 
-    bindText(el, { message: message });
+    bindText({ message: message }, el);
     expect(el?.textContent).toBe("test");
   });
   it("should update data-text when a ref value updates", async () => {
@@ -20,7 +20,7 @@ describe("bindText", () => {
     const el = JSDOM.fragment('<div data-text="message"></div>')
       .firstChild as Element;
 
-    bindText(el, { message: message });
+    bindText({ message: message }, el);
     message.value = "new value";
 
     await wait();
@@ -31,7 +31,7 @@ describe("bindText", () => {
     const el = JSDOM.fragment('<div data-text="message.deep"></div>')
       .firstChild as Element;
 
-    bindText(el, { message: message });
+    bindText({ message: message }, el);
     expect(el?.textContent).toBe("test");
   });
   it("should update deep data-text when a ref value updates", async () => {
@@ -39,7 +39,7 @@ describe("bindText", () => {
     const el = JSDOM.fragment('<div data-text="message.deep"></div>')
       .firstChild as Element;
 
-    bindText(el, { message: message });
+    bindText({ message: message }, el);
     message.value = { deep: "new value" };
 
     await wait();
