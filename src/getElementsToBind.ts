@@ -1,7 +1,14 @@
-import { getPropertyFromPath } from "./helpers";
+import { getPropertyFromPath, isObject, toPrevValue, toValue } from "./helpers";
 import { SetupBits } from "./setup";
 
 export type BindType = "text" | "class" | "model";
+
+type ElementToBindItem = {
+  el: Element;
+  value: SetupBits;
+  getDeepValue: () => unknown;
+  getDeepPreviousValue: () => unknown;
+};
 export const getElementsToBind = (
   el: Element,
   bindType: BindType,
@@ -15,12 +22,25 @@ export const getElementsToBind = (
     if (!insideFor && _attrValue.startsWith("$")) return acc;
 
     const attrValue = _attrValue.replace("$", "__data-for__");
+    const [key, restKey] = attrValue.split(".", 2);
+    const value = data[key];
 
-    const value = data[attrValue.split(".")[0]];
-    const getDeepValue = () => getPropertyFromPath(data, attrValue);
+    const obj: ElementToBindItem = {
+      el: element,
+      value,
+      getDeepValue: () => toValue(value),
+      getDeepPreviousValue: () => toPrevValue(value),
+    };
 
-    const obj = { el: element, value, getDeepValue };
+    if (restKey) {
+      obj.getDeepValue = () => getPropertyFromPath(toValue(value), restKey);
+      obj.getDeepPreviousValue = () => {
+        const prev = toPrevValue(value);
+        return isObject(prev) ? getPropertyFromPath(prev, restKey) : undefined;
+      };
+    }
+
     acc.push(obj);
     return acc;
-  }, [] as { el: Element; value: SetupBits; getDeepValue: () => unknown }[]);
+  }, [] as ElementToBindItem[]);
 };

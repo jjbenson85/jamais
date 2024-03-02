@@ -16,6 +16,14 @@ export const getPropertyFromPath = (
 export function isRef(value: unknown): value is Ref<unknown> {
   return value instanceof Ref;
 }
-export function toValue(value: unknown) {
+export function toValue(value: any) {
   return isRef(value) ? value.value : value;
+}
+
+export function toPrevValue(value: any) {
+  return isRef(value) ? value.previousValue : undefined;
+}
+
+export function isObject(value: unknown): value is Record<string, unknown> {
+  return typeof value === "object" && value !== null;
 }
