@@ -1,4 +1,5 @@
 import type { Ref } from "./ref";
+import { setupFors } from "./setupFors";
 import { setupMethods } from "./setupMethods";
 import { setupRefs } from "./setupRefs";
 
@@ -17,6 +18,7 @@ export function setup(
     attach: (attachStr: string) => {
       const el = _document.querySelector(attachStr);
       if (!el) throw new Error("No element found");
+      setupFors(dataEntries, el);
       setupRefs(dataEntries, el);
       setupMethods(dataEntries, el);
     },

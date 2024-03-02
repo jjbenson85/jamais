@@ -23,3 +23,5 @@ export class ProcessQueue {
     }, 0);
   };
 }
+
+export const globalQueue = new ProcessQueue();
