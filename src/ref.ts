@@ -1,3 +1,5 @@
+import { globalQueue } from "./processQueue";
+
 export class Ref<T> {
   private _previousValue: T;
   private _currentValue: T;
@@ -39,8 +41,12 @@ export class Ref<T> {
   addWatcher = (fn: () => void) => {
     this._watchers.add(fn);
   };
+
+  addProcessQueueWatcher = (fn: () => void) => {
+    this.addWatcher(() => globalQueue.add(fn));
+  };
 }
 
-export const ref = <T,>(value: T) => new Ref<T>(value);
+export const ref = <T>(value: T) => new Ref<T>(value);
 
-export const isRef = <T,>(v: T | Ref<T>): v is Ref<T> => v instanceof Ref;
+export const isRef = <T>(v: T | Ref<T>): v is Ref<T> => v instanceof Ref;

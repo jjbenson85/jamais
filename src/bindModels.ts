@@ -23,12 +23,17 @@ export function bindModels(
       console.warn("Can only bind refs");
       return;
     }
+
     el.addEventListener("input", (e: Event) => {
       if (!e.target) return;
       value.value = toOriginalType(value, e.target as HTMLInputElement);
     });
-    const fn = () => ((el as HTMLInputElement).value = String(value.value));
-    value.addWatcher(() => () => globalQueue.add(fn));
-    fn();
+
+    const setInputValue = () =>
+      ((el as HTMLInputElement).value = String(value.value));
+
+    value.addProcessQueueWatcher(setInputValue);
+
+    setInputValue();
   });
 }
