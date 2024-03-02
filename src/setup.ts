@@ -1,8 +1,8 @@
 import type { Ref } from "./ref";
 import { setupFors } from "./setupFors";
 import { setupMethods } from "./setupMethods";
-import { bindClasses } from "./bindClasses";
-import { bindModels } from "./bindModels";
+import { bindClass } from "./bindClass";
+import { bindModel } from "./bindModel";
 import { bindText } from "./bindText";
 
 type SetupMethods = ((...args: any[]) => string) | ((...args: any[]) => void);
@@ -23,8 +23,8 @@ export function setup(
       setupFors(dataEntries, el);
 
       bindText(data, el);
-      bindClasses(data, el);
-      bindModels(data, el);
+      bindClass(data, el);
+      bindModel(data, el);
 
       setupMethods(dataEntries, el);
     },

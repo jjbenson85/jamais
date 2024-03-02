@@ -1,16 +1,16 @@
 import { ref } from "../ref";
-import { bindClasses } from "../bindClasses";
+import { bindClass } from "../bindClass";
 import { describe, expect, it } from "vitest";
 import { JSDOM } from "jsdom";
 import { wait } from "./utils";
 
-describe("bindClasses", () => {
+describe("bindClass", () => {
   it("should update classes when a ref value update", async () => {
     const message = ref("test");
     const el = JSDOM.fragment('<div data-class="message"></div>')
       .firstChild as Element;
 
-    bindClasses({ message }, el, false);
+    bindClass({ message }, el, false);
     expect(el.className).toBe("test");
 
     message.value = "new value";
@@ -23,7 +23,7 @@ describe("bindClasses", () => {
     const el = JSDOM.fragment('<div data-class="message.deep"></div>')
       .firstChild as Element;
 
-    bindClasses({ message }, el, false);
+    bindClass({ message }, el, false);
     expect(el.className).toBe("test");
   });
 });

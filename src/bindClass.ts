@@ -1,5 +1,4 @@
 import { getElementsToBind } from "./getElementsToBind";
-import { globalQueue } from "./processQueue";
 import { isRef } from "./ref";
 import { SetupBits } from "./setup";
 
@@ -11,7 +10,7 @@ function applyClasses(el: Element, curr: unknown, prev?: unknown) {
   classArrFromStr(curr).forEach((cls) => el.classList.add(cls));
 }
 
-export const bindClasses = (
+export const bindClass = (
   data: Record<string, SetupBits>,
   el: Element,
   insideFor = false

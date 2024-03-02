@@ -1,5 +1,4 @@
 import { getElementsToBind } from "./getElementsToBind";
-import { globalQueue } from "./processQueue";
 import { Ref, isRef } from "./ref";
 import { SetupBits } from "./setup";
 
@@ -7,7 +6,7 @@ const toOriginalType = (value: Ref<unknown>, target: HTMLInputElement) => {
   return typeof value.value === "number" ? Number(target.value) : target.value;
 };
 
-export function bindModels(
+export function bindModel(
   data: Record<string, SetupBits>,
   el: Element,
   insideFor = false
