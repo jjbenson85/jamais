@@ -1,4 +1,4 @@
-import { getPropertyFromPath } from "./helpers";
+import { getElementsToBind } from "./getElementsToBind";
 import { globalQueue } from "./processQueue";
 import { isRef } from "./ref";
 import { SetupBits } from "./setup";
@@ -8,26 +8,20 @@ export function bindText(
   data: Record<string, SetupBits>,
   insideFor = false
 ) {
-  const els = [el, ...el.querySelectorAll(`[data-text]`)];
-  console.log({ els });
-  els.forEach((el) => {
-    const _attrValue = el.getAttribute("data-text") ?? "";
-    const attrValue = _attrValue.replace("$", "__data-for__");
+  getElementsToBind(el, "text", data, insideFor).forEach(
+    ({ el, value, getDeepValue }) => {
+      const fn = () => {
+        el.textContent = String(getDeepValue());
+      };
+      //   Is not a ref if insideFor and using $VALUE in template
+      if (isRef(value)) {
+        value.addWatcher(() => globalQueue.add(fn));
+      }
+      fn();
 
-    if (!insideFor && attrValue.startsWith("__data-for__")) return;
-
-    if (!attrValue) return;
-
-    const value = data[attrValue.split(".")[0]];
-
-    const fn = () => {
-      const deepValue = getPropertyFromPath(data, attrValue);
-      el.textContent = String(deepValue);
-    };
-
-    if (isRef(value)) {
-      value.addWatcher(() => globalQueue.add(fn));
+      if (typeof value === "function") {
+        // TODO: Handle functions as values
+      }
     }
-    fn();
-  });
+  );
 }
