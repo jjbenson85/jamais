@@ -4,6 +4,7 @@ import { bindClass } from "./bindClass";
 import { bindModel } from "./bindModel";
 import { bindText } from "./bindText";
 import { bindFor } from "./bindFor";
+import { bindIf } from "./bindIf";
 
 type SetupMethods = ((...args: any[]) => string) | ((...args: any[]) => void);
 export type SetupBits = Ref<any> | SetupMethods;
@@ -22,6 +23,7 @@ export function setup(
       if (!el) throw new Error("No element found");
 
       bindFor(data, el);
+      bindIf(data, el);
       bindText(data, el);
       bindClass(data, el);
       bindModel(data, el);
