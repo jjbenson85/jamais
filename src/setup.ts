@@ -7,7 +7,15 @@ import { bindFor } from "./bindFor";
 import { bindIf } from "./bindIf";
 
 type SetupMethods = ((...args: any[]) => string) | ((...args: any[]) => void);
-export type SetupBits = Ref<any> | SetupMethods;
+export type SetupBits =
+  | Ref<any>
+  | SetupMethods
+  | number
+  | string
+  | boolean
+  | Record<string, unknown>
+  | null
+  | undefined;
 
 export function setup(
   setupFn: () => Record<string, SetupBits>,

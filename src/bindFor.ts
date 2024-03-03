@@ -1,6 +1,7 @@
 import { bindClass } from "./bindClass";
 import { bindText } from "./bindText";
 import { getElementsToBind } from "./getElementsToBind";
+import { isRef } from "./helpers";
 import { SetupBits } from "./setup";
 
 export function bindFor(data: Record<string, SetupBits>, el: Element) {
@@ -31,7 +32,7 @@ export function bindFor(data: Record<string, SetupBits>, el: Element) {
         return;
       }
       const entries = Object.entries(deepValue);
-      const newChildren = entries.map(([key, item]: any) => {
+      const newChildren = entries.map(([_key, item]: any) => {
         const newEl = el.cloneNode(true) as Element;
 
         // TODO: Do We need to remove these attributes?
@@ -49,7 +50,10 @@ export function bindFor(data: Record<string, SetupBits>, el: Element) {
       parentEl.append(...postSibling);
     };
 
-    value.addProcessQueueWatcher(fn);
     fn();
+
+    if (isRef(value)) {
+      value.addProcessQueueWatcher(fn);
+    }
   });
 }
