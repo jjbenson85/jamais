@@ -10,12 +10,8 @@ function applyClasses(el: Element, curr: unknown, prev?: unknown) {
   classArrFromStr(curr).forEach((cls) => el.classList.add(cls));
 }
 
-export const bindClass = (
-  data: Record<string, SetupBits>,
-  el: Element,
-  insideFor = false
-) => {
-  getElementsToBind(el, "class", data, insideFor).forEach(
+export const bindClass = (data: Record<string, SetupBits>, el: Element) => {
+  getElementsToBind(el, "class", data).forEach(
     ({ el, value, getDeepValue, getDeepPreviousValue }) => {
       //   Is not a ref if insideFor and using $VALUE in template
       if (isRef(value)) {

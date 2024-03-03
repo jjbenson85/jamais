@@ -6,12 +6,8 @@ const toOriginalType = (value: Ref<unknown>, target: HTMLInputElement) => {
   return typeof value.value === "number" ? Number(target.value) : target.value;
 };
 
-export function bindModel(
-  data: Record<string, SetupBits>,
-  el: Element,
-  insideFor = false
-) {
-  getElementsToBind(el, "model", data, insideFor).forEach(({ el, value }) => {
+export function bindModel(data: Record<string, SetupBits>, el: Element) {
+  getElementsToBind(el, "model", data).forEach(({ el, value }) => {
     if (!("value" in el)) {
       console.warn("Can only bind models to input elements");
       return;

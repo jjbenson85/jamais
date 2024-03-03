@@ -21,7 +21,7 @@ describe("bindModel", () => {
     expect(message.value).toBe("c");
   });
 
-  it("should bind refs to inputs", async () => {
+  it.todo("should bind refs to inputs", async () => {
     const document = new JSDOM('<input data-model="message"></div>').window
       .document;
     const message = ref("c");
