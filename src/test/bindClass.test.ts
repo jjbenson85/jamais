@@ -10,7 +10,7 @@ describe("bindClass", () => {
     const el = JSDOM.fragment('<div data-class="message"></div>')
       .firstChild as Element;
 
-    bindClass({ message }, el, false);
+    bindClass({ message }, el);
     expect(el.className).toBe("test");
 
     message.value = "new value";
@@ -23,7 +23,7 @@ describe("bindClass", () => {
     const el = JSDOM.fragment('<div data-class="message.deep"></div>')
       .firstChild as Element;
 
-    bindClass({ message }, el, false);
+    bindClass({ message }, el);
     expect(el.className).toBe("test");
   });
 });
