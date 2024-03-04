@@ -93,4 +93,3 @@ export const getSiblingElementsToBind = (
   const elz = getSiblingElsWithBindType(el, bindType);
   return attachWatchersToEls(data, elz, bindType);
 };
-

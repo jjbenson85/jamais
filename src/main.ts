@@ -24,18 +24,91 @@ const specialClass = computed(count, () =>
 specialClass.addWatcher(() => console.log("watch", specialClass.value));
 count.addWatcher(() => console.log("watch", count.value));
 
+const computedArray = computed(count, () =>
+  Array.from({ length: Math.abs(count.value) }, () => {
+    const value = Math.random() * 100;
+    return cls({
+      "bg-green-500": value > 50,
+      "bg-red-500": value < 50,
+    });
+  })
+);
+
+console.log("computedArray", computedArray.value);
+
 computed(count, () => console.log("watch", count.value));
-setup(() => ({
-  formatDouble,
-  count,
-  double,
-  countClass,
-  specialClass,
-  increment: () => count.value++,
-  decrement: () => count.value--,
-  log: (e: Event) => {
-    const target = e.target as HTMLInputElement;
-    count.value = parseInt(target.value);
+
+const columns = ref([
+  { key: "name", label: "Name" },
+  { key: "age", label: "Age" },
+  { key: "email", label: "Email" },
+]);
+
+const itemsRaw = [
+  { name: "James", age: 33, email: "james@example.com", class: "bg-red-500" },
+  { name: "John", age: 44, email: "john@example.com", class: "bg-green-500" },
+  { name: "Jane", age: 55, email: "jane@example.com", class: "bg-blue-500" },
+];
+
+const items = ref(itemsRaw);
+
+const computedArray2 = computed(count, () =>
+  Array.from({ length: Math.abs(count.value) }, () => {
+    // const value = Math.random() * 100;
+    // return cls({
+    //   "bg-green-500": value > 50,
+    //   "bg-red-500": value < 50,
+    // });
+    return itemsRaw[Math.round(Math.random() * 2)];
+  })
+);
+
+const myObj = ref({ name: "James", age: 33, email: "james@example.com" });
+const showIf = ref(true);
+const showElseIf = ref(true);
+const showElseIf2 = ref(true);
+const toggleShowIf = () => (showIf.value = !showIf.value);
+const toggleShowElseIf = () => (showElseIf.value = !showElseIf.value);
+const toggleShowElseIf2 = () => (showElseIf2.value = !showElseIf2.value);
+
+const state = ref("INIT");
+
+setup(
+  {
+    state,
+    setStateToInit: () => (state.value = "INIT"),
+    setStateToLoading: () => (state.value = "LOADING"),
+    setStateToLoaded: () => (state.value = "LOADED"),
+    setStateToError: () => (state.value = "ERROR"),
+
+    staticString: "Hello World",
+    staticNumber: 123,
+    staticBoolean: true,
+    staticObject: { name: "James", age: 33 },
+    showIf,
+    showElseIf,
+    showElseIf2,
+    toggleShowIf,
+    toggleShowElseIf,
+    toggleShowElseIf2,
+    formatDouble,
+    count,
+    double,
+    countClass,
+    specialClass,
+    items,
+    columns,
+    myObj,
+    computedArray2,
+    increment: () => count.value++,
+    decrement: () => count.value--,
+    log: (e: Event) => {
+      const target = e.target as HTMLInputElement;
+      count.value = parseInt(target.value);
+    },
   },
-})).attach("#app");
+  {
+    attach: "#app",
+  }
+);
 

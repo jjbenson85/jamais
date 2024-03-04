@@ -10,35 +10,103 @@
 
   <body>
     <div id="app">
-      <div data-class="countClass">Count: <span data-text="count" data-class="specialClass"></span></div>
-      <button data-class="specialClass" data-click="increment">
-        increment <span data-text="count" data-class="specialClass"></span>
-      </button>
-      <button class="bg-red-500" data-click="decrement">
+      <h2>Static Values</h2>
+      <div data-text="staticString" data-bind="label:state"></div>
+      <div data-text="staticNumber"></div>
+      <div data-text="staticBoolean"></div>
+      <div data-text="staticObject.name"></div>
+
+      <hr />
+      <h2>Dynamic Values</h2>
+      <div data-class="countClass">
+        Count: <span data-text="count" data-class="specialClass"></span>
+      </div>
+      <button class="bg-red-500" data-event="click:decrement">
         decrement <span data-text="count" data-class="specialClass"></span>
+      </button>
+      <button data-class="specialClass" data-event="click:increment">
+        increment <span data-text="count" data-class="specialClass"></span>
       </button>
       <div>Double: <span data-text="double"></span></div>
       <div data-text="formatDouble"></div>
       <input data-model="count" type="range" min="-100" max="100" />
-      <div data-for="10"> TEST </div>
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
+
+      <hr />
+      <h2>Switch</h2>
+      <div data-text="state"></div>
+      <div data-switch="state">
+        <div data-case="INIT">INIT</div>
+        <div data-case="LOADING">LOADING</div>
+        <div data-case="LOADED">LOADED</div>
+        <div data-case="ERROR">ERROR</div>
+      </div>
+      <div>
+        <button data-event="click:setStateToInit">INIT</button>
+        <button data-event="click:setStateToLoading">LOADING</button>
+        <button data-event="click:setStateToLoaded">LOADED</button>
+        <button data-event="click:setStateToError">ERROR</button>
+      </div>
+      <!-- <div data-text="myObj.name"> XXX </div>
+      <div data-text="myObj.age"> XXX </div>
+      <div data-text="myObj.email"> XXX </div> -->
+
+      <!-- <div>
+        <div data-for="item" data-in="computedArray2">
+          <span data-class="item.class" data-text="item.name"></span>
+          <span data-class="item.class" data-text="item.email"></span>
+          <span data-class="item.class" data-text="item.age"></span>
+        </div>
+      </div> -->
+      <hr />
+      <div>IF - ELSE IF - ELSE</div>
+      <div>
+        <button data-event="click:toggleShowIf">
+          TOGGLE IF <span data-text="showIf"></span>
+        </button>
+        <button data-event="click:toggleShowElseIf">
+          TOGGLE ELSE IF <span data-text="showElseIf"></span>
+        </button>
+        <button data-event="click:toggleShowElseIf2">
+          TOGGLE ELSE IF2 <span data-text="showElseIf2"></span>
+        </button>
+        <div data-if="showIf" style="display: flex">
+          <div>Showing</div>
+          <div>If</div>
+        </div>
+        <div data-else-if="showElseIf">Showing Else IF</div>
+        <div data-else-if="showElseIf2">Showing Else IF 2</div>
+        <div style="display: flex" data-else>
+          <div>Showing</div>
+          <div>Else</div>
+        </div>
+      </div>
+      <hr />
+      <div>FOR LOOP</div>
+
+      <div>
+        <table>
+          <thead>
+            <tr>
+              <th
+                data-for="column"
+                data-in="columns"
+                data-text="column.label"
+              ></th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr data-for="item" data-in="computedArray2">
+              <td data-class="item.class" data-text="item.name"></td>
+              <td data-class="item.class" data-text="item.email"></td>
+              <td data-class="item.class" data-text="item.age"></td>
+              <!-- <td data-for="el" data-in="item" data-text="el"></td> -->
+            </tr>
+          </tbody>
+        </table>
+        <!-- <div data-for="item" data-in="myObj">
+            <span data-text="item"></span>
+        </div> -->
+      </div>
     </div>
   </body>
 </html>

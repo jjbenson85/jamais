@@ -10,7 +10,7 @@ describe("setup", () => {
     const document = new JSDOM(
       '<div id="app"><div data-text="message"></div></div>'
     ).window.document;
-    setup(() => ({ message }), document).attach("#app");
+    setup({ message }, { attach: "#app" }, document);
     await wait();
     expect(document.body.querySelector("div")?.textContent).toBe("test");
   });
@@ -21,7 +21,7 @@ describe("setup", () => {
       '<div id="app"><div data-text="message"></div></div>'
     ).window.document;
 
-    setup(() => ({ message }), document).attach("#app");
+    setup({ message }, { attach: "#app" }, document);
     expect(document.querySelector("div")?.textContent).toBe("test");
     message.value = "new value";
     await wait();
@@ -34,7 +34,7 @@ describe("setup", () => {
       '<div id="app"><div data-class="message"></div></div>'
     ).window.document;
 
-    setup(() => ({ message }), document).attach("#app");
+    setup({ message }, { attach: "#app" }, document);
     expect(document.querySelector('[data-class="message"]')?.className).toBe(
       "test"
     );
@@ -50,7 +50,7 @@ describe("setup", () => {
     const document = new JSDOM(
       '<div id="app"><button data-click="handleClick"></button></div>'
     ).window.document;
-    setup(() => ({ clickFn: handleClick }), document).attach("#app");
+    setup({ clickFn: handleClick }, { attach: "#app" }, document);
     const button = document.querySelector("button");
     button?.click();
     expect(handleClick).toHaveBeenCalledOnce();

@@ -1,4 +1,4 @@
-import { cls } from "../cls";
+import { cls } from "../helpers/cls";
 
 import { describe, expect, it } from "vitest";
 
