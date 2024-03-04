@@ -21,8 +21,6 @@ const specialClass = computed(count, () =>
 );
 
 // watch
-specialClass.addWatcher(() => console.log("watch", specialClass.value));
-count.addWatcher(() => console.log("watch", count.value));
 
 const computedArray = computed(count, () =>
   Array.from({ length: Math.abs(count.value) }, () => {
@@ -34,9 +32,7 @@ const computedArray = computed(count, () =>
   })
 );
 
-console.log("computedArray", computedArray.value);
 
-computed(count, () => console.log("watch", count.value));
 
 const columns = ref([
   { key: "name", label: "Name" },
@@ -51,6 +47,12 @@ const itemsRaw = [
 ];
 
 const items = ref(itemsRaw);
+
+const mainItems = ref([
+  { name: "A", arr: ["a", "b", "c"] },
+  { name: "B", arr: ["d", "e", "f"] },
+  { name: "C", arr: ["g", "h", "i"] },
+]);
 
 const computedArray2 = computed(count, () =>
   Array.from({ length: Math.abs(count.value) }, () => {
@@ -75,6 +77,7 @@ const state = ref("INIT");
 
 setup(
   {
+    mainItems,
     state,
     setStateToInit: () => (state.value = "INIT"),
     setStateToLoading: () => (state.value = "LOADING"),
