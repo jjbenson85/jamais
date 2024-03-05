@@ -1,7 +1,7 @@
 import { expect } from "vitest";
 import { prettyHTML } from "./utils";
 expect.extend({
-  toBeInnerHTML(received: unknown, expected: string) {
+  toBeHTML(received: unknown, expected: string) {
     //@ts-ignore
     const { utils } = this;
     const rFormatted =

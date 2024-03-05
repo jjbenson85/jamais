@@ -1,7 +1,7 @@
 import type { Assertion, AsymmetricMatchersContaining } from "vitest";
 
 interface CustomMatchers<R = unknown> {
-  toBeInnerHTML: (expected: E) => R;
+  toBeHTML: (expected: E) => R;
 }
 
 declare module "vitest" {

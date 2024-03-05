@@ -18,7 +18,7 @@ describe("bindFor", () => {
 
     await wait();
 
-    expect(el.innerHTML).toBeInnerHTML(
+    expect(el.innerHTML).toBeHTML(
       `
         <div data-text="item">a</div>
         <div data-text="item">b</div>
@@ -45,7 +45,7 @@ describe("bindFor", () => {
     bindFor({ items }, el);
 
     const innerHTML = el?.innerHTML;
-    expect(innerHTML).toBeInnerHTML(
+    expect(innerHTML).toBeHTML(
       `
         <div>
             <div data-text="subItem">a.1</div>

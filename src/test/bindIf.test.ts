@@ -12,7 +12,7 @@ describe("bindIf", () => {
       .firstChild as Element;
 
     bindIf({ show }, el);
-    expect(el?.outerHTML).toBeInnerHTML('<div data-if="show"></div>');
+    expect(el?.outerHTML).toBeHTML('<div data-if="show"></div>');
   });
 
   it("should remove the element when the value is false", async () => {
@@ -24,7 +24,7 @@ describe("bindIf", () => {
     show.value = false;
 
     await wait();
-    expect(el?.outerHTML).toBeInnerHTML(
+    expect(el?.outerHTML).toBeHTML(
       '<div data-if="show" style="display: none;"></div>'
     );
   });
@@ -42,7 +42,7 @@ describe("bindIf", () => {
     show.value = true;
 
     await wait();
-    expect(el?.outerHTML).toBeInnerHTML(`
+    expect(el?.outerHTML).toBeHTML(`
     <div>
         <div data-if="show">If</div>
         <div data-else="" style="display: none;">Else</div>
@@ -61,7 +61,7 @@ describe("bindIf", () => {
     bindIf({ show }, el);
 
     await wait();
-    expect(el?.outerHTML).toBeInnerHTML(
+    expect(el?.outerHTML).toBeHTML(
       `<div>
         <div data-if="show" style="display: none;">If</div>
         <div data-else="">Else</div>
@@ -82,7 +82,7 @@ describe("bindIf", () => {
     show.value = false;
 
     await wait();
-    expect(el?.outerHTML).toBeInnerHTML(
+    expect(el?.outerHTML).toBeHTML(
       `<div>
             <div data-if="show" style="display: none;">If</div>
             <div data-else="" style="">Else</div>
@@ -103,7 +103,7 @@ describe("bindIf", () => {
     show.value = true;
 
     await wait();
-    expect(el?.outerHTML).toBeInnerHTML(
+    expect(el?.outerHTML).toBeHTML(
       `<div>
             <div data-if="show" style="">If</div>
             <div data-else="" style="display: none;">Else</div>
@@ -123,7 +123,7 @@ describe("bindIf", () => {
     ).firstChild as Element;
 
     bindIf({ showIf, showElseIf }, el);
-    expect(el?.outerHTML).toBeInnerHTML(
+    expect(el?.outerHTML).toBeHTML(
       `<div>
             <div data-if="showIf" style="display: none;">If</div>
             <div data-else-if="showElseIf" style="">Else If</div>
@@ -147,7 +147,7 @@ describe("bindIf", () => {
     showElseIf.value = true;
 
     await wait();
-    expect(el?.outerHTML).toBeInnerHTML(
+    expect(el?.outerHTML).toBeHTML(
       `<div>
             <div data-if="showIf" style="display: none;">If</div>
             <div data-else-if="showElseIf" style="">Else If</div>
@@ -171,7 +171,7 @@ describe("bindIf", () => {
     showElseIf.value = false;
 
     await wait();
-    expect(el?.outerHTML).toBeInnerHTML(
+    expect(el?.outerHTML).toBeHTML(
       `<div>
             <div data-if="showIf" style="display: none;">If</div>
             <div data-else-if="showElseIf" style="display: none;">Else If</div>
@@ -197,7 +197,7 @@ describe("bindIf", () => {
     showIf.value = false;
 
     await wait();
-    expect(el?.outerHTML).toBeInnerHTML(
+    expect(el?.outerHTML).toBeHTML(
       `<div>
             <div data-if="showIf" style="display: none;">If</div>
             <div data-else-if="showElseIf" style="display: none;">Else If</div>
