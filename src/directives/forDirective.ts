@@ -39,8 +39,6 @@ export const forDirective = createDirective((ctx) => {
         newEl.removeAttribute("data-in");
 
         bindDirectives(directives, { ...data, [forKey]: item }, newEl);
-
-        return newEl;
       });
 
       parentEl.append(...postSibling);
