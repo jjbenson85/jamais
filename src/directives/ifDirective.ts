@@ -3,68 +3,39 @@ import {
   getSiblingElementsToBind,
   getSiblingElsWithBindType,
 } from "../getElementsToBind";
-import { Ref, isRef } from "../ref";
-import { SetupBits } from "../setup";
-
-const displayElement = (el: HTMLElement | undefined) => {
-  if (!el) return () => {};
-  const display = el.style.display;
-  return (isVisible: boolean) =>
-    (el.style.display = isVisible ? display : "none");
-};
+import { displayElement } from "../helpers/displayElement";
+import { isRef } from "../ref";
 
 export const ifDirective = createDirective((ctx) => {
   const { el, attrs, data } = ctx;
   for (const attr of attrs) {
     const { get, value } = attr;
 
-    const ifEl = el as HTMLElement;
-    const ifDisplay = displayElement(ifEl);
-    const ifElGetDeepValue = get;
-    const ifElRef = value;
-
-    const [elseIfEls, elseIfGetDeepValues, elseIfRefs] =
-      getSiblingElementsToBind(el, "else-if", data).reduce(
-        (acc, e) => {
-          acc[0].push(e.el as HTMLElement);
-          acc[1].push(e.getDeepValue);
-          acc[2].push(e.value);
-          return acc;
-        },
-        [[], [], []] as [HTMLElement[], (() => unknown)[], SetupBits[]]
-      );
-    const elseIfElsDisplay = elseIfEls.map(displayElement);
-
+    const elses = getSiblingElementsToBind(el, "else-if", data);
     const elseEl = getSiblingElsWithBindType(el, "else").at(0);
-    const elseIfDisplay = displayElement(elseEl as HTMLElement);
 
+    const els = [el, ...elses.map((e) => e.el), elseEl].filter(
+      (e): e is HTMLElement => Boolean(e)
+    );
+    const elsDisplay = els.map(displayElement);
+
+    const getValues = [get, ...elses.map((e) => e.get), () => !get()];
+    const refs = [value, ...elses.map((e) => e.value), value];
     const cb = () => {
       //Hide all elements
-      ifDisplay(false);
-      elseIfElsDisplay.forEach((toggleElement) => toggleElement(false));
-      elseIfDisplay(false);
+      elsDisplay.forEach((toggleElement) => toggleElement(false));
 
-      if (ifElGetDeepValue()) {
-        ifDisplay(true);
-        return;
-      }
+      const displayIndex = els.findIndex((_, i) => getValues[i]());
 
-      const getElseIfToDisplay = elseIfEls.findIndex((_, i) =>
-        elseIfGetDeepValues[i]()
-      );
+      if (displayIndex === -1) return;
 
       //Show the correct element
-      if (getElseIfToDisplay > -1) {
-        elseIfElsDisplay[getElseIfToDisplay](true);
-        return;
-      }
+      const elToDisplayFn = elsDisplay[displayIndex];
 
-      elseIfDisplay(true);
+      elToDisplayFn(true);
     };
 
-    [ifElRef, ...elseIfRefs]
-      .filter((e): e is Ref<unknown> => isRef(e))
-      .forEach((ref) => ref.addProcessQueueWatcher(cb));
+    refs.filter(isRef).forEach((ref) => ref.addProcessQueueWatcher(cb));
 
     cb();
   }
