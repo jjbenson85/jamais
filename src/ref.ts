@@ -1,12 +1,12 @@
 import { globalQueue } from "./processQueue";
 
 export class Ref<T> {
-  private _previousValue: T;
+  private _previousValue: T | undefined;
   private _currentValue: T;
   private _watchers: Set<() => void>;
   constructor(value: T) {
     this._currentValue = value;
-    this._previousValue = value;
+    this._previousValue = undefined;
     this._watchers = new Set();
   }
   get value() {
@@ -20,7 +20,7 @@ export class Ref<T> {
   get previousValue() {
     return this._previousValue;
   }
-  set previousValue(_value: T) {}
+  set previousValue(_value: T | undefined) {}
 
   get currentValue() {
     return this._currentValue;
