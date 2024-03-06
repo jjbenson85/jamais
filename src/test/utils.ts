@@ -1,10 +1,11 @@
+import { Mock, beforeEach, vi } from "vitest";
+
 export const wait = async (ms: number = 0) =>
   new Promise((resolve) => setTimeout(resolve, ms));
 
-
 export const prettyHTML = (_str: string) => {
   if (typeof _str !== "string") return Error("prettyHTML only accepts strings");
-  
+
   const str = _str
     .trim()
     .replaceAll(/[\n\t]/g, "")
@@ -25,4 +26,24 @@ export const prettyHTML = (_str: string) => {
     }
   }
   return formatted.trim();
+};
+
+export const spyConsoleError = () => {
+  beforeEach(() => {
+    (console.error as Mock).mockClear();
+  });
+  return vi.spyOn(console, "error");
+};
+export const spyConsoleWarn = () => {
+  beforeEach(() => {
+    (console.warn as Mock).mockClear();
+  });
+  return vi.spyOn(console, "warn");
+};
+
+export const spyConsoleLog = () => {
+  beforeEach(() => {
+    (console.log as Mock).mockClear();
+  });
+  return vi.spyOn(console, "log");
 };

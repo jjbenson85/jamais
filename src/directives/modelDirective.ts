@@ -10,12 +10,12 @@ export const modelDirective = createDirective((ctx) => {
   for (const attr of attrs) {
     const { effect, get, value } = attr;
     if (!("value" in el)) {
-      console.warn("Can only bind models to input elements");
+      console.warn("data-model: Can only bind models to input elements");
       return;
     }
 
     if (!isRef(value)) {
-      console.warn("Can only bind refs");
+      console.warn("data-model: Can only bind refs");
       return;
     }
 
