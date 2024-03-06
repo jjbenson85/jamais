@@ -1,6 +1,6 @@
 import { getPropertyFromPath } from "../helpers";
 
-import { describe, it, expect } from "vitest";
+import { describe, expect, it } from "vitest";
 
 describe("getPropertyFromPath", () => {
   it("should get the property from the path", () => {

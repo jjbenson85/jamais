@@ -1,24 +1,26 @@
-import type { Ref } from "./ref";
 import { Directive, bindDirectives } from "./bindDirectives";
-import { switchDirective } from "./directives/switchDirective";
-import { textDirective } from "./directives/textDirective";
-import { eventDirective } from "./directives/eventDirective";
 import { bindDirective } from "./directives/bindDirective";
 import { classDirective } from "./directives/classDirective";
-import { modelDirective } from "./directives/modelDirective";
-import { ifDirective } from "./directives/ifDirective";
+import { eventDirective } from "./directives/eventDirective";
 import { forDirective } from "./directives/forDirective";
+import { ifDirective } from "./directives/ifDirective";
+import { modelDirective } from "./directives/modelDirective";
+import { switchDirective } from "./directives/switchDirective";
+import { textDirective } from "./directives/textDirective";
+import type { Ref } from "./ref";
 
-type SetupMethods = ((...args: any[]) => string) | ((...args: any[]) => void);
-export type SetupBits =
-  | Ref<any>
-  | SetupMethods
-  | number
-  | string
-  | boolean
-  | Record<string, unknown>
-  | null
-  | undefined;
+type SetupMethods =
+  | ((...args: unknown[]) => string)
+  | ((...args: unknown[]) => void);
+export type SetupBits = unknown;
+// | Ref<unknown>
+// | SetupMethods
+// | number
+// | string
+// | boolean
+// | Record<string, unknown>
+// | null
+// | undefined;
 
 export const builtInDirectives: Record<string, Directive> = {
   "data-switch": switchDirective,
@@ -37,7 +39,7 @@ export function setup(
     attach: string;
     directives?: Record<string, Directive>;
   },
-  _document: Document = document
+  _document: Document = document,
 ) {
   const el = _document.querySelector<HTMLElement>(options.attach);
   if (!el) throw new Error("No element found");

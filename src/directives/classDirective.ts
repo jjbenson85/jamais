@@ -4,8 +4,12 @@ const classArrFromStr = (str: unknown) =>
   str ? String(str).trim().split(" ").filter(Boolean) : [];
 
 function applyClasses(el: Element, curr: unknown, prev?: unknown) {
-  classArrFromStr(prev).forEach((cls) => el.classList.remove(cls));
-  classArrFromStr(curr).forEach((cls) => el.classList.add(cls));
+  for (const cls of classArrFromStr(prev)) {
+    el.classList.remove(cls);
+  }
+  for (const cls of classArrFromStr(curr)) {
+    el.classList.add(cls);
+  }
 }
 
 export const classDirective = createDirective((ctx) => {

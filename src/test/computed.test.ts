@@ -1,6 +1,6 @@
 import { computed } from "../computed";
 
-import { describe, it, expect, vi } from "vitest";
+import { describe, expect, it, vi } from "vitest";
 import { ref } from "../ref";
 
 const mockConsoleWarn = vi.spyOn(console, "warn");
@@ -52,7 +52,9 @@ describe("computed", () => {
     const r = computed(
       a,
       () => a.value * 2,
-      (value) => (a.value = value)
+      (value) => {
+        a.value = value;
+      },
     );
     r.value = 2;
     expect(a.value).toBe(2);

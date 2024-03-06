@@ -1,9 +1,9 @@
 import "../extendMatchers";
 
+import { JSDOM } from "jsdom";
+import { describe, expect, it } from "vitest";
 import { DirectiveContext } from "../../bindDirectives";
 import { textDirective } from "../../directives/textDirective";
-import { describe, it, expect } from "vitest";
-import { JSDOM } from "jsdom";
 import { ref } from "../../ref";
 import { wait } from "../utils";
 
@@ -16,9 +16,7 @@ describe("textDirective", () => {
     const ctx: DirectiveContext = {
       data: { message },
       el,
-
       value: message,
-
       attrValue: "message",
 
       get: () => message.value,
@@ -38,11 +36,8 @@ describe("textDirective", () => {
     const ctx: DirectiveContext = {
       data: { message },
       el,
-
       value: message,
-
       attrValue: "message",
-
       get: () => message.value,
       getPrevious: () => message.previousValue,
       effect: (fn) => message.addProcessQueueWatcher(fn),
@@ -63,9 +58,7 @@ describe("textDirective", () => {
     const ctx: DirectiveContext = {
       data: { message },
       el,
-
       value: message,
-
       attrValue: "message.deep",
 
       get: () => message.value.deep,
@@ -85,13 +78,11 @@ describe("textDirective", () => {
     const ctx: DirectiveContext = {
       data: { message },
       el,
-
       value: message,
       attrValue: "message.deep",
       get: () => message.value.deep,
       getPrevious: () => message.previousValue?.deep,
       effect: (fn) => message.addProcessQueueWatcher(fn),
-
       directives: {},
     };
 

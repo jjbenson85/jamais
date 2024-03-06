@@ -1,9 +1,9 @@
 import "../extendMatchers";
 
+import { JSDOM } from "jsdom";
+import { describe, expect, it, vi } from "vitest";
 import { DirectiveContext } from "../../bindDirectives";
 import { eventDirective } from "../../directives/eventDirective";
-import { describe, it, expect, vi } from "vitest";
-import { JSDOM } from "jsdom";
 
 describe("eventDirective", () => {
   it("should bind a click event to an element", () => {
@@ -13,18 +13,39 @@ describe("eventDirective", () => {
     const ctx: DirectiveContext = {
       data,
       el,
-
-      value: "handleClick",
-      attrValue: "handleClick",
+      value: undefined,
+      attrValue: "click:handleClick",
       get: () => data.handleClick,
       getPrevious: () => undefined,
       effect: () => {},
-
       directives: {},
     };
 
     eventDirective(ctx);
     el.click();
     expect(data.handleClick).toHaveBeenCalled();
+  });
+
+  it.todo("should handle multiple events", () => {
+    const el = new JSDOM().window.document.createElement("button");
+    const data = { handleClick: vi.fn(), handleMouseOver: vi.fn() };
+
+    const ctx: DirectiveContext = {
+      data,
+      el,
+      value: undefined,
+      attrValue: "click:handleClick mouseover:handleMouseOver",
+      get: () => data.handleClick,
+      getPrevious: () => undefined,
+      effect: () => {},
+      directives: {},
+    };
+
+    eventDirective(ctx);
+    el.click();
+    expect(data.handleClick).toHaveBeenCalled();
+
+    el.dispatchEvent(new MouseEvent("mouseover"));
+    expect(data.handleMouseOver).toHaveBeenCalled();
   });
 });

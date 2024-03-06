@@ -1,9 +1,9 @@
 import "../extendMatchers";
 
+import { JSDOM } from "jsdom";
+import { describe, expect, it } from "vitest";
 import { DirectiveContext } from "../../bindDirectives";
 import { ifDirective } from "../../directives/ifDirective";
-import { describe, it, expect } from "vitest";
-import { JSDOM } from "jsdom";
 import { ref } from "../../ref";
 import { wait } from "../utils";
 
@@ -16,15 +16,11 @@ describe("ifDirective", () => {
     const ctx: DirectiveContext = {
       data: { show },
       el,
-
       value: show,
-
       attrValue: "show",
-
       get: () => show.value,
       getPrevious: () => show.previousValue,
       effect: () => {},
-
       directives: {},
     };
 
@@ -40,15 +36,11 @@ describe("ifDirective", () => {
     const ctx: DirectiveContext = {
       data: { show },
       el,
-
       value: show,
-
       attrValue: "show",
-
       get: () => show.value,
       getPrevious: () => show.previousValue,
       effect: () => {},
-
       directives: {},
     };
 
@@ -57,7 +49,7 @@ describe("ifDirective", () => {
 
     await wait();
     expect(el?.outerHTML).toBeHTML(
-      '<div data-if="show" style="display: none;"></div>'
+      '<div data-if="show" style="display: none;"></div>',
     );
   });
 
@@ -67,22 +59,19 @@ describe("ifDirective", () => {
       `<div>
             <div data-if="show">If</div>
             <div data-else>Else</div>
-        </div>`
+        </div>`,
     ).firstChild as HTMLElement;
-    const el = parent.querySelector<HTMLElement>("div")!;
+    const el = parent.querySelector<HTMLElement>("div");
+    if (!el) throw new Error("No element found");
 
     const ctx: DirectiveContext = {
       data: { show },
       el,
-
       value: show,
-
       attrValue: "show",
-
       get: () => show.value,
       getPrevious: () => show.previousValue,
       effect: () => {},
-
       directives: {},
     };
 
@@ -101,22 +90,19 @@ describe("ifDirective", () => {
       `<div>
             <div data-if="show">If</div>
             <div data-else>Else</div>
-        </div>`
+        </div>`,
     ).firstChild as HTMLElement;
-    const el = parent.querySelector<HTMLElement>("div")!;
+    const el = parent.querySelector<HTMLElement>("div");
+    if (!el) throw new Error("No element found");
 
     const ctx: DirectiveContext = {
       data: { show },
       el,
-
       value: show,
-
       attrValue: "show",
-
       get: () => show.value,
       getPrevious: () => show.previousValue,
       effect: () => {},
-
       directives: {},
     };
 
@@ -135,22 +121,19 @@ describe("ifDirective", () => {
       `<div>
             <div data-if="show">If</div>
             <div data-else>Else</div>
-        </div>`
+        </div>`,
     ).firstChild as HTMLElement;
-    const el = parent.querySelector<HTMLElement>("div")!;
+    const el = parent.querySelector<HTMLElement>("div");
+    if (!el) throw new Error("No element found");
 
     const ctx: DirectiveContext = {
       data: { show },
       el,
-
       value: show,
-
       attrValue: "show",
-
       get: () => show.value,
       getPrevious: () => show.previousValue,
       effect: () => {},
-
       directives: {},
     };
 
@@ -170,22 +153,19 @@ describe("ifDirective", () => {
       `<div>
             <div data-if="show">If</div>
             <div data-else>Else</div>
-        </div>`
+        </div>`,
     ).firstChild as HTMLElement;
-    const el = parent.querySelector<HTMLElement>("div")!;
+    const el = parent.querySelector<HTMLElement>("div");
+    if (!el) throw new Error("No element found");
 
     const ctx: DirectiveContext = {
       data: { show },
       el,
-
       value: show,
-
       attrValue: "show",
-
       get: () => show.value,
       getPrevious: () => show.previousValue,
       effect: () => {},
-
       directives: {},
     };
 
@@ -207,22 +187,19 @@ describe("ifDirective", () => {
             <div data-if="show">If</div>
             <div data-else-if="showElseIf">Else If</div>
             <div data-else>Else</div>
-        </div>`
+        </div>`,
     ).firstChild as HTMLElement;
-    const el = parent.querySelector<HTMLElement>("div")!;
+    const el = parent.querySelector<HTMLElement>("div");
+    if (!el) throw new Error("No element found");
 
     const ctx: DirectiveContext = {
       data: { show, showElseIf },
       el,
-
       value: show,
-
       attrValue: "show",
-
       get: () => show.value,
       getPrevious: () => show.previousValue,
       effect: () => {},
-
       directives: {},
     };
 
@@ -245,22 +222,19 @@ describe("ifDirective", () => {
                 <div data-if="show">If</div>
                 <div data-else-if="showElseIf">Else If</div>
                 <div data-else>Else</div>
-            </div>`
+            </div>`,
     ).firstChild as HTMLElement;
-    const el = parent.querySelector<HTMLElement>("div")!;
+    const el = parent.querySelector<HTMLElement>("div");
+    if (!el) throw new Error("No element found");
 
     const ctx: DirectiveContext = {
       data: { show, showElseIf },
       el,
-
       value: show,
-
       attrValue: "show",
-
       get: () => show.value,
       getPrevious: () => show.previousValue,
       effect: () => {},
-
       directives: {},
     };
 
@@ -285,20 +259,19 @@ describe("ifDirective", () => {
                 <div data-else-if="showElseIf">Else If</div>
                 <div data-else-if="showElseIf2">Else If 2</div>
                 <div data-else>Else</div>
-            </div>`
+            </div>`,
     ).firstChild as HTMLElement;
-    const el = parent.querySelector<HTMLElement>("div")!;
+    const el = parent.querySelector<HTMLElement>("div");
+    if (!el) throw new Error("No element found");
 
     const ctx: DirectiveContext = {
       data: { show, showElseIf, showElseIf2 },
       el,
-
       value: show,
       attrValue: "show",
       get: () => show.value,
       getPrevious: () => show.previousValue,
       effect: () => {},
-
       directives: {},
     };
 

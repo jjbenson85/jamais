@@ -7,26 +7,26 @@ const toOriginalType = (value: Ref<unknown>, target: HTMLInputElement) => {
 
 export const modelDirective = createDirective((ctx) => {
   const { el, effect, get, value } = ctx;
- 
-    if (!("value" in el)) {
-      console.warn("data-model: Can only bind models to input elements");
-      return;
-    }
 
-    if (!isRef(value)) {
-      console.warn("data-model: Can only bind refs");
-      return;
-    }
+  if (!("value" in el)) {
+    console.warn("data-model: Can only bind models to input elements");
+    return;
+  }
 
-    el.addEventListener("input", (e: Event) => {
-      if (!e.target) return;
-      value.value = toOriginalType(value, e.target as HTMLInputElement);
-    });
+  if (!isRef(value)) {
+    console.warn("data-model: Can only bind refs");
+    return;
+  }
 
-    const cb = () => {
-      el.value = String(get());
-    };
+  el.addEventListener("input", (e: Event) => {
+    if (!e.target) return;
+    value.value = toOriginalType(value, e.target as HTMLInputElement);
+  });
 
-    effect(cb);
-    cb();
+  const cb = () => {
+    el.value = String(get());
+  };
+
+  effect(cb);
+  cb();
 });

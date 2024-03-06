@@ -13,7 +13,7 @@ export const ifDirective = createDirective((ctx) => {
   const elseEl = getSiblingElsWithBindType(el, "else").at(0);
 
   const els = [el, ...elses.map((e) => e.el), elseEl].filter(
-    (e): e is HTMLElement => Boolean(e)
+    (e): e is HTMLElement => Boolean(e),
   );
   const elsDisplay = els.map(displayElement);
 
@@ -21,7 +21,9 @@ export const ifDirective = createDirective((ctx) => {
   const refs = [value, ...elses.map((e) => e.value), value];
   const cb = () => {
     //Hide all elements
-    elsDisplay.forEach((toggleElement) => toggleElement(false));
+    for (const toggleElement of elsDisplay) {
+      toggleElement(false);
+    }
 
     const displayIndex = els.findIndex((_, i) => getValues[i]());
 
@@ -33,7 +35,9 @@ export const ifDirective = createDirective((ctx) => {
     elToDisplayFn(true);
   };
 
-  refs.filter(isRef).forEach((ref) => ref.addProcessQueueWatcher(cb));
+  for (const ref of refs.filter(isRef)) {
+    ref.addProcessQueueWatcher(cb);
+  }
 
   cb();
 });

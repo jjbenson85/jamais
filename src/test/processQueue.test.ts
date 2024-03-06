@@ -1,6 +1,6 @@
 import { ProcessQueue } from "../processQueue";
 
-import { describe, it, expect, vi } from "vitest";
+import { describe, expect, it, vi } from "vitest";
 import { wait } from "./utils";
 
 describe("ProcessQueue", () => {

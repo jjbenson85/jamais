@@ -1,9 +1,9 @@
 import "./extendMatchers";
 
-import { ref } from "../ref";
-import { getElementsToBind } from "../getElementsToBind";
-import { describe, expect, it } from "vitest";
 import { JSDOM } from "jsdom";
+import { describe, expect, it } from "vitest";
+import { getElementsToBind } from "../getElementsToBind";
+import { ref } from "../ref";
 
 describe("getElementsToBind", () => {
   it("should return an empty array if there are no elements to bind", () => {
@@ -19,7 +19,7 @@ describe("getElementsToBind", () => {
     (input) => {
       const message = ref("test");
       const el = new JSDOM(
-        `<div id="app"><div data-${input}="message"></div></div>`
+        `<div id="app"><div data-${input}="message"></div></div>`,
       ).window.document.body as HTMLElement;
       const elements = getElementsToBind(el, input, { message });
 
@@ -27,7 +27,7 @@ describe("getElementsToBind", () => {
       expect(elements[0].value).toBe(message);
       expect(elements[0].get()).toBe("test");
       expect(elements[0].el).toBe(el.querySelector(`[data-${input}]`));
-    }
+    },
   );
 
   it.each(["text", "class"] as const)(
@@ -35,7 +35,7 @@ describe("getElementsToBind", () => {
     (input) => {
       const message = ref({ deep: "test" });
       const el = JSDOM.fragment(
-        `<div id="app"><div data-${input}="message.deep"></div></div>`
+        `<div id="app"><div data-${input}="message.deep"></div></div>`,
       ).firstChild as HTMLElement;
       const elements = getElementsToBind(el, input, { message });
 
@@ -43,7 +43,7 @@ describe("getElementsToBind", () => {
       expect(elements[0].value).toBe(message);
       expect(elements[0].get()).toBe("test");
       expect(elements[0].el).toBe(el.querySelector(`[data-${input}]`));
-    }
+    },
   );
 
   it.each(["text", "class"] as const)(
@@ -51,7 +51,7 @@ describe("getElementsToBind", () => {
     (input) => {
       const message = ref("test");
       const el = JSDOM.fragment(
-        `<div id="app"><div><div data-${input}="message"></div></div></div>`
+        `<div id="app"><div><div data-${input}="message"></div></div></div>`,
       ).firstChild as HTMLElement;
       const elements = getElementsToBind(el, input, { message });
 
@@ -59,7 +59,7 @@ describe("getElementsToBind", () => {
       expect(elements[0].value).toBe(message);
       expect(elements[0].get()).toBe("test");
       expect(elements[0].el).toBe(el.querySelector(`[data-${input}]`));
-    }
+    },
   );
 
   it.each(["text", "class"] as const)(
@@ -67,7 +67,7 @@ describe("getElementsToBind", () => {
     (input) => {
       const message = ref("test");
       const el = JSDOM.fragment(
-        `<div id="app"><div data-${input}="message"></div><div data-${input}="message"></div><div data-${input}="message"></div></div>`
+        `<div id="app"><div data-${input}="message"></div><div data-${input}="message"></div><div data-${input}="message"></div></div>`,
       ).firstChild as HTMLElement;
       const elements = getElementsToBind(el, input, { message });
 
@@ -77,6 +77,6 @@ describe("getElementsToBind", () => {
         expect(item.get()).toBe("test");
         expect(item.el).toBe(el.querySelectorAll(`[data-${input}]`)[i]);
       });
-    }
+    },
   );
 });

@@ -1,6 +1,6 @@
 import "./style.css";
 
-import { ref, computed, setup, cls } from "./jamais";
+import { cls, computed, ref, setup } from "./jamais";
 
 const count = ref(0);
 const double = computed(count, () => count.value * 2);
@@ -29,10 +29,8 @@ const computedArray = computed(count, () =>
       "bg-green-500": value > 50,
       "bg-red-500": value < 50,
     });
-  })
+  }),
 );
-
-
 
 const columns = ref([
   { key: "name", label: "Name" },
@@ -62,16 +60,22 @@ const computedArray2 = computed(count, () =>
     //   "bg-red-500": value < 50,
     // });
     return itemsRaw[Math.round(Math.random() * 2)];
-  })
+  }),
 );
 
 const myObj = ref({ name: "James", age: 33, email: "james@example.com" });
 const showIf = ref(true);
 const showElseIf = ref(true);
 const showElseIf2 = ref(true);
-const toggleShowIf = () => (showIf.value = !showIf.value);
-const toggleShowElseIf = () => (showElseIf.value = !showElseIf.value);
-const toggleShowElseIf2 = () => (showElseIf2.value = !showElseIf2.value);
+const toggleShowIf = () => {
+  showIf.value = !showIf.value;
+};
+const toggleShowElseIf = () => {
+  showElseIf.value = !showElseIf.value;
+};
+const toggleShowElseIf2 = () => {
+  showElseIf2.value = !showElseIf2.value;
+};
 
 const state = ref("INIT");
 
@@ -79,10 +83,18 @@ setup(
   {
     mainItems,
     state,
-    setStateToInit: () => (state.value = "INIT"),
-    setStateToLoading: () => (state.value = "LOADING"),
-    setStateToLoaded: () => (state.value = "LOADED"),
-    setStateToError: () => (state.value = "ERROR"),
+    setStateToInit: () => {
+      state.value = "INIT";
+    },
+    setStateToLoading: () => {
+      state.value = "LOADING";
+    },
+    setStateToLoaded: () => {
+      state.value = "LOADED";
+    },
+    setStateToError: () => {
+      state.value = "ERROR";
+    },
 
     staticString: "Hello World",
     staticNumber: 123,
@@ -102,6 +114,7 @@ setup(
     items,
     columns,
     myObj,
+    computedArray,
     computedArray2,
     increment: () => count.value++,
     decrement: () => count.value--,
@@ -112,6 +125,5 @@ setup(
   },
   {
     attach: "#app",
-  }
+  },
 );
-

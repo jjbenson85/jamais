@@ -1,6 +1,6 @@
 import { ref } from "../ref";
 
-import { describe, it, expect, vi } from "vitest";
+import { describe, expect, it, vi } from "vitest";
 describe("ref", () => {
   it("should create a ref", () => {
     const r = ref(1);

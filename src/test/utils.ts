@@ -1,6 +1,6 @@
 import { Mock, beforeEach, vi } from "vitest";
 
-export const wait = async (ms: number = 0) =>
+export const wait = async (ms = 0) =>
   new Promise((resolve) => setTimeout(resolve, ms));
 
 export const prettyHTML = (_str: string) => {
@@ -20,9 +20,9 @@ export const prettyHTML = (_str: string) => {
       continue;
     }
     if (str[i + 1] === "/") {
-      formatted += "\n" + " ".repeat(indent-- * 2) + "<";
+      formatted += `\n${" ".repeat(indent-- * 2)}<`;
     } else {
-      formatted += "\n" + " ".repeat(++indent * 2) + "<";
+      formatted += `\n${" ".repeat(++indent * 2)}<`;
     }
   }
   return formatted.trim();

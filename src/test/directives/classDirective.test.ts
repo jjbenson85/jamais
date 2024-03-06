@@ -1,9 +1,9 @@
 import "../extendMatchers";
 
+import { JSDOM } from "jsdom";
+import { describe, expect, it } from "vitest";
 import { DirectiveContext } from "../../bindDirectives";
 import { classDirective } from "../../directives/classDirective";
-import { describe, it, expect } from "vitest";
-import { JSDOM } from "jsdom";
 import { ref } from "../../ref";
 import { wait } from "../utils";
 
@@ -15,13 +15,11 @@ describe("classDirective", () => {
     const ctx: DirectiveContext = {
       data,
       el,
-
       value: "testClass",
       attrValue: "testClass",
       get: () => data.testClass,
       getPrevious: () => undefined,
       effect: () => {},
-
       directives: {},
     };
 
@@ -37,20 +35,16 @@ describe("classDirective", () => {
     const ctx: DirectiveContext = {
       data,
       el,
-
       value: "testClass",
       attrValue: "testClass",
       get: () => data.testClass,
       getPrevious: () => undefined,
       effect: () => {},
-
       directives: {},
     };
 
     classDirective(ctx);
-    expect(el.outerHTML).toBeHTML(
-      `<div class="existing-class my-class"></div>`
-    );
+    expect(el.outerHTML).toBeHTML(`<div class="existing-class my-class"></div>`);
   });
 
   it("should remove classes that are no longer bound", async () => {
@@ -62,26 +56,24 @@ describe("classDirective", () => {
     const ctx: DirectiveContext = {
       data,
       el,
-
       value: "testClass",
       attrValue: "testClass",
       get: () => testClass.value,
       getPrevious: () => testClass.previousValue,
       effect: (fn) => testClass.addProcessQueueWatcher(fn),
-
       directives: {},
     };
     classDirective(ctx);
 
     expect(el.outerHTML).toBeHTML(
-      `<div class="existing-class my-old-class"></div>`
+      `<div class="existing-class my-old-class"></div>`,
     );
 
     testClass.value = "my-new-class";
 
     await wait();
     expect(el.outerHTML).toBeHTML(
-      `<div class="existing-class my-new-class"></div>`
+      `<div class="existing-class my-new-class"></div>`,
     );
   });
 });

@@ -1,6 +1,6 @@
 import { globalQueue } from "./processQueue";
 
-export class Ref<T> {
+export class Ref<T = unknown> {
   private _previousValue: T | undefined;
   private _currentValue: T;
   private _watchers: Set<() => void>;
@@ -33,8 +33,9 @@ export class Ref<T> {
   };
 
   _callWatchers = () => {
-    if (this._previousValue !== this._currentValue) {
-      this._watchers.forEach((fn) => fn());
+    if (this._previousValue === this._currentValue) return;
+    for (const fn of this._watchers) {
+      fn();
     }
   };
 

@@ -4,9 +4,9 @@ export class Computed<T> extends Ref<T> {
   _getFn: () => T;
   _setFn?: (value: T) => void;
   constructor(
-    refsToWatch: Ref<any> | Ref<any>[],
+    refsToWatch: Ref<unknown>[],
     getFn: () => T,
-    setFn?: (value: T) => void
+    setFn?: (value: T) => void,
   ) {
     const value = getFn();
 
@@ -14,7 +14,7 @@ export class Computed<T> extends Ref<T> {
     this._getFn = getFn;
     this._setFn = setFn;
 
-    for (const ref of [refsToWatch].flat()) {
+    for (const ref of refsToWatch) {
       ref.addWatcher(() => {
         const value = getFn();
         this._setInternalValue(value);
@@ -35,8 +35,13 @@ export class Computed<T> extends Ref<T> {
     return value;
   }
 }
-export const computed = <T,>(
-  refsToWatch: Ref<any> | Ref<any>[],
+export const computed = <T>(
+  refsToWatch: unknown | unknown[],
   getFn: () => T,
   setFn?: (value: T) => void,
-) => new Computed(refsToWatch, getFn, setFn);
+) => {
+  const refsToWatch2 = [refsToWatch]
+    .flat()
+    .filter((ref): ref is Ref => ref instanceof Ref);
+  return new Computed(refsToWatch2, getFn, setFn);
+};

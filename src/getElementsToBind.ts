@@ -19,7 +19,7 @@ type ElementToBindItem = {
 
 export const getSiblingElsWithBindType = (
   el: HTMLElement,
-  bindType: BindType
+  bindType: BindType,
 ): HTMLElement[] => {
   const els = [];
   let nextEl = el.nextElementSibling as HTMLElement;
@@ -35,7 +35,7 @@ export const getSiblingElsWithBindType = (
 
 const getElementsWithBindType = (
   el: HTMLElement,
-  bindType: BindType
+  bindType: BindType,
 ): HTMLElement[] => {
   const els = el.querySelectorAll<HTMLElement>(`[data-${bindType}]`);
   return [el, ...els];
@@ -44,7 +44,7 @@ const getElementsWithBindType = (
 const attachWatchersToEls = (
   data: Record<string, SetupBits>,
   els: HTMLElement[],
-  bindType: BindType
+  bindType: BindType,
 ) => {
   return els.reduce((acc, element) => {
     const attrValue = element.getAttribute(`data-${bindType}`);
@@ -79,7 +79,7 @@ const attachWatchersToEls = (
 export const getElementsToBind = (
   el: HTMLElement,
   bindType: BindType,
-  data: Record<string, SetupBits>
+  data: Record<string, SetupBits>,
 ) => {
   const elz = getElementsWithBindType(el, bindType);
   return attachWatchersToEls(data, elz, bindType);
@@ -88,7 +88,7 @@ export const getElementsToBind = (
 export const getSiblingElementsToBind = (
   el: HTMLElement,
   bindType: BindType,
-  data: Record<string, SetupBits>
+  data: Record<string, SetupBits>,
 ) => {
   const elz = getSiblingElsWithBindType(el, bindType);
   return attachWatchersToEls(data, elz, bindType);

@@ -29,7 +29,7 @@ function makeGetValue(data: Record<string, SetupBits>, attrValue: string) {
 
 function makeGetPreviousValue(
   data: Record<string, SetupBits>,
-  attrValue: string
+  attrValue: string,
 ) {
   const [key, restKey] = attrValue.split(".", 2);
   const value = data[key];
@@ -43,39 +43,41 @@ function makeGetPreviousValue(
 export function bindDirectives(
   directives: Record<string, Directive>,
   data: Record<string, SetupBits>,
-  parentEl: HTMLElement
+  parentEl: HTMLElement,
 ) {
   for (const [name, directive] of Object.entries(directives)) {
     const p: HTMLElement[] = parentEl.hasAttribute(name) ? [parentEl] : [];
 
-    [...p, ...parentEl.querySelectorAll<HTMLElement>(`[${name}]`)].forEach(
-      (el) => {
-        const attrValue = el.getAttribute(`${name}`);
-        const dataValue = attrValue ? data[attrValue] : undefined;
+    const items = [
+      ...p,
+      ...parentEl.querySelectorAll<HTMLElement>(`[${name}]`),
+    ];
 
-        const get = attrValue ? makeGetValue(data, attrValue) : () => undefined;
+    for (const el of items) {
+      const attrValue = el.getAttribute(`${name}`);
+      const dataValue = attrValue ? data[attrValue] : undefined;
 
-        const getPrevious = attrValue
-          ? makeGetPreviousValue(data, attrValue)
-          : () => undefined;
+      const get = attrValue ? makeGetValue(data, attrValue) : () => undefined;
 
-        const ctx: DirectiveContext = {
-          el,
-          attrValue,
-          value: dataValue,
-          get,
-          getPrevious,
-          effect: (fn) => {
-            if (isRef(dataValue)) {
-              dataValue.addProcessQueueWatcher(fn);
-            }
-          },
-          data,
-          directives,
-        };
-        directive(ctx);
-      },
-      [] as DirectiveContext[]
-    );
+      const getPrevious = attrValue
+        ? makeGetPreviousValue(data, attrValue)
+        : () => undefined;
+
+      const ctx: DirectiveContext = {
+        el,
+        attrValue,
+        value: dataValue,
+        get,
+        getPrevious,
+        effect: (fn) => {
+          if (isRef(dataValue)) {
+            dataValue.addProcessQueueWatcher(fn);
+          }
+        },
+        data,
+        directives,
+      };
+      directive(ctx);
+    }
   }
 }

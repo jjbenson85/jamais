@@ -3,47 +3,47 @@ import { isObject } from "../helpers";
 
 export const forDirective = createDirective((ctx) => {
   const { el, get, effect, data, directives } = ctx;
- 
-    const parentEl = el.parentElement;
 
-    if (!parentEl) return;
+  const parentEl = el.parentElement;
 
-    const siblings = Array.from(parentEl?.children || []);
-    const preSibling = siblings.slice(0, siblings.indexOf(el));
-    const postSibling = siblings.slice(siblings.indexOf(el) + 1);
+  if (!parentEl) return;
 
-    const forKey = el.getAttribute("data-for");
+  const siblings = Array.from(parentEl?.children || []);
+  const preSibling = siblings.slice(0, siblings.indexOf(el));
+  const postSibling = siblings.slice(siblings.indexOf(el) + 1);
 
-    if (!forKey) {
-      console.warn("No data-for attribute found on data-in");
-      return;
-    }
+  const forKey = el.getAttribute("data-for");
 
-    const fn = () => {
-      parentEl.innerHTML = "";
-      parentEl.append(...preSibling);
+  if (!forKey) {
+    console.warn("No data-for attribute found on data-in");
+    return;
+  }
 
-      const deepValue = get();
+  const fn = () => {
+    parentEl.innerHTML = "";
+    parentEl.append(...preSibling);
 
-      const valueArray = Array.isArray(deepValue)
-        ? deepValue
-        : isObject(deepValue)
+    const deepValue = get();
+
+    const valueArray = Array.isArray(deepValue)
+      ? deepValue
+      : isObject(deepValue)
         ? Object.values(deepValue)
         : [];
 
-      valueArray.forEach((item: any) => {
-        const newEl = el.cloneNode(true) as HTMLElement;
-        parentEl.append(newEl);
-        newEl.removeAttribute("data-for");
-        newEl.removeAttribute("data-in");
+    for (const item of valueArray) {
+      const newEl = el.cloneNode(true) as HTMLElement;
+      parentEl.append(newEl);
+      newEl.removeAttribute("data-for");
+      newEl.removeAttribute("data-in");
 
-        bindDirectives(directives, { ...data, [forKey]: item }, newEl);
-      });
+      bindDirectives(directives, { ...data, [forKey]: item }, newEl);
+    }
 
-      parentEl.append(...postSibling);
-    };
+    parentEl.append(...postSibling);
+  };
 
-    fn();
+  fn();
 
-    effect(fn);
+  effect(fn);
 });

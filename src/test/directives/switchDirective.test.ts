@@ -1,8 +1,8 @@
 import "../extendMatchers";
 
-import { switchDirective } from "../../directives/switchDirective";
-import { describe, it, expect } from "vitest";
 import { JSDOM } from "jsdom";
+import { describe, expect, it } from "vitest";
+import { switchDirective } from "../../directives/switchDirective";
 import { ref } from "../../ref";
 import { wait } from "../utils";
 
@@ -15,13 +15,12 @@ describe("switchDirective", () => {
         <div data-case="Two">Two</div>
         <div data-case="Three">Three</div>
     </div>
-    `
+    `,
     ).firstChild as HTMLElement;
 
     switchDirective({
       data: { state },
       el,
-
       value: state,
       attrValue: "show",
       get: () => state.value,
@@ -49,19 +48,17 @@ describe("switchDirective", () => {
         <div data-case="Two">Two</div>
         <div data-case="Three">Three</div>
     </div>
-    `
+    `,
     ).firstChild as HTMLElement;
 
     switchDirective({
       data: { state },
       el,
-
       value: state,
       attrValue: "show",
       get: () => state.value,
       getPrevious: () => state.previousValue,
       effect: (fn) => state.addProcessQueueWatcher(fn),
-
       directives: {},
     });
 

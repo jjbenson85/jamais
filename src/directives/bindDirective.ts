@@ -14,7 +14,7 @@ function makeGetValue(data: Record<string, SetupBits>, attrValue: string) {
 
 function makeGetPreviousValue(
   data: Record<string, SetupBits>,
-  attrValue: string
+  attrValue: string,
 ) {
   const [key, restKey] = attrValue.split(".", 2);
   const value = data[key];
@@ -34,7 +34,7 @@ type AttrItem = {
   effect: (fn: () => void) => void;
 };
 export const bindDirective = createDirective((ctx) => {
-  const { data, el, attrValue: _attrValue, effect, get } = ctx;
+  const { data, el, attrValue: _attrValue } = ctx;
   if (!_attrValue) return;
 
   const attrValueArr = _attrValue.split(" ");
