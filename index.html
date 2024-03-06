@@ -10,6 +10,8 @@
 
   <body>
     <div id="app">
+
+      <!-- <div data-for="item" data-in="items">text</div> -->
       <!-- <h2>Static Values</h2>
       <div data-text="staticString" data-bind="label:state"></div>
       <div data-text="staticNumber"></div>
@@ -18,7 +20,7 @@
 
       <hr />
       <h2>Dynamic Values</h2>
-      <!-- <div data-class="countClass">
+      <div data-class="countClass">
         Count: <span data-text="count" data-class="specialClass"></span>
       </div>
       <button class="bg-red-500" data-event="click:decrement">
@@ -26,8 +28,8 @@
       </button>
       <button data-class="specialClass" data-event="click:increment">
         increment <span data-text="count" data-class="specialClass"></span>
-      </button> -->
-      <!-- <div>Double: <span data-text="double"></span></div> -->
+      </button> 
+      <div>Double: <span data-text="double"></span></div>
       <div data-text="formatDouble"></div>
       <input data-model="count" type="range" min="-100" max="100" />
 
@@ -70,11 +72,17 @@
           <div>Else</div>
         </div>
       </div> -->
-      <hr />
+      <!-- <hr />
       <div>FOR EACH</div>
       <div data-for="item" data-in="mainItems">
-        <!-- <div data-text="item.name"></div> -->
-        <div data-for="subItem" data-in="item" data-text="subItem"></div>
+        <div style="display: flex;" data-for="subItem" data-in="item">
+          <div
+            data-for="subSubItem"
+            data-in="subItem"
+            data-text="subSubItem"
+            style="margin-right: 10px;"
+          ></div>
+        </div>
       </div>
 
       <hr />
@@ -84,29 +92,20 @@
         <table>
           <thead>
             <tr>
-              <th
-                data-for="column"
-                data-in="columns"
-                data-text="column.label"
-              >
-            <span ></span>
-            </th>
+              <th data-for="column" data-in="columns" data-text="column.label">
+              </th>
             </tr>
           </thead>
-          <tbody>
-            <tr data-for="item" data-in="computedArray2">
+          <tbody> -->
+            <!-- <tr data-for="item" data-in="computedArray2">
               <td data-class="item.class" data-text="item.name"></td>
               <td data-class="item.class" data-text="item.email"></td>
               <td data-class="item.class" data-text="item.age"></td>
               <td data-class="item.class" data-text="item.age"></td>
-              <!-- <td data-for="el" data-in="item" data-text="el"></td> -->
             </tr>
           </tbody>
         </table>
-        <!-- <div data-for="item" data-in="myObj">
-            <span data-text="item"></span>
-        </div> -->
-      </div>
+      </div> -->
     </div>
   </body>
 </html>

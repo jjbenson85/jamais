@@ -13,17 +13,13 @@ describe("eventDirective", () => {
     const ctx: DirectiveContext = {
       data,
       el,
-      attrs: [
-        {
-          value: "handleClick",
-          attrPrefix: "click",
-          attrValue: "handleClick",
-          attrModifiers: [],
-          get: () => data.handleClick,
-          getPrevious: () => undefined,
-          effect: () => {},
-        },
-      ],
+
+      value: "handleClick",
+      attrValue: "handleClick",
+      get: () => data.handleClick,
+      getPrevious: () => undefined,
+      effect: () => {},
+
       directives: {},
     };
 

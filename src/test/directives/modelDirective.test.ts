@@ -18,17 +18,13 @@ describe("modelDirective", () => {
     modelDirective({
       data: { message },
       el,
-      attrs: [
-        {
-          value: message,
-          attrPrefix: "",
-          attrValue: "message",
-          attrModifiers: [],
-          get: () => message.value,
-          getPrevious: () => message.previousValue,
-          effect: (fn) => message.addProcessQueueWatcher(fn),
-        },
-      ],
+
+      value: message,
+      attrValue: "message",
+      get: () => message.value,
+      getPrevious: () => message.previousValue,
+      effect: (fn) => message.addProcessQueueWatcher(fn),
+
       directives: {},
     });
 
@@ -53,17 +49,13 @@ describe("modelDirective", () => {
     modelDirective({
       data: { message },
       el,
-      attrs: [
-        {
-          value: message,
-          attrPrefix: "",
-          attrValue: "message",
-          attrModifiers: [],
-          get: () => message.value,
-          getPrevious: () => message.previousValue,
-          effect: (fn) => message.addProcessQueueWatcher(fn),
-        },
-      ],
+
+      value: message,
+      attrValue: "message",
+      get: () => message.value,
+      getPrevious: () => message.previousValue,
+      effect: (fn) => message.addProcessQueueWatcher(fn),
+
       directives: {},
     });
 
@@ -85,17 +77,15 @@ describe("modelDirective", () => {
     modelDirective({
       data: { message },
       el,
-      attrs: [
-        {
-          value: message,
-          attrPrefix: "",
-          attrValue: "message",
-          attrModifiers: [],
-          get: () => message.value,
-          getPrevious: () => message.previousValue,
-          effect: (fn) => message.addProcessQueueWatcher(fn),
-        },
-      ],
+
+      value: message,
+
+      attrValue: "message",
+
+      get: () => message.value,
+      getPrevious: () => message.previousValue,
+      effect: (fn) => message.addProcessQueueWatcher(fn),
+
       directives: {},
     });
 
@@ -113,17 +103,15 @@ describe("modelDirective", () => {
     modelDirective({
       data: { message },
       el,
-      attrs: [
-        {
-          value: message as any,
-          attrPrefix: "",
-          attrValue: "message",
-          attrModifiers: [],
-          get: () => message,
-          getPrevious: () => undefined,
-          effect: () => undefined,
-        },
-      ],
+
+      value: message as any,
+
+      attrValue: "message",
+
+      get: () => message,
+      getPrevious: () => undefined,
+      effect: () => undefined,
+
       directives: {},
     });
 

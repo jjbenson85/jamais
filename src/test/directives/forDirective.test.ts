@@ -20,17 +20,13 @@ describe("forDirective", () => {
     const ctx: DirectiveContext = {
       data: { items },
       el,
-      attrs: [
-        {
-          value: items,
-          attrPrefix: "",
-          attrValue: "items",
-          attrModifiers: [],
-          get: () => items.value,
-          getPrevious: () => items.previousValue,
-          effect: () => {},
-        },
-      ],
+
+      value: items,
+      attrValue: "items",
+      get: () => items.value,
+      getPrevious: () => items.previousValue,
+      effect: () => {},
+
       directives: {},
     };
 

@@ -16,17 +16,15 @@ describe("ifDirective", () => {
     const ctx: DirectiveContext = {
       data: { show },
       el,
-      attrs: [
-        {
-          value: show,
-          attrPrefix: "",
-          attrValue: "show",
-          attrModifiers: [],
-          get: () => show.value,
-          getPrevious: () => show.previousValue,
-          effect: () => {},
-        },
-      ],
+
+      value: show,
+
+      attrValue: "show",
+
+      get: () => show.value,
+      getPrevious: () => show.previousValue,
+      effect: () => {},
+
       directives: {},
     };
 
@@ -42,17 +40,15 @@ describe("ifDirective", () => {
     const ctx: DirectiveContext = {
       data: { show },
       el,
-      attrs: [
-        {
-          value: show,
-          attrPrefix: "",
-          attrValue: "show",
-          attrModifiers: [],
-          get: () => show.value,
-          getPrevious: () => show.previousValue,
-          effect: () => {},
-        },
-      ],
+
+      value: show,
+
+      attrValue: "show",
+
+      get: () => show.value,
+      getPrevious: () => show.previousValue,
+      effect: () => {},
+
       directives: {},
     };
 
@@ -78,17 +74,15 @@ describe("ifDirective", () => {
     const ctx: DirectiveContext = {
       data: { show },
       el,
-      attrs: [
-        {
-          value: show,
-          attrPrefix: "",
-          attrValue: "show",
-          attrModifiers: [],
-          get: () => show.value,
-          getPrevious: () => show.previousValue,
-          effect: () => {},
-        },
-      ],
+
+      value: show,
+
+      attrValue: "show",
+
+      get: () => show.value,
+      getPrevious: () => show.previousValue,
+      effect: () => {},
+
       directives: {},
     };
 
@@ -114,17 +108,15 @@ describe("ifDirective", () => {
     const ctx: DirectiveContext = {
       data: { show },
       el,
-      attrs: [
-        {
-          value: show,
-          attrPrefix: "",
-          attrValue: "show",
-          attrModifiers: [],
-          get: () => show.value,
-          getPrevious: () => show.previousValue,
-          effect: () => {},
-        },
-      ],
+
+      value: show,
+
+      attrValue: "show",
+
+      get: () => show.value,
+      getPrevious: () => show.previousValue,
+      effect: () => {},
+
       directives: {},
     };
 
@@ -150,17 +142,15 @@ describe("ifDirective", () => {
     const ctx: DirectiveContext = {
       data: { show },
       el,
-      attrs: [
-        {
-          value: show,
-          attrPrefix: "",
-          attrValue: "show",
-          attrModifiers: [],
-          get: () => show.value,
-          getPrevious: () => show.previousValue,
-          effect: () => {},
-        },
-      ],
+
+      value: show,
+
+      attrValue: "show",
+
+      get: () => show.value,
+      getPrevious: () => show.previousValue,
+      effect: () => {},
+
       directives: {},
     };
 
@@ -187,17 +177,15 @@ describe("ifDirective", () => {
     const ctx: DirectiveContext = {
       data: { show },
       el,
-      attrs: [
-        {
-          value: show,
-          attrPrefix: "",
-          attrValue: "show",
-          attrModifiers: [],
-          get: () => show.value,
-          getPrevious: () => show.previousValue,
-          effect: () => {},
-        },
-      ],
+
+      value: show,
+
+      attrValue: "show",
+
+      get: () => show.value,
+      getPrevious: () => show.previousValue,
+      effect: () => {},
+
       directives: {},
     };
 
@@ -226,17 +214,15 @@ describe("ifDirective", () => {
     const ctx: DirectiveContext = {
       data: { show, showElseIf },
       el,
-      attrs: [
-        {
-          value: show,
-          attrPrefix: "",
-          attrValue: "show",
-          attrModifiers: [],
-          get: () => show.value,
-          getPrevious: () => show.previousValue,
-          effect: () => {},
-        },
-      ],
+
+      value: show,
+
+      attrValue: "show",
+
+      get: () => show.value,
+      getPrevious: () => show.previousValue,
+      effect: () => {},
+
       directives: {},
     };
 
@@ -266,17 +252,15 @@ describe("ifDirective", () => {
     const ctx: DirectiveContext = {
       data: { show, showElseIf },
       el,
-      attrs: [
-        {
-          value: show,
-          attrPrefix: "",
-          attrValue: "show",
-          attrModifiers: [],
-          get: () => show.value,
-          getPrevious: () => show.previousValue,
-          effect: () => {},
-        },
-      ],
+
+      value: show,
+
+      attrValue: "show",
+
+      get: () => show.value,
+      getPrevious: () => show.previousValue,
+      effect: () => {},
+
       directives: {},
     };
 
@@ -308,17 +292,13 @@ describe("ifDirective", () => {
     const ctx: DirectiveContext = {
       data: { show, showElseIf, showElseIf2 },
       el,
-      attrs: [
-        {
-          value: show,
-          attrPrefix: "",
-          attrValue: "show",
-          attrModifiers: [],
-          get: () => show.value,
-          getPrevious: () => show.previousValue,
-          effect: () => {},
-        },
-      ],
+
+      value: show,
+      attrValue: "show",
+      get: () => show.value,
+      getPrevious: () => show.previousValue,
+      effect: () => {},
+
       directives: {},
     };
 

@@ -16,17 +16,14 @@ describe("textDirective", () => {
     const ctx: DirectiveContext = {
       data: { message },
       el,
-      attrs: [
-        {
-          value: message,
-          attrPrefix: "",
-          attrValue: "message",
-          attrModifiers: [],
-          get: () => message.value,
-          getPrevious: () => message.previousValue,
-          effect: (fn) => message.addProcessQueueWatcher(fn),
-        },
-      ],
+
+      value: message,
+
+      attrValue: "message",
+
+      get: () => message.value,
+      getPrevious: () => message.previousValue,
+      effect: (fn) => message.addProcessQueueWatcher(fn),
       directives: {},
     };
 
@@ -41,17 +38,14 @@ describe("textDirective", () => {
     const ctx: DirectiveContext = {
       data: { message },
       el,
-      attrs: [
-        {
-          value: message,
-          attrPrefix: "",
-          attrValue: "message",
-          attrModifiers: [],
-          get: () => message.value,
-          getPrevious: () => message.previousValue,
-          effect: (fn) => message.addProcessQueueWatcher(fn),
-        },
-      ],
+
+      value: message,
+
+      attrValue: "message",
+
+      get: () => message.value,
+      getPrevious: () => message.previousValue,
+      effect: (fn) => message.addProcessQueueWatcher(fn),
       directives: {},
     };
 
@@ -69,17 +63,14 @@ describe("textDirective", () => {
     const ctx: DirectiveContext = {
       data: { message },
       el,
-      attrs: [
-        {
-          value: message,
-          attrPrefix: "",
-          attrValue: "message.deep",
-          attrModifiers: [],
-          get: () => message.value.deep,
-          getPrevious: () => message.previousValue?.deep,
-          effect: (fn) => message.addProcessQueueWatcher(fn),
-        },
-      ],
+
+      value: message,
+
+      attrValue: "message.deep",
+
+      get: () => message.value.deep,
+      getPrevious: () => message.previousValue?.deep,
+      effect: (fn) => message.addProcessQueueWatcher(fn),
       directives: {},
     };
 
@@ -94,17 +85,13 @@ describe("textDirective", () => {
     const ctx: DirectiveContext = {
       data: { message },
       el,
-      attrs: [
-        {
-          value: message,
-          attrPrefix: "",
-          attrValue: "message.deep",
-          attrModifiers: [],
-          get: () => message.value.deep,
-          getPrevious: () => message.previousValue?.deep,
-          effect: (fn) => message.addProcessQueueWatcher(fn),
-        },
-      ],
+
+      value: message,
+      attrValue: "message.deep",
+      get: () => message.value.deep,
+      getPrevious: () => message.previousValue?.deep,
+      effect: (fn) => message.addProcessQueueWatcher(fn),
+
       directives: {},
     };
 

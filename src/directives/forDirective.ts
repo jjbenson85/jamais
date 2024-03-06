@@ -2,9 +2,8 @@ import { bindDirectives, createDirective } from "../bindDirectives";
 import { isObject } from "../helpers";
 
 export const forDirective = createDirective((ctx) => {
-  const { el, attrs, data, directives } = ctx;
-  for (const attr of attrs) {
-    const { get, effect } = attr;
+  const { el, get, effect, data, directives } = ctx;
+ 
     const parentEl = el.parentElement;
 
     if (!parentEl) return;
@@ -47,5 +46,4 @@ export const forDirective = createDirective((ctx) => {
     fn();
 
     effect(fn);
-  }
 });

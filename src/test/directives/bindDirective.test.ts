@@ -13,17 +13,13 @@ describe("bindDirective", () => {
     const ctx: DirectiveContext = {
       data,
       el,
-      attrs: [
-        {
-          value: "foo",
-          attrPrefix: "aria-label",
-          attrValue: "foo",
-          attrModifiers: [],
-          get: () => data.foo,
-          getPrevious: () => data.foo,
-          effect: () => {},
-        },
-      ],
+      value: undefined,
+
+      attrValue: "aria-label:foo",
+      get: () => data.foo,
+      getPrevious: () => data.foo,
+      effect: () => {},
+
       directives: {},
     };
 
@@ -38,26 +34,26 @@ describe("bindDirective", () => {
     const ctx: DirectiveContext = {
       data,
       el,
-      attrs: [
-        {
-          value: "foo",
-          attrPrefix: "aria-label",
-          attrValue: "foo",
-          attrModifiers: [],
-          get: () => data.foo,
-          getPrevious: () => data.foo,
-          effect: () => {},
-        },
-        {
-          value: "baz",
-          attrPrefix: "label",
-          attrValue: "baz",
-          attrModifiers: [],
-          get: () => data.baz,
-          getPrevious: () => data.baz,
-          effect: () => {},
-        },
-      ],
+      // attrs: [
+      //   {
+      value: undefined,
+      // attrPrefix: "aria-label",
+      attrValue: "aria-label:foo label:baz",
+      // attrModifiers: [],
+      get: () => undefined,
+      getPrevious: () => undefined,
+      effect: () => {},
+      // },
+      // {
+      // value: "baz",
+      // attrPrefix: "label",
+      // attrValue: "baz",
+      // attrModifiers: [],
+      // get: () => data.baz,
+      // getPrevious: () => data.baz,
+      // effect: () => {},
+      // },
+      // ],
       directives: {},
     };
 

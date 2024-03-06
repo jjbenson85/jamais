@@ -7,36 +7,33 @@ import { displayElement } from "../helpers/displayElement";
 import { isRef } from "../ref";
 
 export const ifDirective = createDirective((ctx) => {
-  const { el, attrs, data } = ctx;
-  for (const attr of attrs) {
-    const { get, value } = attr;
+  const { el, get, value, data } = ctx;
 
-    const elses = getSiblingElementsToBind(el, "else-if", data);
-    const elseEl = getSiblingElsWithBindType(el, "else").at(0);
+  const elses = getSiblingElementsToBind(el, "else-if", data);
+  const elseEl = getSiblingElsWithBindType(el, "else").at(0);
 
-    const els = [el, ...elses.map((e) => e.el), elseEl].filter(
-      (e): e is HTMLElement => Boolean(e)
-    );
-    const elsDisplay = els.map(displayElement);
+  const els = [el, ...elses.map((e) => e.el), elseEl].filter(
+    (e): e is HTMLElement => Boolean(e)
+  );
+  const elsDisplay = els.map(displayElement);
 
-    const getValues = [get, ...elses.map((e) => e.get), () => !get()];
-    const refs = [value, ...elses.map((e) => e.value), value];
-    const cb = () => {
-      //Hide all elements
-      elsDisplay.forEach((toggleElement) => toggleElement(false));
+  const getValues = [get, ...elses.map((e) => e.get), () => !get()];
+  const refs = [value, ...elses.map((e) => e.value), value];
+  const cb = () => {
+    //Hide all elements
+    elsDisplay.forEach((toggleElement) => toggleElement(false));
 
-      const displayIndex = els.findIndex((_, i) => getValues[i]());
+    const displayIndex = els.findIndex((_, i) => getValues[i]());
 
-      if (displayIndex === -1) return;
+    if (displayIndex === -1) return;
 
-      //Show the correct element
-      const elToDisplayFn = elsDisplay[displayIndex];
+    //Show the correct element
+    const elToDisplayFn = elsDisplay[displayIndex];
 
-      elToDisplayFn(true);
-    };
+    elToDisplayFn(true);
+  };
 
-    refs.filter(isRef).forEach((ref) => ref.addProcessQueueWatcher(cb));
+  refs.filter(isRef).forEach((ref) => ref.addProcessQueueWatcher(cb));
 
-    cb();
-  }
+  cb();
 });

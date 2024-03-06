@@ -6,9 +6,8 @@ const toOriginalType = (value: Ref<unknown>, target: HTMLInputElement) => {
 };
 
 export const modelDirective = createDirective((ctx) => {
-  const { el, attrs } = ctx;
-  for (const attr of attrs) {
-    const { effect, get, value } = attr;
+  const { el, effect, get, value } = ctx;
+ 
     if (!("value" in el)) {
       console.warn("data-model: Can only bind models to input elements");
       return;
@@ -30,5 +29,4 @@ export const modelDirective = createDirective((ctx) => {
 
     effect(cb);
     cb();
-  }
 });

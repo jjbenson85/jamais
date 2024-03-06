@@ -7,18 +7,13 @@ export function createDirective(callback: Directive) {
   return callback;
 }
 
-type AttrItem = {
-  attrPrefix: string;
-  attrValue: string;
-  attrModifiers: string[];
+export type DirectiveContext = {
+  el: HTMLElement;
+  attrValue: string | null;
   value: unknown;
   get: () => unknown;
   getPrevious: () => unknown;
   effect: (fn: () => void) => void;
-};
-export type DirectiveContext = {
-  el: HTMLElement;
-  attrs: AttrItem[];
   data: Record<string, SetupBits>;
   directives: Record<string, Directive>;
 };
@@ -55,44 +50,26 @@ export function bindDirectives(
 
     [...p, ...parentEl.querySelectorAll<HTMLElement>(`[${name}]`)].forEach(
       (el) => {
-        const _attrValue = el.getAttribute(`${name}`);
-        if (!_attrValue) return;
-        const attrValueArr = _attrValue.split(" ");
-        const attrs = attrValueArr.map((attr) => {
-          let attrPrefix = "";
-          let attrValue = "";
-          let attrModifiers = [] as string[];
+        const attrValue = el.getAttribute(`${name}`);
+        const dataValue = attrValue ? data[attrValue] : undefined;
 
-          const isPrefixed = attr.includes(":");
-          if (isPrefixed) {
-            [attrPrefix, attrValue] = attr.split(":");
+        const get = attrValue ? makeGetValue(data, attrValue) : () => undefined;
 
-            [attrPrefix, ...attrModifiers] = attrPrefix.split(".");
-          } else {
-            attrValue = attr;
-          }
+        const getPrevious = attrValue
+          ? makeGetPreviousValue(data, attrValue)
+          : () => undefined;
 
-          const dataValue = data[attrValue];
-          const get = makeGetValue(data, attrValue);
-          const getPrevious = makeGetPreviousValue(data, attrValue);
-          const attrItem: AttrItem = {
-            value: dataValue,
-            attrPrefix,
-            attrValue,
-            attrModifiers,
-            get,
-            getPrevious,
-            effect: (fn) => {
-              if (isRef(dataValue)) {
-                dataValue.addProcessQueueWatcher(fn);
-              }
-            },
-          };
-          return attrItem;
-        });
         const ctx: DirectiveContext = {
           el,
-          attrs,
+          attrValue,
+          value: dataValue,
+          get,
+          getPrevious,
+          effect: (fn) => {
+            if (isRef(dataValue)) {
+              dataValue.addProcessQueueWatcher(fn);
+            }
+          },
           data,
           directives,
         };

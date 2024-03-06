@@ -15,17 +15,13 @@ describe("classDirective", () => {
     const ctx: DirectiveContext = {
       data,
       el,
-      attrs: [
-        {
-          value: "testClass",
-          attrPrefix: "",
-          attrValue: "testClass",
-          attrModifiers: [],
-          get: () => data.testClass,
-          getPrevious: () => undefined,
-          effect: () => {},
-        },
-      ],
+
+      value: "testClass",
+      attrValue: "testClass",
+      get: () => data.testClass,
+      getPrevious: () => undefined,
+      effect: () => {},
+
       directives: {},
     };
 
@@ -41,17 +37,13 @@ describe("classDirective", () => {
     const ctx: DirectiveContext = {
       data,
       el,
-      attrs: [
-        {
-          value: "testClass",
-          attrPrefix: "",
-          attrValue: "testClass",
-          attrModifiers: [],
-          get: () => data.testClass,
-          getPrevious: () => undefined,
-          effect: () => {},
-        },
-      ],
+
+      value: "testClass",
+      attrValue: "testClass",
+      get: () => data.testClass,
+      getPrevious: () => undefined,
+      effect: () => {},
+
       directives: {},
     };
 
@@ -70,17 +62,13 @@ describe("classDirective", () => {
     const ctx: DirectiveContext = {
       data,
       el,
-      attrs: [
-        {
-          value: "testClass",
-          attrPrefix: "",
-          attrValue: "testClass",
-          attrModifiers: [],
-          get: () => testClass.value,
-          getPrevious: () => testClass.previousValue,
-          effect: (fn) => testClass.addProcessQueueWatcher(fn),
-        },
-      ],
+
+      value: "testClass",
+      attrValue: "testClass",
+      get: () => testClass.value,
+      getPrevious: () => testClass.previousValue,
+      effect: (fn) => testClass.addProcessQueueWatcher(fn),
+
       directives: {},
     };
     classDirective(ctx);

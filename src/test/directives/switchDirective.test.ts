@@ -21,17 +21,13 @@ describe("switchDirective", () => {
     switchDirective({
       data: { state },
       el,
-      attrs: [
-        {
-          value: state,
-          attrPrefix: "",
-          attrValue: "show",
-          attrModifiers: [],
-          get: () => state.value,
-          getPrevious: () => state.previousValue,
-          effect: (fn) => state.addProcessQueueWatcher(fn),
-        },
-      ],
+
+      value: state,
+      attrValue: "show",
+      get: () => state.value,
+      getPrevious: () => state.previousValue,
+      effect: (fn) => state.addProcessQueueWatcher(fn),
+
       directives: {},
     });
 
@@ -59,17 +55,13 @@ describe("switchDirective", () => {
     switchDirective({
       data: { state },
       el,
-      attrs: [
-        {
-          value: state,
-          attrPrefix: "",
-          attrValue: "show",
-          attrModifiers: [],
-          get: () => state.value,
-          getPrevious: () => state.previousValue,
-          effect: (fn) => state.addProcessQueueWatcher(fn),
-        },
-      ],
+
+      value: state,
+      attrValue: "show",
+      get: () => state.value,
+      getPrevious: () => state.previousValue,
+      effect: (fn) => state.addProcessQueueWatcher(fn),
+
       directives: {},
     });
 
