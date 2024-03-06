@@ -4,6 +4,8 @@ import { DirectiveContext } from "../../bindDirectives";
 import { classDirective } from "../../directives/classDirective";
 import { describe, it, expect } from "vitest";
 import { JSDOM } from "jsdom";
+import { ref } from "../../ref";
+import { wait } from "../utils";
 
 describe("classDirective", () => {
   it("should bind a class to an element", () => {
@@ -59,10 +61,11 @@ describe("classDirective", () => {
     );
   });
 
-  it("should remove classes that are no longer bound", () => {
+  it("should remove classes that are no longer bound", async () => {
     const el = new JSDOM().window.document.createElement("div");
-    el.className = "existing-class my-old-class";
-    const data = { testClass: "my-new-class" };
+    el.className = "existing-class";
+    const testClass = ref("my-old-class");
+    const data = { testClass };
 
     const ctx: DirectiveContext = {
       data,
@@ -73,15 +76,22 @@ describe("classDirective", () => {
           attrPrefix: "",
           attrValue: "testClass",
           attrModifiers: [],
-          get: () => data.testClass,
-          getPrevious: () => "my-old-class",
-          effect: () => {},
+          get: () => testClass.value,
+          getPrevious: () => testClass.previousValue,
+          effect: (fn) => testClass.addProcessQueueWatcher(fn),
         },
       ],
       directives: {},
     };
-
     classDirective(ctx);
+
+    expect(el.outerHTML).toBeHTML(
+      `<div class="existing-class my-old-class"></div>`
+    );
+
+    testClass.value = "my-new-class";
+
+    await wait();
     expect(el.outerHTML).toBeHTML(
       `<div class="existing-class my-new-class"></div>`
     );

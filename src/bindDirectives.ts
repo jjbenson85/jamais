@@ -37,11 +37,12 @@ function makeGetPreviousValue(
   attrValue: string
 ) {
   const [key, restKey] = attrValue.split(".", 2);
-  if (restKey) {
-    const value = data[key];
-    return () => getPropertyFromPath(toValue(value), restKey);
-  }
-  return () => getPropertyFromPath(data, attrValue);
+  const value = data[key];
+
+  if (!isRef(value)) return () => undefined;
+  if (!restKey) return () => value.previousValue;
+
+  return () => getPropertyFromPath(value.previousValue, restKey);
 }
 
 export function bindDirectives(
