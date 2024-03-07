@@ -23,10 +23,10 @@
       <div data-class="countClass">
         Count: <span data-text="count" data-class="specialClass"></span>
       </div>
-      <button class="bg-red-500" data-event="click:decrement">
+      <button class="bg-red-500" data-on="click:decrement">
         decrement <span data-text="count" data-class="specialClass"></span>
       </button>
-      <button data-class="specialClass" data-event="click:increment">
+      <button data-class="specialClass" data-on="click:increment">
         increment <span data-text="count" data-class="specialClass"></span>
       </button> 
       <div>Double: <span data-text="double"></span></div>
@@ -43,22 +43,22 @@
         <div data-case="ERROR">ERROR</div>
       </div>
       <div>
-        <button data-event="click:setStateToInit">INIT</button>
-        <button data-event="click:setStateToLoading">LOADING</button>
-        <button data-event="click:setStateToLoaded">LOADED</button>
-        <button data-event="click:setStateToError">ERROR</button>
+        <button data-on="click:setStateToInit">INIT</button>
+        <button data-on="click:setStateToLoading">LOADING</button>
+        <button data-on="click:setStateToLoaded">LOADED</button>
+        <button data-on="click:setStateToError">ERROR</button>
       </div>
      
       <hr />
       <div>IF - ELSE IF - ELSE</div>
       <div>
-        <button data-event="click:toggleShowIf">
+        <button data-on="click:toggleShowIf">
           TOGGLE IF <span data-text="showIf"></span>
         </button>
-        <button data-event="click:toggleShowElseIf">
+        <button data-on="click:toggleShowElseIf">
           TOGGLE ELSE IF <span data-text="showElseIf"></span>
         </button>
-        <button data-event="click:toggleShowElseIf2">
+        <button data-on="click:toggleShowElseIf2">
           TOGGLE ELSE IF2 <span data-text="showElseIf2"></span>
         </button>
         <div data-if="showIf" style="display: flex">
@@ -72,7 +72,7 @@
           <div>Else</div>
         </div>
       </div> -->
-     <hr />
+     <!-- <hr />
       <div>FOR EACH</div>
       <div data-for="item" data-in="mainItems">
         <div style="display: flex;" data-for="subItem" data-in="item">
@@ -83,7 +83,7 @@
             style="margin-right: 10px;"
           ></div>
         </div>
-      </div>
+      </div> -->
 
       <hr />
       <div>FOR LOOP</div>
@@ -97,10 +97,10 @@
             </tr>
           </thead>
           <tbody> 
-            <tr data-for="item" data-in="computedArray2">
+            <tr data-for="item" data-in="computedArray2" data-key="item.name">
+              <!-- <td data-class="item.class" data-text="item.age"></td> -->
               <td data-class="item.class" data-text="item.name"></td>
               <td data-class="item.class" data-text="item.email"></td>
-              <td data-class="item.class" data-text="item.age"></td>
               <td data-class="item.class" data-text="item.age"></td>
             </tr>
           </tbody>

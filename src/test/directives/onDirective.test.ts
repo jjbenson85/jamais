@@ -3,7 +3,7 @@ import "../extendMatchers";
 import { JSDOM } from "jsdom";
 import { describe, expect, it, vi } from "vitest";
 import { DirectiveContext } from "../../bindDirectives";
-import { eventDirective } from "../../directives/eventDirective";
+import { onDirective } from "../../directives/onDirective";
 
 describe("eventDirective", () => {
   it("should bind a click event to an element", () => {
@@ -21,7 +21,7 @@ describe("eventDirective", () => {
       directives: {},
     };
 
-    eventDirective(ctx);
+    onDirective(ctx);
     el.click();
     expect(data.handleClick).toHaveBeenCalled();
   });
@@ -41,7 +41,7 @@ describe("eventDirective", () => {
       directives: {},
     };
 
-    eventDirective(ctx);
+    onDirective(ctx);
     el.click();
     expect(data.handleClick).toHaveBeenCalled();
 

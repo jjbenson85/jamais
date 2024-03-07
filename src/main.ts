@@ -52,15 +52,12 @@ const mainItems = ref([
   { name: "C", arr: ["g", "h", "i"] },
 ]);
 
+const arrrr = Array.from({ length: 1000 }, () => {
+  return itemsRaw[Math.round(Math.random() * 2)];
+});
+
 const computedArray2 = computed(count, () =>
-  Array.from({ length: Math.abs(count.value) }, () => {
-    // const value = Math.random() * 100;
-    // return cls({
-    //   "bg-green-500": value > 50,
-    //   "bg-red-500": value < 50,
-    // });
-    return itemsRaw[Math.round(Math.random() * 2)];
-  }),
+  arrrr.slice(0, Math.abs(count.value)),
 );
 
 const myObj = ref({ name: "James", age: 33, email: "james@example.com" });

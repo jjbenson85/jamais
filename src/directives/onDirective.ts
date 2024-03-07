@@ -1,6 +1,6 @@
 import { createDirective } from "../bindDirectives";
 
-export const eventDirective = createDirective((ctx) => {
+export const onDirective = createDirective((ctx) => {
   const { el, effect, get, getPrevious, attrValue } = ctx;
   const attrPrefix = attrValue?.split(":").at(0);
   if (!attrPrefix) {
