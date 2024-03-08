@@ -1,7 +1,11 @@
+import { bind } from "./bind";
 import { getPropertyFromPath, toValue } from "./helpers";
 import { isRef } from "./ref";
 
-export type Directive = (ctx: DirectiveContext) => void;
+export type Directive =
+  | ((ctx: DirectiveContext) => void)
+  | ((ctx: DirectiveContext) => HTMLElement[]);
+
 export function createDirective(callback: Directive) {
   return callback;
 }
@@ -16,7 +20,6 @@ export type DirectiveContext = {
   data: Record<string, unknown>;
   directives: Record<string, Directive>;
 };
-
 
 export function makeGetValue(
   data: Record<string, unknown>,
@@ -46,11 +49,16 @@ export function makeGetPreviousValue(
   return () => getPropertyFromPath(value.previousValue, restKey);
 }
 
-export function bindDirectives(
-  directives: Record<string, Directive>,
-  data: Record<string, unknown>,
-  parentEl: HTMLElement,
-) {
+export function bindDirectives({
+  data,
+  directives,
+  el: parentEl,
+}: {
+  data: Record<string, unknown>;
+  directives: Record<string, Directive>;
+  el: HTMLElement;
+}) {
+  const brandNewEls: HTMLElement[] = [];
   for (const [name, directive] of Object.entries(directives)) {
     const parentElWithAttr: HTMLElement[] = parentEl.hasAttribute?.(name)
       ? [parentEl]
@@ -65,7 +73,7 @@ export function bindDirectives(
       const attrValue = el.getAttribute(`${name}`);
       const dataValue = data[attrValue ?? ""];
 
-      directive({
+      const newEls = directive({
         el,
         attrValue,
         value: dataValue,
@@ -77,6 +85,11 @@ export function bindDirectives(
         data,
         directives,
       });
+
+      brandNewEls.push(...(newEls ?? []));
     }
+  }
+  if (brandNewEls.length) {
+    bind({ components: {}, data, directives, el: parentEl });
   }
 }

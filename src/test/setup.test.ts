@@ -1,3 +1,5 @@
+import "./extendMatchers";
+
 import { JSDOM } from "jsdom";
 import { describe, expect, it, vi } from "vitest";
 import { ref } from "../ref";
@@ -35,7 +37,7 @@ describe("setup", () => {
     expect(document.querySelector("div")?.textContent).toBe("new value");
   });
 
-  it.only("should update classes when a ref value updates", async () => {
+  it("should update classes when a ref value updates", async () => {
     const document = new JSDOM(
       '<div id="app"><div data-class="message"></div></div>',
     ).window.document;
@@ -55,18 +57,46 @@ describe("setup", () => {
     expect(el.className).toBe("my-new-class");
   });
 
-  it.todo("should call a click event when a click method is passed", () => {
+  it("should call a click event when a click method is passed", () => {
     const handleClick = vi.fn();
     const document = new JSDOM(
-      '<div id="app"><button data-click="handleClick"></button></div>',
+      '<div id="app"><button data-on="click:handleClick"></button></div>',
     ).window.document;
 
-    setup({ clickFn: handleClick }, { attach: "#app" }, document);
+    setup({ handleClick }, { attach: "#app" }, document);
 
     const button = document.querySelector("button");
 
     button?.click();
 
     expect(handleClick).toHaveBeenCalledOnce();
+  });
+  it("should use a template", async () => {
+    global.document = new JSDOM().window.document;
+    global.document.body.innerHTML = `
+    <div id="app">
+      <template name="my-template">
+        <div data-text="templateText"></div>
+      </template>
+
+      <div data-template="my-template"></div>
+      <div data-template="my-template"></div>
+      <div data-template="my-template"></div>
+    </div>`;
+
+    setup({ templateText: "I am a Template" }, { attach: "#app" }, document);
+
+    await wait();
+
+    expect(document.body.innerHTML).toBeHTML(`
+    <div id="app">
+      <template name="my-template">
+        <div data-text="templateText"></div>  
+      </template>
+  
+      <div data-text="templateText">I am a Template</div>
+      <div data-text="templateText">I am a Template</div>
+      <div data-text="templateText">I am a Template</div>
+    </div>`);
   });
 });

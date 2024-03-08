@@ -1,4 +1,4 @@
-import { Directive, bindDirectives } from "./bindDirectives";
+import { Directive } from "./bindDirectives";
 import { bindDirective } from "./directives/bindDirective";
 import { classDirective } from "./directives/classDirective";
 import { onDirective } from "./directives/onDirective";
@@ -7,7 +7,9 @@ import { ifDirective } from "./directives/ifDirective";
 import { modelDirective } from "./directives/modelDirective";
 import { switchDirective } from "./directives/switchDirective";
 import { textDirective } from "./directives/textDirective";
-
+import { templateDirective } from "./directives/templateDirective";
+import { Component } from "./defineComponent";
+import { bind } from "./bind";
 
 export const builtInDirectives: Record<string, Directive> = {
   "data-switch": switchDirective,
@@ -18,12 +20,14 @@ export const builtInDirectives: Record<string, Directive> = {
   "data-model": modelDirective,
   "data-if": ifDirective,
   "data-in": forDirective,
+  "data-template": templateDirective,
 };
 
 export function setup(
   data: Record<string, unknown>,
   options: {
     attach: string;
+    components?: Record<string, Component>;
     directives?: Record<string, Directive>;
   },
   _document: Document = document,
@@ -31,5 +35,8 @@ export function setup(
   const el = _document.querySelector<HTMLElement>(options.attach);
   if (!el) throw new Error("No element found");
 
-  bindDirectives({ ...builtInDirectives, ...options.directives }, data, el);
+  const directives = { ...builtInDirectives, ...options.directives };
+  const components = { ...options.components };
+
+  bind({ components, data, el, directives });
 }
