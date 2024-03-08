@@ -1,6 +1,5 @@
 import { getPropertyFromPath, toValue } from "./helpers";
 import { isRef } from "./ref";
-import { SetupBits } from "./setup";
 
 export type Directive = (ctx: DirectiveContext) => void;
 export function createDirective(callback: Directive) {
@@ -14,13 +13,13 @@ export type DirectiveContext = {
   get: () => unknown;
   getPrevious?: () => unknown;
   effect?: (fn: () => void) => void;
-  data: Record<string, SetupBits>;
+  data: Record<string, unknown>;
   directives: Record<string, Directive>;
 };
 
 
 export function makeGetValue(
-  data: Record<string, SetupBits>,
+  data: Record<string, unknown>,
   attrValue: string | null,
 ) {
   if (!attrValue) return () => undefined;
@@ -33,7 +32,7 @@ export function makeGetValue(
 }
 
 export function makeGetPreviousValue(
-  data: Record<string, SetupBits>,
+  data: Record<string, unknown>,
   attrValue: string | null,
 ): (() => unknown) | undefined {
   if (!attrValue) return undefined;
@@ -49,7 +48,7 @@ export function makeGetPreviousValue(
 
 export function bindDirectives(
   directives: Record<string, Directive>,
-  data: Record<string, SetupBits>,
+  data: Record<string, unknown>,
   parentEl: HTMLElement,
 ) {
   for (const [name, directive] of Object.entries(directives)) {

@@ -8,8 +8,6 @@ import { modelDirective } from "./directives/modelDirective";
 import { switchDirective } from "./directives/switchDirective";
 import { textDirective } from "./directives/textDirective";
 
-export type SetupBits = unknown;
-
 
 export const builtInDirectives: Record<string, Directive> = {
   "data-switch": switchDirective,
@@ -23,7 +21,7 @@ export const builtInDirectives: Record<string, Directive> = {
 };
 
 export function setup(
-  data: Record<string, SetupBits>,
+  data: Record<string, unknown>,
   options: {
     attach: string;
     directives?: Record<string, Directive>;

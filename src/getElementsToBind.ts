@@ -1,5 +1,4 @@
 import { getPropertyFromPath, isObject, toPrevValue, toValue } from "./helpers";
-import { SetupBits } from "./setup";
 
 export type BindType =
   | "text"
@@ -12,7 +11,7 @@ export type BindType =
 
 type ElementToBindItem = {
   el: HTMLElement;
-  value: SetupBits;
+  value: unknown;
   get: () => unknown;
   getPrevValue: () => unknown;
 };
@@ -42,7 +41,7 @@ const getElementsWithBindType = (
 };
 
 const attachWatchersToEls = (
-  data: Record<string, SetupBits>,
+  data: Record<string, unknown>,
   els: HTMLElement[],
   bindType: BindType,
 ) => {
@@ -79,7 +78,7 @@ const attachWatchersToEls = (
 export const getElementsToBind = (
   el: HTMLElement,
   bindType: BindType,
-  data: Record<string, SetupBits>,
+  data: Record<string, unknown>,
 ) => {
   const elz = getElementsWithBindType(el, bindType);
   return attachWatchersToEls(data, elz, bindType);
@@ -88,7 +87,7 @@ export const getElementsToBind = (
 export const getSiblingElementsToBind = (
   el: HTMLElement,
   bindType: BindType,
-  data: Record<string, SetupBits>,
+  data: Record<string, unknown>,
 ) => {
   const elz = getSiblingElsWithBindType(el, bindType);
   return attachWatchersToEls(data, elz, bindType);
