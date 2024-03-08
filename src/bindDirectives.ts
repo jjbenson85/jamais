@@ -12,13 +12,18 @@ export type DirectiveContext = {
   attrValue: string | null;
   value: unknown;
   get: () => unknown;
-  getPrevious: () => unknown;
-  effect: (fn: () => void) => void;
+  getPrevious?: () => unknown;
+  effect?: (fn: () => void) => void;
   data: Record<string, SetupBits>;
   directives: Record<string, Directive>;
 };
 
-function makeGetValue(data: Record<string, SetupBits>, attrValue: string) {
+
+export function makeGetValue(
+  data: Record<string, SetupBits>,
+  attrValue: string | null,
+) {
+  if (!attrValue) return () => undefined;
   const [key, restKey] = attrValue.split(".", 2);
   if (restKey) {
     const value = data[key];
@@ -27,14 +32,16 @@ function makeGetValue(data: Record<string, SetupBits>, attrValue: string) {
   return () => getPropertyFromPath(data, attrValue);
 }
 
-function makeGetPreviousValue(
+export function makeGetPreviousValue(
   data: Record<string, SetupBits>,
-  attrValue: string,
-) {
+  attrValue: string | null,
+): (() => unknown) | undefined {
+  if (!attrValue) return undefined;
+
   const [key, restKey] = attrValue.split(".", 2);
   const value = data[key];
 
-  if (!isRef(value)) return () => undefined;
+  if (!isRef(value)) return undefined;
   if (!restKey) return () => value.previousValue;
 
   return () => getPropertyFromPath(value.previousValue, restKey);
@@ -46,38 +53,31 @@ export function bindDirectives(
   parentEl: HTMLElement,
 ) {
   for (const [name, directive] of Object.entries(directives)) {
-    const p: HTMLElement[] = parentEl.hasAttribute(name) ? [parentEl] : [];
+    const parentElWithAttr: HTMLElement[] = parentEl.hasAttribute?.(name)
+      ? [parentEl]
+      : [];
 
-    const items = [
-      ...p,
-      ...parentEl.querySelectorAll<HTMLElement>(`[${name}]`),
-    ];
+    const descendantsWithAttr = parentEl.querySelectorAll<HTMLElement>(
+      `[${name}]`,
+    );
+    const elemsWithAttr = [...parentElWithAttr, ...descendantsWithAttr];
 
-    for (const el of items) {
+    for (const el of elemsWithAttr) {
       const attrValue = el.getAttribute(`${name}`);
-      const dataValue = attrValue ? data[attrValue] : undefined;
+      const dataValue = data[attrValue ?? ""];
 
-      const get = attrValue ? makeGetValue(data, attrValue) : () => undefined;
-
-      const getPrevious = attrValue
-        ? makeGetPreviousValue(data, attrValue)
-        : () => undefined;
-
-      const ctx: DirectiveContext = {
+      directive({
         el,
         attrValue,
         value: dataValue,
-        get,
-        getPrevious,
-        effect: (fn) => {
-          if (isRef(dataValue)) {
-            dataValue.addProcessQueueWatcher(fn);
-          }
-        },
+        get: makeGetValue(data, attrValue),
+        getPrevious: makeGetPreviousValue(data, attrValue),
+        effect: isRef(dataValue)
+          ? (fn) => dataValue.addProcessQueueWatcher(fn)
+          : undefined,
         data,
         directives,
-      };
-      directive(ctx);
+      });
     }
   }
 }

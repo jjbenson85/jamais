@@ -27,6 +27,6 @@ export const modelDirective = createDirective((ctx) => {
     el.value = String(get());
   };
 
-  effect(cb);
+  effect?.(cb);
   cb();
 });

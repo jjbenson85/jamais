@@ -23,6 +23,6 @@ export const switchDirective = createDirective((ctx) => {
       cb();
     }
   };
-  effect(cb);
+  effect?.(cb);
   cb();
 });

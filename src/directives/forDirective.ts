@@ -45,5 +45,5 @@ export const forDirective = createDirective((ctx) => {
 
   fn();
 
-  effect(fn);
+  effect?.(fn);
 });

@@ -5,6 +5,6 @@ export const textDirective = createDirective((ctx) => {
   const cb = () => {
     el.textContent = String(get());
   };
-  effect(cb);
+  effect?.(cb);
   cb();
 });

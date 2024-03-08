@@ -75,7 +75,8 @@ export const bindDirective = createDirective((ctx) => {
     const cb = () => {
       el.setAttribute(attrPrefix, String(get()));
     };
-    effect(cb);
+    effect?.(cb);
+
     cb();
   }
 });

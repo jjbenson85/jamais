@@ -14,7 +14,7 @@ function applyClasses(el: Element, curr: unknown, prev?: unknown) {
 
 export const classDirective = createDirective((ctx) => {
   const { el, effect, get, getPrevious } = ctx;
-  const cb = () => applyClasses(el, get(), getPrevious());
-  effect(cb);
+  const cb = () => applyClasses(el, get(), getPrevious?.());
+  effect?.(cb);
   cb();
 });
