@@ -1,6 +1,5 @@
 import { bind } from "./bind";
-import { getPropertyFromPath, toValue } from "./helpers";
-import { isRef } from "./ref";
+import { Component } from "./defineComponent";
 
 export type Directive =
   | ((ctx: DirectiveContext) => void)
@@ -19,6 +18,7 @@ export type DirectiveContext = {
   effect?: (fn: () => void) => void;
   data: Record<string, unknown>;
   directives: Record<string, Directive>;
+  components: Record<string, Component>;
 };
 
 export function makeGetValue(
@@ -52,10 +52,12 @@ export function makeGetPreviousValue(
 export function bindDirectives({
   data,
   directives,
+  components,
   el: parentEl,
 }: {
   data: Record<string, unknown>;
   directives: Record<string, Directive>;
+  components: Record<string, Component>;
   el: HTMLElement;
 }) {
   const brandNewEls: HTMLElement[] = [];
@@ -84,12 +86,13 @@ export function bindDirectives({
           : undefined,
         data,
         directives,
+        components,
       });
 
       brandNewEls.push(...(newEls ?? []));
     }
   }
   if (brandNewEls.length) {
-    bind({ components: {}, data, directives, el: parentEl });
+    bind({ components, data, directives, el: parentEl });
   }
 }

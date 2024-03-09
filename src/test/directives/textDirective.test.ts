@@ -23,6 +23,7 @@ describe("textDirective", () => {
       getPrevious: () => message.previousValue,
       effect: (fn) => message.addProcessQueueWatcher(fn),
       directives: {},
+      components: {},
     };
 
     textDirective(ctx);
@@ -42,6 +43,7 @@ describe("textDirective", () => {
       getPrevious: () => message.previousValue,
       effect: (fn) => message.addProcessQueueWatcher(fn),
       directives: {},
+      components: {},
     };
 
     textDirective(ctx);
@@ -65,6 +67,7 @@ describe("textDirective", () => {
       getPrevious: () => message.previousValue?.deep,
       effect: (fn) => message.addProcessQueueWatcher(fn),
       directives: {},
+      components: {},
     };
 
     textDirective(ctx);
@@ -84,6 +87,7 @@ describe("textDirective", () => {
       getPrevious: () => message.previousValue?.deep,
       effect: (fn) => message.addProcessQueueWatcher(fn),
       directives: {},
+      components: {},
     };
 
     textDirective(ctx);

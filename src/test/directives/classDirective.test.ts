@@ -21,6 +21,7 @@ describe("classDirective", () => {
       getPrevious: () => undefined,
       effect: () => {},
       directives: {},
+      components: {},
     };
 
     classDirective(ctx);
@@ -41,6 +42,7 @@ describe("classDirective", () => {
       getPrevious: () => undefined,
       effect: () => {},
       directives: {},
+      components: {},
     };
 
     classDirective(ctx);
@@ -62,6 +64,7 @@ describe("classDirective", () => {
       getPrevious: () => testClass.previousValue,
       effect: (fn) => testClass.addProcessQueueWatcher(fn),
       directives: {},
+      components: {},
     };
     classDirective(ctx);
 

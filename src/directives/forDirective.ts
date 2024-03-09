@@ -1,8 +1,9 @@
-import { bindDirectives, createDirective } from "../bindDirectives";
+import { bind } from "../bind";
+import { createDirective } from "../bindDirectives";
 import { isObject } from "../helpers";
 
 export const forDirective = createDirective((ctx) => {
-  const { el, get, effect, data, directives } = ctx;
+  const { el, get, effect, data, directives, components } = ctx;
 
   const parentEl = el.parentElement;
 
@@ -37,7 +38,15 @@ export const forDirective = createDirective((ctx) => {
       newEl.removeAttribute("data-for");
       newEl.removeAttribute("data-in");
 
-      bindDirectives(directives, { ...data, [forKey]: item }, newEl);
+      // Can we handle this better?
+      // I dont like it being recursive here
+      const newData = { ...data, [forKey]: item };
+      bind({
+        components,
+        data: newData,
+        directives,
+        el: parentEl,
+      });
     }
 
     parentEl.append(...postSibling);

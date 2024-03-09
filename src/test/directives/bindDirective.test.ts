@@ -19,6 +19,7 @@ describe("bindDirective", () => {
       getPrevious: () => data.foo,
       effect: () => {},
       directives: {},
+      components: {},
     };
 
     bindDirective(ctx);
@@ -38,6 +39,7 @@ describe("bindDirective", () => {
       getPrevious: () => undefined,
       effect: () => {},
       directives: {},
+      components: {},
     };
 
     bindDirective(ctx);

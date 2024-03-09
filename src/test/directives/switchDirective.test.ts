@@ -28,6 +28,7 @@ describe("switchDirective", () => {
       effect: (fn) => state.addProcessQueueWatcher(fn),
 
       directives: {},
+      components: {},
     });
 
     await wait();
@@ -60,6 +61,7 @@ describe("switchDirective", () => {
       getPrevious: () => state.previousValue,
       effect: (fn) => state.addProcessQueueWatcher(fn),
       directives: {},
+      components: {},
     });
 
     state.value = "Two";

@@ -19,6 +19,7 @@ describe("eventDirective", () => {
       getPrevious: () => undefined,
       effect: () => {},
       directives: {},
+      components: {},
     };
 
     onDirective(ctx);
@@ -39,6 +40,7 @@ describe("eventDirective", () => {
       getPrevious: () => undefined,
       effect: () => {},
       directives: {},
+      components: {},
     };
 
     onDirective(ctx);

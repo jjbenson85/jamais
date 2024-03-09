@@ -22,6 +22,7 @@ describe("ifDirective", () => {
       getPrevious: () => show.previousValue,
       effect: () => {},
       directives: {},
+      components: {},
     };
 
     ifDirective(ctx);
@@ -42,6 +43,7 @@ describe("ifDirective", () => {
       getPrevious: () => show.previousValue,
       effect: () => {},
       directives: {},
+      components: {},
     };
 
     ifDirective(ctx);
@@ -73,6 +75,7 @@ describe("ifDirective", () => {
       getPrevious: () => show.previousValue,
       effect: () => {},
       directives: {},
+      components: {},
     };
 
     ifDirective(ctx);
@@ -104,6 +107,7 @@ describe("ifDirective", () => {
       getPrevious: () => show.previousValue,
       effect: () => {},
       directives: {},
+      components: {},
     };
 
     ifDirective(ctx);
@@ -135,6 +139,7 @@ describe("ifDirective", () => {
       getPrevious: () => show.previousValue,
       effect: () => {},
       directives: {},
+      components: {},
     };
 
     ifDirective(ctx);
@@ -167,6 +172,7 @@ describe("ifDirective", () => {
       getPrevious: () => show.previousValue,
       effect: () => {},
       directives: {},
+      components: {},
     };
 
     ifDirective(ctx);
@@ -201,6 +207,7 @@ describe("ifDirective", () => {
       getPrevious: () => show.previousValue,
       effect: () => {},
       directives: {},
+      components: {},
     };
 
     ifDirective(ctx);
@@ -236,6 +243,7 @@ describe("ifDirective", () => {
       getPrevious: () => show.previousValue,
       effect: () => {},
       directives: {},
+      components: {},
     };
 
     ifDirective(ctx);
@@ -273,6 +281,7 @@ describe("ifDirective", () => {
       getPrevious: () => show.previousValue,
       effect: () => {},
       directives: {},
+      components: {},
     };
 
     ifDirective(ctx);

@@ -5,6 +5,7 @@ import { describe, expect, it, vi } from "vitest";
 import { ref } from "../ref";
 import { setup } from "../setup";
 import { wait } from "./utils";
+import { defineComponent } from "../defineComponent";
 
 describe("setup", () => {
   it("should create a setup", async () => {
@@ -97,6 +98,76 @@ describe("setup", () => {
       <div data-text="templateText">I am a Template</div>
       <div data-text="templateText">I am a Template</div>
       <div data-text="templateText">I am a Template</div>
+    </div>`);
+  });
+
+  it("should add a component", async () => {
+    global.document = new JSDOM().window.document;
+    global.document.body.innerHTML = `
+    <div id="app">
+      <MyComponent message="messageText1"></MyComponent>
+      <MyComponent message="messageText2"></MyComponent>
+      <MyComponent message="messageText3"></MyComponent>
+    </div>`;
+
+    setup(
+      {
+        messageText1: "I am a Component 1",
+        messageText2: "I am a Component 2",
+        messageText3: "I am a Component 3",
+      },
+      {
+        attach: "#app",
+        components: {
+          MyComponent: defineComponent({
+            template: '<div data-text="message"></div>',
+            props: ["message"],
+          }),
+        },
+      },
+      document,
+    );
+
+    await wait();
+
+    expect(document.body.innerHTML).toBeHTML(`
+    <div id="app">
+      <div data-text="message">I am a Component 1</div>
+      <div data-text="message">I am a Component 2</div>
+      <div data-text="message">I am a Component 3</div>
+    </div>`);
+  });
+
+  it.skip("should add a component with a data-for", async () => {
+    global.document = new JSDOM().window.document;
+    global.document.body.innerHTML = `
+    <div id="app">
+      <MyComponent data-for="item in items" item="item"></MyComponent>
+    </div>`;
+
+    setup(
+      {
+        items: ["item1", "item2", "item3"],
+      },
+      {
+        attach: "#app",
+        components: {
+          MyComponent: defineComponent({
+            template: '<div data-text="item"></div>',
+            props: ["item"],
+          }),
+        },
+      },
+      document,
+    );
+
+    await wait();
+
+    expect(document.body.innerHTML).toBeHTML(`
+    <div id="app">
+      <div data-text="item">item1</div>
+      <div data-text="item">item2</div>
+      <div data-text="item">item3</div>
     </div>`);
   });
 });

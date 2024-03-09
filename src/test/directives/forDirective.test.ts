@@ -29,6 +29,7 @@ describe("forDirective", () => {
       getPrevious: () => items.previousValue,
       effect: () => {},
       directives: {},
+      components: {},
     };
 
     forDirective(ctx);

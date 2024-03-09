@@ -25,6 +25,7 @@ describe("modelDirective", () => {
       getPrevious: () => message.previousValue,
       effect: (fn) => message.addProcessQueueWatcher(fn),
       directives: {},
+      components: {},
     });
 
     const inputEl = document.querySelector("input");
@@ -56,6 +57,7 @@ describe("modelDirective", () => {
       getPrevious: () => message.previousValue,
       effect: (fn) => message.addProcessQueueWatcher(fn),
       directives: {},
+      components: {},
     });
 
     message.value = "Test message";
@@ -84,6 +86,7 @@ describe("modelDirective", () => {
       getPrevious: () => message.previousValue,
       effect: (fn) => message.addProcessQueueWatcher(fn),
       directives: {},
+      components: {},
     });
 
     expect(consoleWarn).toBeCalledWith(
@@ -108,6 +111,7 @@ describe("modelDirective", () => {
       getPrevious: () => undefined,
       effect: () => undefined,
       directives: {},
+      components: {},
     });
 
     expect(consoleWarn).toBeCalledWith("data-model: Can only bind refs");
