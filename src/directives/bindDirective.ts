@@ -1,6 +1,6 @@
-import { createDirective, makeGetValue } from "../bindDirectives";
+import { defineDirective, makeGetValue } from "../bindDirectives";
 
-export const bindDirective = createDirective((ctx) => {
+export const bindDirective = defineDirective((ctx) => {
   const { data, el, attrValue: _attrValue, effect } = ctx;
   if (!_attrValue) return;
 
@@ -27,5 +27,4 @@ export const bindDirective = createDirective((ctx) => {
 
     cb();
   }
-
 });

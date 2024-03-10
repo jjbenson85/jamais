@@ -1,6 +1,6 @@
-import { createDirective } from "../bindDirectives";
+import { defineDirective } from "../bindDirectives";
 
-export const templateDirective = createDirective((ctx) => {
+export const templateDirective = defineDirective((ctx) => {
   const { el, attrValue } = ctx;
   const parentElement = el.parentElement;
 

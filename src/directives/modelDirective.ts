@@ -1,11 +1,11 @@
-import { createDirective } from "../bindDirectives";
+import { defineDirective } from "../bindDirectives";
 import { Ref, isRef } from "../ref";
 
 const toOriginalType = (value: Ref<unknown>, target: HTMLInputElement) => {
   return typeof value.value === "number" ? Number(target.value) : target.value;
 };
 
-export const modelDirective = createDirective((ctx) => {
+export const modelDirective = defineDirective((ctx) => {
   const { el, effect, get, value } = ctx;
 
   if (!("value" in el)) {

@@ -1,6 +1,6 @@
-import { createDirective } from "../bindDirectives";
+import { defineDirective } from "../bindDirectives";
 
-export const textDirective = createDirective((ctx) => {
+export const textDirective = defineDirective((ctx) => {
   const { el, effect, get } = ctx;
   const cb = () => {
     el.textContent = String(get());

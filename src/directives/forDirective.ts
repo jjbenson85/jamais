@@ -1,8 +1,8 @@
 import { bind } from "../bind";
-import { createDirective } from "../bindDirectives";
+import { defineDirective } from "../bindDirectives";
 import { isObject } from "../helpers";
 
-export const forDirective = createDirective((ctx) => {
+export const forDirective = defineDirective((ctx) => {
   const { el, get, effect, data, directives, components } = ctx;
 
   const parentEl = el.parentElement;

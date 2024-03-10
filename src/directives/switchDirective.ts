@@ -1,7 +1,7 @@
-import { createDirective } from "../bindDirectives";
+import { defineDirective } from "../bindDirectives";
 import { displayElement } from "../helpers/displayElement";
 
-export const switchDirective = createDirective((ctx) => {
+export const switchDirective = defineDirective((ctx) => {
   const { el, get, effect } = ctx;
 
   const caseEls = el.querySelectorAll<HTMLElement>("[data-case]");

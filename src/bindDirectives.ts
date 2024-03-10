@@ -5,7 +5,7 @@ export type Directive =
   | ((ctx: DirectiveContext) => void)
   | ((ctx: DirectiveContext) => HTMLElement[]);
 
-export function createDirective(callback: Directive) {
+export function defineDirective(callback: Directive) {
   return callback;
 }
 

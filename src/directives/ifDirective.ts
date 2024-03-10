@@ -1,4 +1,4 @@
-import { createDirective } from "../bindDirectives";
+import { defineDirective } from "../bindDirectives";
 import {
   getSiblingElementsToBind,
   getSiblingElsWithBindType,
@@ -6,7 +6,7 @@ import {
 import { displayElement } from "../helpers/displayElement";
 import { isRef } from "../ref";
 
-export const ifDirective = createDirective((ctx) => {
+export const ifDirective = defineDirective((ctx) => {
   const { el, get, value, data } = ctx;
 
   const elses = getSiblingElementsToBind(el, "else-if", data);

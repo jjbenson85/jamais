@@ -1,6 +1,6 @@
-import { createDirective, makeGetValue } from "../bindDirectives";
+import { defineDirective, makeGetValue } from "../bindDirectives";
 
-export const onDirective = createDirective((ctx) => {
+export const onDirective = defineDirective((ctx) => {
   const { data, el, attrValue: _attrValue, effect, getPrevious } = ctx;
   if (!_attrValue) return;
 
