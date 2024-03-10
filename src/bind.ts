@@ -1,5 +1,6 @@
 import { bindComponents } from "./bindComponents";
 import { Directive, bindDirectives } from "./bindDirectives";
+import { bindEvents } from "./bindEvents";
 import { Component } from "./defineComponent";
 
 export const bind = (args: {
@@ -11,4 +12,6 @@ export const bind = (args: {
   if (!args.el) throw new Error("No element found");
   bindDirectives(args);
   bindComponents(args);
+  bindEvents(args);
+
 };

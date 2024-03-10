@@ -11,7 +11,7 @@ describe("setup", () => {
   it("should create a setup", async () => {
     const message = ref("test");
     const document = new JSDOM(
-      '<div id="app"><div data-text="message"></div></div>',
+      '<div id="app"><div data-text="{{message}}"></div></div>',
     ).window.document;
 
     setup({ message }, { attach: "#app" }, document);
@@ -24,7 +24,7 @@ describe("setup", () => {
   it("should update dom when a ref value update", async () => {
     const message = ref("test");
     const document = new JSDOM(
-      '<div id="app"><div data-text="message"></div></div>',
+      '<div id="app"><div data-text="{{message}}"></div></div>',
     ).window.document;
 
     setup({ message }, { attach: "#app" }, document);
@@ -40,9 +40,9 @@ describe("setup", () => {
 
   it("should update classes when a ref value updates", async () => {
     const document = new JSDOM(
-      '<div id="app"><div data-class="message"></div></div>',
+      '<div id="app"><div data-class="{{message}}"></div></div>',
     ).window.document;
-    const el = document.querySelector<HTMLElement>('[data-class="message"]');
+    const el = document.querySelector<HTMLElement>('[data-class="{{message}}"]');
     if (!el) throw new Error("No element found");
 
     const message = ref("my-old-class");
@@ -61,7 +61,7 @@ describe("setup", () => {
   it("should call a click event when a click method is passed", () => {
     const handleClick = vi.fn();
     const document = new JSDOM(
-      '<div id="app"><button data-on="click:handleClick"></button></div>',
+      '<div id="app"><button @click="handleClick"></button></div>',
     ).window.document;
 
     setup({ handleClick }, { attach: "#app" }, document);
@@ -72,6 +72,7 @@ describe("setup", () => {
 
     expect(handleClick).toHaveBeenCalledOnce();
   });
+
   it("should use a template", async () => {
     global.document = new JSDOM().window.document;
     global.document.body.innerHTML = `
