@@ -7,7 +7,7 @@ import { displayElement } from "../helpers/displayElement";
 import { isRef } from "../ref";
 
 export const ifDirective = defineDirective((ctx) => {
-  const { el, get, value, data } = ctx;
+  const { el, get, dataValue, data } = ctx;
 
   const elses = getSiblingElementsToBind(el, "else-if", data);
   const elseEl = getSiblingElsWithBindType(el, "else").at(0);
@@ -18,7 +18,7 @@ export const ifDirective = defineDirective((ctx) => {
   const elsDisplay = els.map(displayElement);
 
   const getValues = [get, ...elses.map((e) => e.get), () => !get()];
-  const refs = [value, ...elses.map((e) => e.value), value];
+  const refs = [dataValue, ...elses.map((e) => e.value), dataValue];
   const cb = () => {
     //Hide all elements
     for (const toggleElement of elsDisplay) {
