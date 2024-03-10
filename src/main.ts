@@ -1,8 +1,8 @@
-import "./style.css";
-
 import { cls, computed, ref, setup } from "./jamais";
+import { TableComponent } from "./TableComponent";
+import { MyButton } from "./MyButton";
 
-const count = ref(0);
+const count = ref(3);
 const double = computed(count, () => count.value * 2);
 const formatDouble = computed(double, () => `Hello ${double.value}`);
 const countClass = computed(count, () =>
@@ -75,9 +75,17 @@ const toggleShowElseIf2 = () => {
 };
 
 const state = ref("INIT");
+const message = ref("Hello World");
 
+const dynamicStyle = ref({
+  color: "red",
+  backgroundColor: "blue",
+  fontSize: "20px",
+});
 setup(
   {
+    dynamicStyle,
+    message,
     mainItems,
     state,
     setStateToInit: () => {
@@ -115,12 +123,13 @@ setup(
     computedArray2,
     increment: () => count.value++,
     decrement: () => count.value--,
-    log: (e: Event) => {
-      const target = e.target as HTMLInputElement;
-      count.value = parseInt(target.value);
-    },
+    log: console.log,
   },
   {
     attach: "#app",
+    components: {
+      "table-component": TableComponent,
+      "my-button": MyButton,
+    },
   },
 );

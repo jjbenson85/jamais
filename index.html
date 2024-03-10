@@ -5,11 +5,22 @@
     <link rel="icon" type="image/svg+xml" href="/vite.svg" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <script type="module" src="/src/main.ts"></script>
-    <title>Vite + TS</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <title>Jamais</title>
   </head>
 
-  <body>
-    <div id="app">
+  <body >
+    <div id="app" class="p-16 h-screen bg-stone-800 text-white">
+      <!-- <template name="my-template"> 
+        <div>
+          <h1>My App</h1>
+          <div data-text="message"></div>
+          <input data-model="message" />
+        </div>
+      </template>
+
+      <div data-template="my-template" data-scope=""></div>
+      <div data-template="my-template"></div> -->
 
       <!-- <div data-for="item" data-in="items">text</div> -->
       <!-- <h2>Static Values</h2>
@@ -20,21 +31,31 @@
 
       <hr />
       <h2>Dynamic Values</h2>
-      <div data-class="countClass">
+      <!-- <div data-class="countClass">
         Count: <span data-text="count" data-class="specialClass"></span>
-      </div>
-      <button class="bg-red-500" data-on="click:decrement">
-        decrement <span data-text="count" data-class="specialClass"></span>
-      </button>
-      <button data-class="specialClass" data-on="click:increment">
-        increment <span data-text="count" data-class="specialClass"></span>
-      </button> 
-      <div>Double: <span data-text="double"></span></div>
-      <div data-text="formatDouble"></div>
-      <input data-model="count" type="range" min="-100" max="100" />
+      </div> -->
 
-      <!-- <hr />
-      <h2>Switch</h2>
+      <!-- <my-button class="bg-red-500 hover:bg-red-800"></my-button> -->
+      <my-button click="{{decrement}}" text="Decrement" class="bg-red-500 hover:bg-red-800"></my-button>
+      <my-button click="{{increment}}" text="Increment" class="bg-green-500 hover:bg-green-800"></my-button>
+      <!-- <button class="bg-red-500" data-on="click:decrement mouseover:log">
+        decrement 
+      </button>
+
+      <button data-class="{{specialClass}}" data-on="click:increment">
+        increment
+      </button> -->
+      <div>Double: <span data-text="{{double}}" data-class="{{specialClass}}"></span></div>
+      <div>
+        HERE:
+        <span data-text="{{computed([count],()=>count.value * 10)}}"></span>
+      </div>
+
+       <input data-model="{{count}}" type="range" min="-100" max="100" />
+      <hr />
+      <table-component items="{{computedArray2}}" columns="{{columns}}"></table-component>
+      <hr /> 
+      <!--  <h2>Switch</h2>
       <div data-text="state"></div>
       <div data-switch="state">
         <div data-case="INIT">INIT</div>
@@ -72,7 +93,7 @@
           <div>Else</div>
         </div>
       </div> -->
-     <!-- <hr />
+      <!-- <hr />
       <div>FOR EACH</div>
       <div data-for="item" data-in="mainItems">
         <div style="display: flex;" data-for="subItem" data-in="item">
@@ -85,27 +106,29 @@
         </div>
       </div> -->
 
-      <hr />
+      <!-- <hr />
       <div>FOR LOOP</div>
 
       <div>
         <table>
           <thead>
             <tr>
-              <th data-for="column" data-in="columns" data-text="column.label">
-              </th>
+              <th
+                data-for="column"
+                data-in="columns"
+                data-text="column.label"
+              ></th>
             </tr>
           </thead>
-          <tbody> 
+          <tbody>
             <tr data-for="item" data-in="computedArray2" data-key="item.name">
-              <!-- <td data-class="item.class" data-text="item.age"></td> -->
               <td data-class="item.class" data-text="item.name"></td>
               <td data-class="item.class" data-text="item.email"></td>
               <td data-class="item.class" data-text="item.age"></td>
             </tr>
           </tbody>
         </table>
-      </div>
+      </div> -->
     </div>
   </body>
 </html>
