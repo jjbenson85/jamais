@@ -13,9 +13,9 @@ export const bindComponents = ({
   directives: Record<string, Directive>;
   el: HTMLElement;
 }) => {
-  for (const [name, component] of Object.entries(components ?? {})) {
+  for (const [componentName, component] of Object.entries(components ?? {})) {
     const componentElems =
-      parentEl.querySelectorAll<HTMLElement>(`${name}`) ?? [];
+      parentEl.querySelectorAll<HTMLElement>(`${componentName}`) ?? [];
     for (const componentEl of componentElems) {
       if (!componentEl.parentElement) {
         console.error("No parent element for", componentEl);
@@ -23,7 +23,7 @@ export const bindComponents = ({
       }
 
       const componentHTMLArr = component({
-        name,
+        componentName,
         componentEl,
         directives,
         components,
