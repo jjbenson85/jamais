@@ -4,19 +4,8 @@ import { computed } from "./computed";
 import { toValue } from "./helpers";
 import { isRef } from "./ref";
 
-function getValue(attrValue: string, data: Record<string, unknown>) {
-  let dataValue: unknown = attrValue.replace(/{{|}}/g, "");
-
-  const isExpression = dataValue !== attrValue;
-  if (isExpression) {
-    dataValue = evaluateExpression(attrValue, data);
-  }
-
-  return dataValue;
-}
-
 export type Component = (args: {
-  name: string;
+  componentName: string;
   componentEl: HTMLElement;
   directives: Record<string, Directive>;
   components: Record<string, Component>;
@@ -31,44 +20,86 @@ export const defineComponent =
   }: {
     template: string;
     props?: string[];
+    emits?: string[];
     components?: Record<string, Component>;
   }): Component =>
-  ({ componentEl, directives, components: globalComponents, data, name }) => {
-    const props = {} as Record<string, unknown>;
-
-    for (const prop of expectedProps ?? []) {
-      const attrValue = componentEl.getAttribute(prop);
-
-      if (!attrValue) {
-        console.error(
-          `Missing prop: ${prop} in ${componentEl.outerHTML} is missing but expected in ${name}`,
-        );
-        continue;
-      }
-
-      props[prop] = getValue(attrValue, data);
-    }
+  ({
+    componentEl,
+    directives,
+    components: globalComponents,
+    data,
+    componentName,
+  }) => {
+    const scope = createNewScope(
+      componentEl,
+      componentName,
+      data,
+      expectedProps,
+    );
 
     const el = document.createElement("div");
     el.innerHTML = template;
 
-    // Get class or data-class applied to component invocation
-    // and pass to component template as $class
-    const dataClassAttr = componentEl.getAttribute("data-class");
-    const $class = componentEl.getAttribute("class") ?? "";
-    const dataClassValue = getValue(dataClassAttr ?? "", data);
-
-    if (isRef(dataClassValue)) {
-      props.$class = computed([dataClassValue], () => {
-        return `${$class} ${toValue(dataClassValue)}`;
-      });
-    } else {
-      props.$class = `${$class} ${dataClassValue}`;
-    }
+    scope.$class = getStaticOrDynamicClass(componentEl, data);
 
     const components = { ...globalComponents, ...localComponents };
 
-    bind({ components, data: props, el, directives });
+    bind({ components, data: scope, el, directives });
 
     return el.children as unknown as HTMLElement[];
   };
+
+function createNewScope(
+  el: HTMLElement,
+  componentName: string,
+  data: Record<string, unknown>,
+  expectedProps: string[] = [],
+) {
+  const [scope, missingProps] = expectedProps.reduce(
+    ([scope, missingProps], prop) => {
+      const attrValue = el.getAttribute(prop);
+      const dataAttrValue = el.getAttribute(`\:${prop}`);
+
+      if (!attrValue && !dataAttrValue) {
+        missingProps.push(prop);
+      } else if (dataAttrValue) {
+        scope[prop] = evaluateExpression(dataAttrValue, data);
+      } else if (attrValue) {
+        scope[prop] = attrValue;
+      }
+
+      return [scope, missingProps];
+    },
+    [{}, []] as [{ [key: string]: unknown }, string[]],
+  );
+
+  if (missingProps.length) {
+    const error = `Missing props: ${missingProps.join(", ")} in ${
+      el.outerHTML
+    } but required in <${componentName}>`;
+    console.error(error);
+  }
+
+  return scope;
+}
+
+function getStaticOrDynamicClass(
+  el: HTMLElement,
+  data: Record<string, unknown>,
+) {
+  const keyOfScope = el.getAttribute(":class");
+  let valueFromScope: unknown;
+
+  if (keyOfScope) {
+    valueFromScope = evaluateExpression(keyOfScope, data);
+  }
+
+  const str = el.getAttribute("class") ?? "";
+
+  if (!isRef(valueFromScope)) `${str} ${valueFromScope}`.trim();
+
+  return computed([valueFromScope], () =>
+    `${str} ${toValue(valueFromScope)}`.trim(),
+  );
+}
+
