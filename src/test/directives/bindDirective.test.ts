@@ -13,7 +13,7 @@ describe("bindDirective", () => {
     const ctx: DirectiveContext = {
       data,
       el,
-      value: undefined,
+      dataValue: undefined,
       attrValue: "aria-label:foo",
       get: () => data.foo,
       getPrevious: () => data.foo,
@@ -33,7 +33,7 @@ describe("bindDirective", () => {
     const ctx: DirectiveContext = {
       data,
       el,
-      value: undefined,
+      dataValue: undefined,
       attrValue: "aria-label:foo label:baz",
       get: () => undefined,
       getPrevious: () => undefined,

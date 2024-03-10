@@ -19,7 +19,7 @@ describe("modelDirective", () => {
     modelDirective({
       data: { message },
       el,
-      value: message,
+      dataValue: message,
       attrValue: "message",
       get: () => message.value,
       getPrevious: () => message.previousValue,
@@ -51,7 +51,7 @@ describe("modelDirective", () => {
     modelDirective({
       data: { message },
       el,
-      value: message,
+      dataValue: message,
       attrValue: "message",
       get: () => message.value,
       getPrevious: () => message.previousValue,
@@ -80,7 +80,7 @@ describe("modelDirective", () => {
     modelDirective({
       data: { message },
       el,
-      value: message,
+      dataValue: message,
       attrValue: "message",
       get: () => message.value,
       getPrevious: () => message.previousValue,
@@ -105,7 +105,7 @@ describe("modelDirective", () => {
     modelDirective({
       data: { message },
       el,
-      value: message,
+      dataValue: message,
       attrValue: "message",
       get: () => message,
       getPrevious: () => undefined,

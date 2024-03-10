@@ -15,7 +15,7 @@ describe("classDirective", () => {
     const ctx: DirectiveContext = {
       data,
       el,
-      value: "testClass",
+      dataValue: "testClass",
       attrValue: "testClass",
       get: () => data.testClass,
       getPrevious: () => undefined,
@@ -36,7 +36,7 @@ describe("classDirective", () => {
     const ctx: DirectiveContext = {
       data,
       el,
-      value: "testClass",
+      dataValue: "testClass",
       attrValue: "testClass",
       get: () => data.testClass,
       getPrevious: () => undefined,
@@ -58,7 +58,7 @@ describe("classDirective", () => {
     const ctx: DirectiveContext = {
       data,
       el,
-      value: "testClass",
+      dataValue: "testClass",
       attrValue: "testClass",
       get: () => testClass.value,
       getPrevious: () => testClass.previousValue,

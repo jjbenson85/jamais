@@ -21,7 +21,7 @@ describe("switchDirective", () => {
     switchDirective({
       data: { state },
       el,
-      value: state,
+      dataValue: state,
       attrValue: "show",
       get: () => state.value,
       getPrevious: () => state.previousValue,
@@ -55,7 +55,7 @@ describe("switchDirective", () => {
     switchDirective({
       data: { state },
       el,
-      value: state,
+      dataValue: state,
       attrValue: "show",
       get: () => state.value,
       getPrevious: () => state.previousValue,

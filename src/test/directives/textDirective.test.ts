@@ -16,7 +16,7 @@ describe("textDirective", () => {
     const ctx: DirectiveContext = {
       data: { message },
       el,
-      value: message,
+      dataValue: message,
       attrValue: "message",
 
       get: () => message.value,
@@ -37,7 +37,7 @@ describe("textDirective", () => {
     const ctx: DirectiveContext = {
       data: { message },
       el,
-      value: message,
+      dataValue: message,
       attrValue: "message",
       get: () => message.value,
       getPrevious: () => message.previousValue,
@@ -60,7 +60,7 @@ describe("textDirective", () => {
     const ctx: DirectiveContext = {
       data: { message },
       el,
-      value: message,
+      dataValue: message,
       attrValue: "message.deep",
 
       get: () => message.value.deep,
@@ -81,7 +81,7 @@ describe("textDirective", () => {
     const ctx: DirectiveContext = {
       data: { message },
       el,
-      value: message,
+      dataValue: message,
       attrValue: "message.deep",
       get: () => message.value.deep,
       getPrevious: () => message.previousValue?.deep,

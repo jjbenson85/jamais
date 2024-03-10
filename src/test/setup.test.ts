@@ -11,7 +11,7 @@ describe("setup", () => {
   it("should create a setup", async () => {
     const message = ref("test");
     const document = new JSDOM(
-      '<div id="app"><div data-text="{{message}}"></div></div>',
+      '<div id="app"><div :data-text="message"></div></div>',
     ).window.document;
 
     setup({ message }, { attach: "#app" }, document);
@@ -24,7 +24,7 @@ describe("setup", () => {
   it("should update dom when a ref value update", async () => {
     const message = ref("test");
     const document = new JSDOM(
-      '<div id="app"><div data-text="{{message}}"></div></div>',
+      '<div id="app"><div :data-text="message"></div></div>',
     ).window.document;
 
     setup({ message }, { attach: "#app" }, document);
@@ -40,9 +40,9 @@ describe("setup", () => {
 
   it("should update classes when a ref value updates", async () => {
     const document = new JSDOM(
-      '<div id="app"><div data-class="{{message}}"></div></div>',
+      '<div id="app"><div :data-class="message"></div></div>',
     ).window.document;
-    const el = document.querySelector<HTMLElement>('[data-class="{{message}}"]');
+    const el = document.querySelector<HTMLElement>('[\\:data-class="message"]');
     if (!el) throw new Error("No element found");
 
     const message = ref("my-old-class");
@@ -78,7 +78,7 @@ describe("setup", () => {
     global.document.body.innerHTML = `
     <div id="app">
       <template name="my-template">
-        <div data-text="templateText"></div>
+        <div :data-text="templateText"></div>
       </template>
 
       <div data-template="my-template"></div>
@@ -93,12 +93,12 @@ describe("setup", () => {
     expect(document.body.innerHTML).toBeHTML(`
     <div id="app">
       <template name="my-template">
-        <div data-text="templateText"></div>  
+        <div :data-text="templateText"></div>  
       </template>
   
-      <div data-text="templateText">I am a Template</div>
-      <div data-text="templateText">I am a Template</div>
-      <div data-text="templateText">I am a Template</div>
+      <div :data-text="templateText">I am a Template</div>
+      <div :data-text="templateText">I am a Template</div>
+      <div :data-text="templateText">I am a Template</div>
     </div>`);
   });
 
@@ -106,9 +106,9 @@ describe("setup", () => {
     global.document = new JSDOM().window.document;
     global.document.body.innerHTML = `
     <div id="app">
-      <MyComponent message="messageText1"></MyComponent>
-      <MyComponent message="messageText2"></MyComponent>
-      <MyComponent message="messageText3"></MyComponent>
+      <MyComponent :message="messageText1"></MyComponent>
+      <MyComponent :message="messageText2"></MyComponent>
+      <MyComponent :message="messageText3"></MyComponent>
     </div>`;
 
     setup(
@@ -121,7 +121,7 @@ describe("setup", () => {
         attach: "#app",
         components: {
           MyComponent: defineComponent({
-            template: '<div data-text="message"></div>',
+            template: '<div :data-text="message"></div>',
             props: ["message"],
           }),
         },
@@ -133,9 +133,9 @@ describe("setup", () => {
 
     expect(document.body.innerHTML).toBeHTML(`
     <div id="app">
-      <div data-text="message">I am a Component 1</div>
-      <div data-text="message">I am a Component 2</div>
-      <div data-text="message">I am a Component 3</div>
+      <div :data-text="message">I am a Component 1</div>
+      <div :data-text="message">I am a Component 2</div>
+      <div :data-text="message">I am a Component 3</div>
     </div>`);
   });
 

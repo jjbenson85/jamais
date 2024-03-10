@@ -13,7 +13,7 @@ describe("eventDirective", () => {
     const ctx: DirectiveContext = {
       data,
       el,
-      value: undefined,
+      dataValue: undefined,
       attrValue: "click:handleClick",
       get: () => data.handleClick,
       getPrevious: () => undefined,
@@ -34,7 +34,7 @@ describe("eventDirective", () => {
     const ctx: DirectiveContext = {
       data,
       el,
-      value: undefined,
+      dataValue: undefined,
       attrValue: "click:handleClick mouseover:handleMouseOver",
       get: () => data.handleClick,
       getPrevious: () => undefined,
