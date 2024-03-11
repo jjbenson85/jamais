@@ -43,7 +43,6 @@ export function bindEvents({
     for (const el of test) {
       const attrs = el.attributes;
       for (const attr of attrs) {
-        console.log({ [event]: [attr.value] });
         const callback = data[attr.value] as (e: Event) => void;
         if (typeof callback !== "function") {
           console.error(`No function found for ${attr.value} on ${el}`);

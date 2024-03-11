@@ -102,6 +102,23 @@ describe("setup", () => {
     </div>`);
   });
 
+  it("should bind a value to an attribute", async () => {
+    global.document = new JSDOM(`
+    <div id="app">
+      <div :a-random-attribute="testLabel"></div>
+    </div>`).window.document;
+
+    const el = document.querySelector<HTMLElement>(
+      '[\\:a-random-attribute="testLabel"]',
+    );
+
+    setup({ testLabel: "This is a test label" }, { attach: "#app" }, document);
+
+    await wait();
+
+    expect(el?.getAttribute("a-random-attribute")).toBe("This is a test label");
+  });
+
   it("should add a component", async () => {
     global.document = new JSDOM().window.document;
     global.document.body.innerHTML = `

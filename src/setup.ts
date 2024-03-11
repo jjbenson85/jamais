@@ -1,5 +1,5 @@
 import { Directive } from "./bindDirectives";
-import { bindDirective } from "./directives/bindDirective";
+import { bindAttributes } from "./bindAttributes";
 import { classDirective } from "./directives/classDirective";
 import { forDirective } from "./directives/forDirective";
 import { ifDirective } from "./directives/ifDirective";
@@ -13,7 +13,7 @@ import { bind } from "./bind";
 export const builtInDirectives: Record<string, Directive> = {
   "data-switch": switchDirective,
   "data-text": textDirective,
-  "data-bind": bindDirective,
+  // "data-bind": bindDirective,
   "data-class": classDirective,
   "data-model": modelDirective,
   "data-if": ifDirective,

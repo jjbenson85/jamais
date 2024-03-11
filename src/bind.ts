@@ -2,6 +2,7 @@ import { bindComponents } from "./bindComponents";
 import { Directive, bindDirectives } from "./bindDirectives";
 import { bindEvents } from "./bindEvents";
 import { Component } from "./defineComponent";
+import { bindAttributes } from "./bindAttributes";
 
 export const bind = (args: {
   components: Record<string, Component>;
@@ -13,5 +14,5 @@ export const bind = (args: {
   bindDirectives(args);
   bindComponents(args);
   bindEvents(args);
-
+  bindAttributes(args);
 };
