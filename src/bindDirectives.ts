@@ -97,7 +97,11 @@ export function bindDirectives({
     const elemsWithAttr = [...parentElWithAttr, ...descendantsWithAttr];
 
     for (const el of elemsWithAttr) {
-      for (const attr of el.attributes) {
+      const filteredAttrs = [...el.attributes].filter(
+        (e) => e.name === `:${name}` || e.name === name,
+      );
+
+      for (const attr of filteredAttrs) {
         const isExpression = attr.name.startsWith(":");
         const ctx: DirectiveContext = {
           el,
