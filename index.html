@@ -31,8 +31,8 @@
 
       <hr />
       <h2>Dynamic Values</h2>
-      <!-- <div :data-class="countClass">
-        Count: <span data-text="count" :data-class="specialClass"></span>
+      <!-- <div :class="countClass">
+        Count: <span data-text="count" :class="specialClass"></span>
       </div> -->
 
       <!-- <my-button class="bg-red-500 hover:bg-red-800"></my-button> -->
@@ -42,11 +42,11 @@
         decrement 
       </button>
 
-      <button :data-class="specialClass" @click="increment">
+      <button :class="specialClass" @click="increment">
         increment
       </button>
       
-      <div>Double: <span :data-text="double" :data-class="specialClass"></span></div>
+      <div>Double: <span :data-text="double" :class="specialClass"></span></div>
       <div>
         HERE:
         <span :data-text="computed([count],()=>count.value * 10)"></span>
@@ -123,9 +123,9 @@
           </thead>
           <tbody>
             <tr data-for="item" data-in="computedArray2" data-key="item.name">
-              <td :data-class="item.class" data-text="item.name"></td>
-              <td :data-class="item.class" data-text="item.email"></td>
-              <td :data-class="item.class" data-text="item.age"></td>
+              <td :class="item.class" data-text="item.name"></td>
+              <td :class="item.class" data-text="item.email"></td>
+              <td :class="item.class" data-text="item.age"></td>
             </tr>
           </tbody>
         </table>
