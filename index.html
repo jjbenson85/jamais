@@ -31,29 +31,30 @@
 
       <hr />
       <h2>Dynamic Values</h2>
-      <!-- <div data-class="countClass">
-        Count: <span data-text="count" data-class="specialClass"></span>
+      <!-- <div :data-class="countClass">
+        Count: <span data-text="count" :data-class="specialClass"></span>
       </div> -->
 
       <!-- <my-button class="bg-red-500 hover:bg-red-800"></my-button> -->
-      <my-button click="{{decrement}}" text="Decrement" class="bg-red-500 hover:bg-red-800"></my-button>
-      <my-button click="{{increment}}" text="Increment" class="bg-green-500 hover:bg-green-800"></my-button>
-      <!-- <button class="bg-red-500" data-on="click:decrement mouseover:log">
+      <!-- <my-button :click="decrement" text="Decrement" class="bg-red-500 hover:bg-red-800"></my-button> -->
+      <!-- <my-button :click="increment" text="Increment" class="bg-green-500 hover:bg-green-800"></my-button> -->
+   <button class="bg-red-500" @click="decrement">
         decrement 
       </button>
 
-      <button data-class="{{specialClass}}" data-on="click:increment">
+      <button :data-class="specialClass" @click="increment">
         increment
-      </button> -->
-      <div>Double: <span data-text="{{double}}" data-class="{{specialClass}}"></span></div>
+      </button>
+      
+      <div>Double: <span :data-text="double" :data-class="specialClass"></span></div>
       <div>
         HERE:
-        <span data-text="{{computed([count],()=>count.value * 10)}}"></span>
+        <span :data-text="computed([count],()=>count.value * 10)"></span>
       </div>
 
-       <input data-model="{{count}}" type="range" min="-100" max="100" />
+       <input :data-model="count" type="range" min="-100" max="100" />
       <hr />
-      <table-component items="{{computedArray2}}" columns="{{columns}}"></table-component>
+      <table-component :items="computedArray2" :columns="columns"></table-component>
       <hr /> 
       <!--  <h2>Switch</h2>
       <div data-text="state"></div>
@@ -122,9 +123,9 @@
           </thead>
           <tbody>
             <tr data-for="item" data-in="computedArray2" data-key="item.name">
-              <td data-class="item.class" data-text="item.name"></td>
-              <td data-class="item.class" data-text="item.email"></td>
-              <td data-class="item.class" data-text="item.age"></td>
+              <td :data-class="item.class" data-text="item.name"></td>
+              <td :data-class="item.class" data-text="item.email"></td>
+              <td :data-class="item.class" data-text="item.age"></td>
             </tr>
           </tbody>
         </table>

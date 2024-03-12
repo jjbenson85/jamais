@@ -43,6 +43,9 @@ export function bindEvents({
     for (const el of test) {
       const attrs = el.attributes;
       for (const attr of attrs) {
+        if (!attr.name.startsWith("@")) {
+          continue;
+        }
         const callback = data[attr.value] as (e: Event) => void;
         if (typeof callback !== "function") {
           console.error(`No function found for ${attr.value} on ${el}`);

@@ -39,10 +39,9 @@ describe("setup", () => {
   });
 
   it("should update classes when a ref value updates", async () => {
-    const document = new JSDOM(
-      '<div id="app"><div :data-class="message"></div></div>',
-    ).window.document;
-    const el = document.querySelector<HTMLElement>('[\\:data-class="message"]');
+    const document = new JSDOM('<div id="app"><div :class="message"></div></div>')
+      .window.document;
+    const el = document.querySelector<HTMLElement>('[\\:class="message"]');
     if (!el) throw new Error("No element found");
 
     const message = ref("my-old-class");
