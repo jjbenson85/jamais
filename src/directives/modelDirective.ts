@@ -1,32 +1,36 @@
-import { defineDirective } from "../bindDirectives";
-import { Ref, isRef } from "../ref";
+import { evaluateExpression } from "../helpers/evaluateExpression";
+import { Directive } from "../types";
+import { isSignal } from "../signal";
 
-const toOriginalType = (value: Ref<unknown>, target: HTMLInputElement) => {
-  return typeof value.value === "number" ? Number(target.value) : target.value;
+export const modelDirective: Directive = {
+  name: "modelDirective",
+  matcher: (attr: Attr) => attr.name === ":data-model",
+  mounted: (el, attrName, attrValue, data) => {
+    const signal = evaluateExpression(attrValue, data);
+
+    if (!isSignal(signal)) {
+      let str = `Can only bind signals with ${attrName}.\n\n${el.outerHTML}`;
+      const suffix = attrValue.match(/\..*\(.*\)/)?.at(0);
+      if (suffix) {
+        str += `\n\nTry removing ${suffix} on ${attrValue}\n\n`;
+      } else {
+        str += `\nn${attrValue} is not a signal\n`;
+      }
+      console.error(Error(str));
+      return;
+    }
+
+    const toOriginalValue =
+      signal.get() === "number"
+        ? (value: string) => Number(value)
+        : (value: string) => value;
+
+    el.addEventListener("input", (e: Event) => {
+      signal.set(toOriginalValue((e.target as HTMLInputElement).value));
+    });
+
+    return () => {
+      (el as HTMLInputElement).value = String(signal.get());
+    };
+  },
 };
-
-export const modelDirective = defineDirective((ctx) => {
-  const { el, effect, get, value } = ctx;
-
-  if (!("value" in el)) {
-    console.warn("data-model: Can only bind models to input elements");
-    return;
-  }
-
-  if (!isRef(value)) {
-    console.warn("data-model: Can only bind refs");
-    return;
-  }
-
-  el.addEventListener("input", (e: Event) => {
-    if (!e.target) return;
-    value.value = toOriginalType(value, e.target as HTMLInputElement);
-  });
-
-  const cb = () => {
-    el.value = String(get());
-  };
-
-  effect?.(cb);
-  cb();
-});

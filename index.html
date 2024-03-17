@@ -7,129 +7,95 @@
     <script type="module" src="/src/main.ts"></script>
     <script src="https://cdn.tailwindcss.com"></script>
     <title>Jamais</title>
+    <style>
+      [\:data-if],
+      [\:data-else-if],
+      [\:data-else],
+      [\:data-switch],
+      [\:data-case],
+      [data-case],
+      [data-default] {
+        display: none;
+      }
+    </style>
   </head>
 
-  <body >
-    <div id="app" class="p-16 h-screen bg-stone-800 text-white">
-      <!-- <template name="my-template"> 
-        <div>
-          <h1>My App</h1>
-          <div data-text="message"></div>
-          <input data-model="message" />
-        </div>
-      </template>
-
-      <div data-template="my-template" data-scope=""></div>
-      <div data-template="my-template"></div> -->
-
-      <!-- <div data-for="item" data-in="items">text</div> -->
-      <!-- <h2>Static Values</h2>
-      <div data-text="staticString" data-bind="label:state"></div>
-      <div data-text="staticNumber"></div>
-      <div data-text="staticBoolean"></div>
-      <div data-text="staticObject.name"></div> -->
-
-      <hr />
-      <h2>Dynamic Values</h2>
-      <!-- <div :class="countClass">
-        Count: <span data-text="count" :class="specialClass"></span>
-      </div> -->
-
-      <!-- <my-button class="bg-red-500 hover:bg-red-800"></my-button> -->
-      <!-- <my-button :click="decrement" text="Decrement" class="bg-red-500 hover:bg-red-800"></my-button> -->
-      <!-- <my-button :click="increment" text="Increment" class="bg-green-500 hover:bg-green-800"></my-button> -->
-   <button class="bg-red-500" @click="decrement">
-        decrement 
-      </button>
-
-      <button :class="specialClass" @click="increment">
-        increment
-      </button>
-      
-      <div>Double: <span :data-text="double" :class="specialClass"></span></div>
-      <div>
-        HERE:
-        <span :data-text="computed([count],()=>count.value * 10)"></span>
-      </div>
-
-       <input :data-model="count" type="range" min="-100" max="100" />
-      <hr />
-      <table-component :items="computedArray2" :columns="columns"></table-component>
-      <hr /> 
-      <!--  <h2>Switch</h2>
-      <div data-text="state"></div>
-      <div data-switch="state">
-        <div data-case="INIT">INIT</div>
-        <div data-case="LOADING">LOADING</div>
-        <div data-case="LOADED">LOADED</div>
-        <div data-case="ERROR">ERROR</div>
-      </div>
-      <div>
-        <button data-on="click:setStateToInit">INIT</button>
-        <button data-on="click:setStateToLoading">LOADING</button>
-        <button data-on="click:setStateToLoaded">LOADED</button>
-        <button data-on="click:setStateToError">ERROR</button>
-      </div>
-     
-      <hr />
-      <div>IF - ELSE IF - ELSE</div>
-      <div>
-        <button data-on="click:toggleShowIf">
-          TOGGLE IF <span data-text="showIf"></span>
-        </button>
-        <button data-on="click:toggleShowElseIf">
-          TOGGLE ELSE IF <span data-text="showElseIf"></span>
-        </button>
-        <button data-on="click:toggleShowElseIf2">
-          TOGGLE ELSE IF2 <span data-text="showElseIf2"></span>
-        </button>
-        <div data-if="showIf" style="display: flex">
-          <div>Showing</div>
-          <div>If</div>
-        </div>
-        <div data-else-if="showElseIf">Showing Else IF</div>
-        <div data-else-if="showElseIf2">Showing Else IF 2</div>
-        <div style="display: flex" data-else>
-          <div>Showing</div>
-          <div>Else</div>
-        </div>
-      </div> -->
-      <!-- <hr />
-      <div>FOR EACH</div>
-      <div data-for="item" data-in="mainItems">
-        <div style="display: flex;" data-for="subItem" data-in="item">
-          <div
-            data-for="subSubItem"
-            data-in="subItem"
-            data-text="subSubItem"
-            style="margin-right: 10px;"
-          ></div>
-        </div>
-      </div> -->
-
-      <!-- <hr />
-      <div>FOR LOOP</div>
-
-      <div>
-        <table>
-          <thead>
-            <tr>
-              <th
-                data-for="column"
-                data-in="columns"
-                data-text="column.label"
-              ></th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr data-for="item" data-in="computedArray2" data-key="item.name">
-              <td :class="item.class" data-text="item.name"></td>
-              <td :class="item.class" data-text="item.email"></td>
-              <td :class="item.class" data-text="item.age"></td>
-            </tr>
-          </tbody>
-        </table>
-      </div> -->
+  <body>
+    <div id="app" class="p-16 min-h-screen bg-stone-800 text-white">
+      <input :data-model="count" type="range" min="0" max="1000">
+      <h1 :data-text="count.get()" class="text-4xl"></h1>
+      <button @click="increment(1)" class="px-2 py-2 m-2 rounded bg-blue-600 hover:bg-blue-800 transition">increment</button>
+      <button @click="decrement(1)" class="px-2 py-2 m-2 rounded bg-blue-600 hover:bg-blue-800 transition">decrement</button>
+            <hr />
+      <table 
+      class="w-48"
+      :data-scope="{}"
+      >
+        <thead>
+          <tr>
+            <th  :data-for="[index, column] in columns" :data-text="column" :data-key="column"  class="p-2 text-center"></th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr :data-for="[index, item] in items.get()" :data-key="item.name">
+            <td :data-for="[index, column] in columns" :data-text="item[column]" :data-key="column" class="p-2 text-center"></td>
+          </tr>
+        </tbody>
+      </table>
+    </main>
     </div>
+    <!-- prettier-ignore biome-ignore -->
+    <!-- <div class="here" :data-scope="{newCount: signal(0)}">
+        <div :data-scope="{doubleCount: computed(()=>newCount.get()*2)}">
+          <h1 class="text-4xl" :data-text="newCount.get()"></h1>
+          <h1 class="text-4xl" :data-text="doubleCount.get()"></h1>
+          <button @click="()=>newCount.set(newCount.get()+1)"
+            class="px-2 py-2 m-2 rounded bg-blue-600 hover:bg-blue-800 transition">increment</button>
+          <button @click="()=>newCount.set(newCount.get()-1)"
+            class="px-2 py-2 m-2 rounded bg-blue-600 hover:bg-blue-800 transition">decrement</button>
+        </div>
+      </div> -->
+    <!-- <h1 class="text-4xl" :data-text="aFunction(count.get())"></h1> -->
+    <!-- <button @click="increment(10)" class="px-2 py-2 m-2 rounded bg-blue-600 hover:bg-blue-800 transition">increment</button>
+                                                                                                                                    <button @click="decrement(10)" class="px-2 py-2 m-2 rounded bg-blue-600 hover:bg-blue-800 transition">decrement</button>
+                                                                                                                                    <div :class="specialClass.get()" class="text-lg px-8 rounded mx-2 transition" :data-text="count.get()">0</div>
+                                                                                                                                    <input :data-model="count" type="range" min="-100" max="100" />
+      <hr />
+        <button @click="toggleShowIf()" class="px-2 py-2 m-2 rounded bg-blue-600 hover:bg-blue-800 transition ">
+          TOGGLE IF
+        </button>
+      <button @click="toggleShowIfElse()" class="px-2 py-2 m-2 rounded bg-blue-600 hover:bg-blue-800 transition">
+        TOGGLE IF ELSE
+      </button>
+      <article>
+        <div :data-if="showIfElse2(count.get())">IF</div>
+        <div :data-else-if="showIfElse.get()">IF ELSE 1</div>
+        <div :data-else-if="showIf.get()">IF ELSE 2</div>
+        <div :data-else-if="showIfElse.get()">IF ELSE 3</div>
+        <div :data-else>ELSE</div>
+      </article>
+      <div
+      :aria-label="count.get()"
+        class="text-lg px-8 rounded m-4"
+        :class="{
+          'bg-red-600': count.get() < 0,
+          'bg-green-600': count.get() > 0,
+          'bg-blue-600': count.get() === 0
+        }"
+        :data-text="count.get()"
+      ></div>
+      <hr>
+      <div class="p-4">
+      
+        <div :data-switch="caseValue.get()" data-case="zero" class="px-8 py-2 my-2 rounded bg-blue-600"> zero</div>
+        <div :data-case="`positive`" class="px-8 py-2 my-2 rounded bg-green-600"> positive</div>
+        <div data-case="negative" class="px-8 py-2 my-2 rounded bg-red-600"> negative</div>
+        <div data-default class="px-8 py-2 my-2 rounded bg-red-600"> default</div>
+      </div>
+      </div> -->
+
+    <!-- <div :data-for="item in items">
+
+    </div> -->
   </body>
 </html>

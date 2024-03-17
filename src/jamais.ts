@@ -1,6 +1,12 @@
-export { ref, isRef } from "./ref";
-export { computed } from "./computed";
+
+export {
+  signal,
+  isSignal,
+  computed,
+  createEffect,
+  createPostEffect,
+  createSyncEffect,
+} from "./signal";
 export { setup } from "./setup";
 export { cls } from "./helpers/cls";
-export { defineDirective } from "./bindDirectives";
-export { defineComponent } from "./defineComponent";
+export type { Directive } from "./types";

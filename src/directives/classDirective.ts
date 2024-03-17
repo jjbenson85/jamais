@@ -1,20 +1,20 @@
-import { defineDirective } from "../bindDirectives";
+import { cls } from "../helpers/cls";
+import { evaluateExpression } from "../helpers/evaluateExpression";
+import { Directive } from "../types";
 
-const classArrFromStr = (str: unknown) =>
-  str ? String(str).trim().split(" ").filter(Boolean) : [];
+export const classDirective: Directive = {
+  name: "classDirective",
+  matcher: (attr: Attr) => attr.name === ":class",
+  mounted: (el, _attrName, attrValue, data) => {
+    let prevClasses: string[] = [];
+    return () => {
+      const prev = prevClasses;
+      const expr = evaluateExpression(attrValue, data);
+      const curr = cls(expr).split(" ").filter(Boolean);
+      prevClasses = curr;
 
-function applyClasses(el: Element, curr: unknown, prev?: unknown) {
-  for (const cls of classArrFromStr(prev)) {
-    el.classList.remove(cls);
-  }
-  for (const cls of classArrFromStr(curr)) {
-    el.classList.add(cls);
-  }
-}
-
-export const classDirective = defineDirective((ctx) => {
-  const { el, effect, get, getPrevious } = ctx;
-  const cb = () => applyClasses(el, get(), getPrevious?.());
-  effect?.(cb);
-  cb();
-});
+      prev.length && el.classList.remove(...prev);
+      curr.length && el.classList.add(...curr);
+    };
+  },
+};

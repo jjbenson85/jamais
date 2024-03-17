@@ -1,24 +1,23 @@
 # TODO
 
+## Rectivity
+[*] Try Solid signals with get and set functions
+
+
 ## Components
 [] HTML template
+[] Emit events
 
-## Rectivity
-[] Try Solid signals with get and set functions
 
 ## Repo
 [] export package
 [] setup mono-repo
 
 ## Tests
-    [*] replace bind* tests wtih directive tests
+[*] replace bind* tests wtih directive tests
 
 ## Site
-[] Add tailwind
+[*] Add tailwind
 
 ## Better DX
 [] file of warnings / errors
-[] import into components and tests
-
-## Directives
-[] remove Attrs arr

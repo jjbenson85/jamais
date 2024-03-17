@@ -1,43 +1,20 @@
-import "../extendMatchers";
 
 import { JSDOM } from "jsdom";
-import { describe, expect, it } from "vitest";
-import { DirectiveContext } from "../../bindDirectives";
+
+import { describe, it, expect } from "vitest";
+import { createEffect } from "../../signal";
 import { forDirective } from "../../directives/forDirective";
-import { ref } from "../../ref";
 
 describe("forDirective", () => {
-  it("should loop over the data-for elements", () => {
-    const items = ref(["a", "b", "c"]);
-    const document = new JSDOM(
-      `<main>
-        <div data-for="item" data-in="items">text</div>
-      </main>`,
-    ).window.document;
-    const parent = document.querySelector<HTMLElement>("main");
-    const el = document.querySelector<HTMLElement>("div");
-
+  it("should create a for directive", () => {
+    const doc = new JSDOM(`<div :data-for="item in items">Test</div>`).window
+      .document;
+    const el = doc.querySelector("div");
     if (!el) throw new Error("No element found");
-    if (!parent) throw new Error("No parent found");
+    const data = { items: ["a", "b", "c"] };
+    const effect = forDirective.mounted(el, ":class", "item in items", data);
+    effect && createEffect(effect);
 
-    const ctx: DirectiveContext = {
-      data: { items },
-      el,
-      dataValue: items,
-      attrValue: "items",
-      get: () => items.value,
-      getPrevious: () => items.previousValue,
-      effect: () => {},
-      directives: {},
-      components: {},
-    };
-
-    forDirective(ctx);
-
-    expect(parent.innerHTML).toBeHTML(
-      `<div>text</div>
-      <div>text</div>
-      <div>text</div>`,
-    );
+    expect(el.parentElement.textContent).toBe("TestTestTest");
   });
 });

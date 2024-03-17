@@ -1,58 +1,94 @@
-import { bind } from "../bind";
-import { defineDirective } from "../bindDirectives";
-import { isObject } from "../helpers";
+import { evaluateExpression } from "../helpers/evaluateExpression";
+import { setup } from "../setup";
+import { Directive } from "../types";
 
-export const forDirective = defineDirective((ctx) => {
-  const { el, get, effect, data, directives, components } = ctx;
+export const forDirective: Directive = {
+  name: "forDirective",
+  matcher: (attr: Attr) => attr.name === ":data-for",
+  mounted: (el, _attrName, attrValue, data) => {
+    const [_itemName, itemsName] = attrValue.split(" in ").map((s) => s.trim());
 
-  const parentEl = el.parentElement;
+    const [indexName, itemName] = _itemName
+      .replaceAll(/[\[\]]/g, "")
+      .split(",")
+      .map((s) => s.trim());
 
-  if (!parentEl) return;
+    el.removeAttribute(":data-for");
 
-  const siblings = Array.from(parentEl?.children || []);
-  const preSibling = siblings.slice(0, siblings.indexOf(el));
-  const postSibling = siblings.slice(siblings.indexOf(el) + 1);
+    if (!el.parentElement) {
+      console.error(
+        `:data-for must be a child of an element\n\n${el.outerHTML}`,
+      );
+      return;
+    }
+    const getItems = () => evaluateExpression(itemsName, data);
 
-  const forKey = el.getAttribute("data-for");
-
-  if (!forKey) {
-    console.warn("No data-for attribute found on data-in");
-    return;
-  }
-
-  const fn = () => {
-    parentEl.innerHTML = "";
-    parentEl.append(...preSibling);
-
-    const deepValue = get();
-
-    const valueArray = Array.isArray(deepValue)
-      ? deepValue
-      : isObject(deepValue)
-        ? Object.values(deepValue)
-        : [];
-
-    for (const item of valueArray) {
-      const newEl = el.cloneNode(true) as HTMLElement;
-      parentEl.append(newEl);
-      newEl.removeAttribute("data-for");
-      newEl.removeAttribute("data-in");
-
-      // Can we handle this better?
-      // I dont like it being recursive here
-      const newData = { ...data, [forKey]: item };
-      bind({
-        components,
-        data: newData,
-        directives,
-        el: parentEl,
-      });
+    // Check type just on initial setup
+    const items = getItems();
+    if (typeof items !== "object") {
+      console.error(`:data-for expects an object or array\n\n${el.outerHTML}`);
+      return;
     }
 
-    parentEl.append(...postSibling);
-  };
+    const elCopy = el.cloneNode(true) as HTMLElement;
+    // elCopy.removeAttribute(":data-for");
 
-  fn();
+    const parentEl = el.parentElement;
 
-  effect?.(fn);
-});
+    el.remove();
+
+    const key = el.getAttribute(":data-key") ?? "index";
+
+    // Need to handle on destroyed?
+    const effect = () => {
+      const children = new Map(
+        Array.from(parentEl.children).map((el) => [el, el]),
+      );
+      const entries = Object.entries(getItems());
+
+      for (const [index, item] of entries) {
+        const keyValue =
+          key === "index"
+            ? index
+            : evaluateExpression(key, { [indexName]: index, [itemName]: item });
+
+        // Get the child that might have been made with this data
+        const currentChildInPosition = children.values().next().value;
+
+        // Remove from map of children that will be removed from parentEl
+        children.delete(currentChildInPosition);
+
+        // If the current child has the same key as the data, we don't need to do anything as it is still valid
+        const currentChildKey =
+          currentChildInPosition?.getAttribute("data-key");
+
+        if (currentChildKey === keyValue) {
+          continue;
+        }
+
+        // globalQueue.add(() => {
+        const newEl = elCopy.cloneNode(true) as HTMLElement;
+        parentEl.appendChild(newEl);
+
+        // Set the actual value of the key on the element
+        newEl.setAttribute("data-key", keyValue);
+
+        const newScope = {
+          ...data,
+          [indexName]: index,
+          [itemName]: item,
+        };
+
+        // Do we need to add to mergedScopeMap?
+        // mergedScopeMap.set(newEl, newScope);
+
+        setup(newScope, { attach: newEl });
+      }
+
+      // Remove any children that are left in the map
+      for (const [el] of children) el.remove();
+    };
+
+    return effect;
+  },
+};
