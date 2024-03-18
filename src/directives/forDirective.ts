@@ -38,55 +38,49 @@ export const forDirective: Directive = {
     el.remove();
 
     const key = el.getAttribute(":data-key") ?? "index";
-
     // Need to handle on destroyed?
+    const childrenArr: { el: HTMLElement; keyValue: string }[] = [];
     const effect = () => {
-      const children = new Map(
-        Array.from(parentEl.children).map((el) => [el, el]),
-      );
+      // const childrenMap = new Map<string, HTMLElement>();
+      // const children = new Map(Array.from(parentEl.children).map((el) => [el, el]));
+      // const children: HTMLElement[] = [];
+      // const scopes: Map<HTMLElement, Record<string, unknown>> = new Map();
       const entries = Object.entries(getItems());
-
+      let count = 0;
       for (const [index, item] of entries) {
         const keyValue =
           key === "index"
             ? index
             : evaluateExpression(key, { [indexName]: index, [itemName]: item });
 
-        // Get the child that might have been made with this data
-        const currentChildInPosition = children.values().next().value;
+        const currentItem = childrenArr[count];
+        if (!currentItem || currentItem.keyValue !== keyValue) {
+          const newEl = elCopy.cloneNode(true) as HTMLElement;
+          childrenArr[count] = { el: newEl, keyValue };
 
-        // Remove from map of children that will be removed from parentEl
-        children.delete(currentChildInPosition);
+          if (currentItem) {
+            currentItem.el.replaceWith(newEl);
+          } else {
+            parentEl.appendChild(newEl);
+          }
 
-        // If the current child has the same key as the data, we don't need to do anything as it is still valid
-        const currentChildKey =
-          currentChildInPosition?.getAttribute("data-key");
-
-        if (currentChildKey === keyValue) {
-          continue;
+          setup(
+            {
+              ...data,
+              [indexName]: parseInt(index),
+              [itemName]: item,
+            },
+            { attach: newEl },
+          );
         }
 
-        // globalQueue.add(() => {
-        const newEl = elCopy.cloneNode(true) as HTMLElement;
-        parentEl.appendChild(newEl);
-
-        // Set the actual value of the key on the element
-        newEl.setAttribute("data-key", keyValue);
-
-        const newScope = {
-          ...data,
-          [indexName]: index,
-          [itemName]: item,
-        };
-
-        // Do we need to add to mergedScopeMap?
-        // mergedScopeMap.set(newEl, newScope);
-
-        setup(newScope, { attach: newEl });
+        count++;
       }
 
-      // Remove any children that are left in the map
-      for (const [el] of children) el.remove();
+      for (let i = count; i < childrenArr.length; i++) {
+        childrenArr.pop()?.el.remove();
+      }
+    
     };
 
     return effect;
