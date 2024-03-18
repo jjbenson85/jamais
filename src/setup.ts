@@ -106,8 +106,14 @@ export function setup(
       mergedScopeMap.delete(el);
       continue;
     }
+    
     const elementScope = mergedScopeMap.get(el) ?? {};
-    attrLoop: for (const attr of el.attributes) {
+    for (const attr of el.attributes) {
+      if (!el.parentElement) {
+        mergedScopeMap.delete(el);
+        el.remove();
+        break;
+      }
       // DIRECTIVES
       for (const directive of directives) {
         if (!directive.matcher(attr)) continue;
@@ -118,9 +124,7 @@ export function setup(
           elementScope,
         );
         effect && createEffect(effect, directive.name);
-        // attr matched in this directive, so skip the other directives
-        // Maybe use break?
-        continue attrLoop;
+        break;
       }
     }
   }

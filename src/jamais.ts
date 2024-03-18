@@ -3,6 +3,7 @@ export {
   signal,
   isSignal,
   computed,
+  computedSync,
   createEffect,
   createPostEffect,
   createSyncEffect,

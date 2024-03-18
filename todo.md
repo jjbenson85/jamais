@@ -2,12 +2,12 @@
 
 ## Rectivity
 [*] Try Solid signals with get and set functions
-
+[] Deep signals?
 
 ## Components
 [] HTML template
+[] Web Components?
 [] Emit events
-
 
 ## Repo
 [] export package
@@ -18,6 +18,11 @@
 
 ## Site
 [*] Add tailwind
+[] Text Docs
+[] Class Docs
+[] ...
+[] Example TODO App
 
 ## Better DX
-[] file of warnings / errors
+[] Improves warnings/errors
+[] Style errors
