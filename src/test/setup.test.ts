@@ -6,12 +6,12 @@ import { setup } from "../setup";
 import { wait } from "./utils";
 import { signal } from "../signal";
 
+global.document = new JSDOM().window.document;
 describe("setup", () => {
   it("should create a setup", async () => {
     const message = signal("test");
-    const document = new JSDOM(
-      '<div id="app"><div :data-text="message.get()"></div></div>',
-    ).window.document;
+    document.body.innerHTML =
+      '<div id="app"><div :data-text="message.get()"></div></div>';
 
     setup({ message }, { attach: "#app" }, document);
 
@@ -22,9 +22,8 @@ describe("setup", () => {
 
   it("should update dom when a ref value update", async () => {
     const message = signal("test");
-    const document = new JSDOM(
-      '<div id="app"><div :data-text="message.get()"></div></div>',
-    ).window.document;
+    document.body.innerHTML =
+      '<div id="app"><div :data-text="message.get()"></div></div>';
 
     setup({ message }, { attach: "#app" }, document);
 
@@ -38,9 +37,9 @@ describe("setup", () => {
   });
 
   it("should update classes when a ref value updates", async () => {
-    const document = new JSDOM(
-      '<div id="app"><div :class="message.get()"></div></div>',
-    ).window.document;
+    document.body.innerHTML =
+      '<div id="app"><div :class="message.get()"></div></div>';
+
     const el = document.querySelector<HTMLElement>(
       '[\\:class="message.get()"]',
     );
@@ -61,9 +60,8 @@ describe("setup", () => {
 
   it("should call a click event when a click method is passed", () => {
     const handleClick = vi.fn();
-    const document = new JSDOM(
-      '<div id="app"><button @click="handleClick()"></button></div>',
-    ).window.document;
+    document.body.innerHTML =
+      '<div id="app"><button @click="handleClick()"></button></div>';
 
     setup({ handleClick }, { attach: "#app" }, document);
 
@@ -75,10 +73,10 @@ describe("setup", () => {
   });
 
   it("should bind a value to an attribute", async () => {
-    global.document = new JSDOM(`
+    document.body.innerHTML = `
     <div id="app">
       <div :a-random-attribute="testLabel"></div>
-    </div>`).window.document;
+    </div>`;
 
     const el = document.querySelector<HTMLElement>(
       '[\\:a-random-attribute="testLabel"]',
