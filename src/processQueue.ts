@@ -10,13 +10,19 @@ export class ProcessQueue {
     DEBUG.value && console.info("add: ", { msg });
 
     this.queue.add(fn);
-    this.debouceProcessQueue();
+    if (this.queue.size === 1) {
+      queueMicrotask(this.processQueue);
+    }
   }
   addPost(fn: () => void, msg?: string) {
     DEBUG.value && console.info("addPost: ", { msg });
 
     this.postQueue.add(fn);
-    this.debouceProcessQueue();
+    if (this.postQueue.size === 1) {
+      setTimeout(() => {
+        queueMicrotask(this.processPostQueue);
+      }, 0);
+    }
   }
 
   processQueue = () => {
@@ -24,26 +30,13 @@ export class ProcessQueue {
       member();
       this.queue.delete(member);
     }
+  };
 
+  processPostQueue = () => {
     for (const member of this.postQueue.keys()) {
       member();
       this.postQueue.delete(member);
     }
-  };
-
-  debouceProcessQueue = () => {
-    if (this.timerId) {
-      clearTimeout(this.timerId);
-    }
-    this.timerId = setTimeout(() => {
-      this.timerId = undefined;
-      DEBUG.value &&
-        console.info({
-          queue: this.queue.size,
-          postQueue: this.postQueue.size,
-        });
-      this.processQueue();
-    }, 0);
   };
 }
 
