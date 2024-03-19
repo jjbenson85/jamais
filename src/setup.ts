@@ -99,6 +99,9 @@ export function setup(
     mergedScopeMap.set(el, scope);
   }
 
+
+  const destroyArr: (() => void)[] = [];
+
   for (const el of allElems) {
     // Element is removed in data-for directive
     // TODO: Try to reuse it, but there is an ordering issue
@@ -117,15 +120,25 @@ export function setup(
       // DIRECTIVES
       for (const directive of directives) {
         if (!directive.matcher(attr)) continue;
-        const effect = directive.mounted(
-          el,
-          attr.name,
-          attr.value,
-          elementScope,
-        );
-        effect && createEffect(effect, directive.name);
+        const cb = directive.mounted(el, attr.name, attr.value, elementScope);
+        if (cb) {
+          const effect = createEffect(cb, directive.name);
+          destroyArr.push(effect.destroy);
+        }
+        if (!document.contains(el)) {
+          // If the directive removed the el
+          mergedScopeMap.delete(el);
+          // el.remove();
+        }
+
         break;
       }
     }
   }
+
+  return () => {
+    for (const d of destroyArr) {
+      d();
+    }
+  };
 }

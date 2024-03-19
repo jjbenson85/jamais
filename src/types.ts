@@ -1,4 +1,4 @@
-type Effect = () => void;
+type Cb = () => void;
 
 export type Directive = {
   name: string;
@@ -8,5 +8,6 @@ export type Directive = {
     attrName: string,
     attrValue: string,
     data: Record<string, unknown>,
-  ) => Effect | undefined;
+  ) => Cb | undefined;
+  destroyed?: (el: HTMLElement) => void;
 };

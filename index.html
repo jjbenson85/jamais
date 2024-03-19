@@ -41,10 +41,10 @@
           <tr  
             :data-for="[index, item] in items.get()" 
             :data-key="item.name"  
-            :class="[item.class,{'bg-green-500': index === 0, 'bg-red-600': index === items.get().length-1}]" 
+            :class="[item.class,{'bg-green-500': $index === 0, 'bg-red-600': $index === items.get().length-1}]" 
             class="border-b border-gray-400/20"
           >
-            <td  :data-for="[index, column] in columns" :data-text="item[column]" :data-key="column" class="p-2 text-center" ></td>
+            <td  :data-for="[index, column] in columns" :data-text="count.get()" :data-key="column" class="p-2 text-center" ></td>
             <td>
               <div class="flex">
                 <button @click="raise(index)" class="px-2 py-2 m-2 rounded bg-blue-600 hover:bg-blue-800 transition">raise</button>

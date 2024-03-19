@@ -40,23 +40,27 @@ export const forDirective: Directive = {
     const key = el.getAttribute(":data-key") ?? "index";
     // Need to handle on destroyed?
     const childrenArr: { el: HTMLElement; keyValue: string }[] = [];
-    const effect = () => {
-      // const childrenMap = new Map<string, HTMLElement>();
-      // const children = new Map(Array.from(parentEl.children).map((el) => [el, el]));
-      // const children: HTMLElement[] = [];
-      // const scopes: Map<HTMLElement, Record<string, unknown>> = new Map();
-      const entries = Object.entries(getItems());
-      let count = 0;
-      for (const [index, item] of entries) {
-        const keyValue =
-          key === "index"
-            ? index
-            : evaluateExpression(key, { [indexName]: index, [itemName]: item });
 
-        const currentItem = childrenArr[count];
+    const getKeyValue = (key: string, index: string, item: unknown) => {
+      if (key === "index") return index;
+      return evaluateExpression(key, {
+        [indexName]: index,
+        [itemName]: item,
+      });
+    };
+
+    const destroyMap = new WeakMap<HTMLElement, () => void>();
+    const cb = () => {
+      const entries = Object.entries(getItems());
+
+      entries.forEach(([index, item], i) => {
+        const keyValue = getKeyValue(key, index, item);
+        const currentItem = childrenArr[i];
+
         if (!currentItem || currentItem.keyValue !== keyValue) {
           const newEl = elCopy.cloneNode(true) as HTMLElement;
-          childrenArr[count] = { el: newEl, keyValue };
+
+          childrenArr[i] = { el: newEl, keyValue };
 
           if (currentItem) {
             currentItem.el.replaceWith(newEl);
@@ -64,25 +68,34 @@ export const forDirective: Directive = {
             parentEl.appendChild(newEl);
           }
 
-          setup(
+          const destroy = setup(
             {
               ...data,
-              [indexName]: parseInt(index),
+              $index: i,
+              [indexName]: index,
               [itemName]: item,
             },
             { attach: newEl },
           );
+          destroyMap.set(newEl, destroy);
         }
+      });
 
-        count++;
-      }
-
-      for (let i = count; i < childrenArr.length; i++) {
+      for (let i = entries.length; i < childrenArr.length; i++) {
         childrenArr.pop()?.el.remove();
       }
-    
     };
 
-    return effect;
+    new MutationObserver((el) => {
+      for (const node of el[0].removedNodes) {
+        console.log({ destroying: node });
+        destroyMap.get(node as HTMLElement)?.();
+      }
+    }).observe(parentEl, { childList: true });
+
+    return cb;
+  },
+  destroyed: (el) => {
+    console.log("destroyed", el);
   },
 };

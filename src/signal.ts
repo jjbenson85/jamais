@@ -2,8 +2,7 @@ import { globalQueue } from "./processQueue";
 
 type SyncType = "sync" | "pre" | "post";
 
-let currentListener: null | [cb: () => void, sync: SyncType, msg: string] =
-  null;
+let currentSubscriberEffect: null | Effect = null;
 
 export const DEBUG = {
   value: false,
@@ -17,17 +16,16 @@ export const DEBUG = {
 
 export class Signal<T> {
   value: T;
-  previousValue: T | undefined = undefined;
-  subscribers = new Map<() => void, [() => void, SyncType, string]>();
+  subscribers = new Set<Effect>();
 
   constructor(initialValue: T) {
     this.value = initialValue;
   }
 
   get = () => {
-    if (currentListener !== null) {
-      const [effect] = currentListener;
-      this.subscribers.set(effect, currentListener);
+    if (currentSubscriberEffect !== null) {
+      this.subscribers.add(currentSubscriberEffect);
+      currentSubscriberEffect.addSubscription(this as Signal<unknown>);
     }
     return this.value;
   };
@@ -38,28 +36,62 @@ export class Signal<T> {
 
     if (newValue === this.value) return;
 
-    this.previousValue = this.value;
     this.value = newValue;
 
-    // after setting the value, run any subscriber, aka effect, functions
-    // add them to appropriate queues or run them immediately
-    for (const [effect, sync, subMsg] of this.subscribers.values()) {
-      switch (sync) {
-        case "sync": {
-          DEBUG.value && console.info("call", { sync, msg: subMsg });
-          effect();
-          continue;
-        }
-        case "pre": {
-          globalQueue.add(effect, subMsg);
-          continue;
-        }
-        case "post": {
-          globalQueue.addPost(effect, subMsg);
-          continue;
-        }
+    for (const effect of this.subscribers.values()) {
+      effect.run();
+    }
+  };
+
+  removeSubscriber = (effect: Effect) => {
+    this.subscribers.delete(effect);
+  };
+}
+
+export class Effect {
+  effect: () => void;
+  sync: SyncType;
+  msg: string;
+  subscriptions: Set<Signal<unknown>> = new Set();
+
+  constructor(effect: () => void, sync: SyncType, msg: string) {
+    this.effect = effect;
+    this.sync = sync;
+    this.msg = msg;
+
+    currentSubscriberEffect = this;
+    effect();
+    currentSubscriberEffect = null;
+  }
+
+  addSubscription = (signal: Signal<unknown>) => {
+    this.subscriptions.add(signal);
+  };
+
+  run = () => {
+    const { effect, sync, msg } = this;
+    switch (sync) {
+      case "sync": {
+        DEBUG.value && console.info("call", { sync, msg });
+        effect();
+        return;
       }
-      sync satisfies never;
+      case "pre": {
+        globalQueue.add(effect, msg);
+        return;
+      }
+      case "post": {
+        globalQueue.addPost(effect, msg);
+        return;
+      }
+    }
+    sync satisfies never;
+  };
+
+  destroy = () => {
+    for (const signal of this.subscriptions) {
+      console.log("unsub", this, { signal });
+      signal.removeSubscriber(this);
     }
   };
 }
@@ -85,41 +117,33 @@ export const isSignal = <T>(
  * To attach to a signal, the signals need to be called on the inital call
  * @param effect
  */
-export function createEffect(effect: () => void, msg = "createEffect") {
-  currentListener = [effect, "pre", msg];
-  effect();
-  currentListener = null;
-}
+export const createEffect = (cb: () => void, msg = "createEffect") =>
+  new Effect(cb, "sync", msg);
 
 /**
  * Will run the callback after all the createEffect callbacks have run
  * @param effect
  */
-export function createPostEffect(effect: () => void, msg = "createPostEffect") {
-  currentListener = [effect, "post", msg];
-  effect();
-  currentListener = null;
-}
+export const createPostEffect = (cb: () => void, msg = "createPostEffect") =>
+  new Effect(cb, "post", msg);
+
 
 /**
  * Will run the callback immediately and then every time the signals used in the callback change
  * @param effect
  */
-export function createSyncEffect(effect: () => void, msg = "createSyncEffect") {
-  currentListener = [effect, "sync", msg];
-  effect();
-  currentListener = null;
-}
+export const createSyncEffect = (cb: () => void, msg = "createSyncEffect") =>
+  new Effect(cb, "sync", msg);
 
 /**
  * Returns a signal that will update before the dom is updated, when the signals used in the callback change
  * @param effect
  * @returns
  */
-export function computed<T>(effect: () => T, msg = "computed") {
-  const newSignal = signal(effect());
+export function computed<T>(cb: () => T, msg = "computed") {
+  const newSignal = signal(cb());
   createEffect(() => {
-    newSignal.set(effect(), msg);
+    newSignal.set(cb(), msg);
   }, msg);
   return newSignal;
 }
@@ -130,10 +154,10 @@ export function computed<T>(effect: () => T, msg = "computed") {
  * @param msg
  * @returns
  */
-export function computedSync<T>(effect: () => T, msg = "computedSync") {
-  const newSignal = signal(effect());
+export function computedSync<T>(cb: () => T, msg = "computedSync") {
+  const newSignal = signal(cb());
   createSyncEffect(() => {
-    newSignal.set(effect(), msg);
+    newSignal.set(cb(), msg);
   }, msg);
   return newSignal;
 }
