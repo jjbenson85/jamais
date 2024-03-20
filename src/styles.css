@@ -1,0 +1,9 @@
+[\:data-if],
+[\:data-else-if],
+[\:data-else],
+[\:data-switch],
+[\:data-case],
+[data-case],
+[data-default] {
+  display: none;
+}

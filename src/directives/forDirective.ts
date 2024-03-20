@@ -31,7 +31,6 @@ export const forDirective: Directive = {
     }
 
     const elCopy = el.cloneNode(true) as HTMLElement;
-    // elCopy.removeAttribute(":data-for");
 
     const parentEl = el.parentElement;
 
@@ -49,49 +48,45 @@ export const forDirective: Directive = {
       });
     };
 
-    const destroyMap = new WeakMap<HTMLElement, () => void>();
     const cb = () => {
+
       const entries = Object.entries(getItems());
 
-      entries.forEach(([index, item], i) => {
+      const max = Math.max(entries.length, childrenArr.length);
+
+      for (let i = 0; i < max; i++) {
+        const entry = entries[i];
+
+        if (!entry) {
+          childrenArr.pop()?.el.remove();
+          continue;
+        }
+
+        const [index, item] = entry;
         const keyValue = getKeyValue(key, index, item);
         const currentItem = childrenArr[i];
+        if (currentItem && currentItem.keyValue === keyValue) continue;
 
-        if (!currentItem || currentItem.keyValue !== keyValue) {
-          const newEl = elCopy.cloneNode(true) as HTMLElement;
-
-          childrenArr[i] = { el: newEl, keyValue };
-
-          if (currentItem) {
-            currentItem.el.replaceWith(newEl);
-          } else {
-            parentEl.appendChild(newEl);
-          }
-
-          const destroy = setup(
-            {
-              ...data,
-              $index: i,
-              [indexName]: index,
-              [itemName]: item,
-            },
-            { attach: newEl },
-          );
-          destroyMap.set(newEl, destroy);
+        const newEl = elCopy.cloneNode(true) as HTMLElement;
+        if (!currentItem) {
+          parentEl.appendChild(newEl);
+          childrenArr.push({ el: newEl, keyValue });
+        } else {
+          currentItem.el.replaceWith(newEl);
         }
-      });
 
-      for (let i = entries.length; i < childrenArr.length; i++) {
-        childrenArr.pop()?.el.remove();
+        setup(
+          {
+            ...data,
+            $index: i,
+            [indexName]: index,
+            [itemName]: item,
+          },
+          { attach: newEl },
+        );
       }
+
     };
-
-    new MutationObserver((el) => {
-      for (const node of el[0].removedNodes) {
-        console.log({ destroying: node });
-        destroyMap.get(node as HTMLElement)?.();
-      }
-    }).observe(parentEl, { childList: true });
 
     return cb;
   },

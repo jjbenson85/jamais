@@ -1,7 +1,7 @@
 import { setup, computed, signal } from "./jamais";
 import { computedSync } from "./signal";
 
-const count = signal(1);
+const count = signal(100);
 
 const increment = (amount = 1) => count.set(count.get() + amount, "increment");
 const decrement = (amount = 1) => count.set(count.get() - amount, "decrement");
