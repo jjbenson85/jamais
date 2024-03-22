@@ -2,6 +2,29 @@ import { evaluateExpression } from "../helpers/evaluateExpression";
 import { setup } from "../setup";
 import { Directive } from "../types";
 
+const destroyMap = new WeakMap<HTMLElement, (() => void)[]>();
+
+const addToDestroyMap = (el: HTMLElement, cb: () => void) => {
+  const arr = destroyMap.get(el);
+  if (!arr) {
+    destroyMap.set(el, [cb]);
+  } else {
+    arr.push(cb);
+  }
+}
+
+const removeEl = (el?: HTMLElement) => {
+  if (!el) return;
+
+  const arr = destroyMap.get(el) ?? []
+  for (const cb of arr) {
+    cb();
+  }
+  destroyMap.delete(el);
+  el.remove();
+}
+
+
 export const forDirective: Directive = {
   name: "forDirective",
   matcher: (attr: Attr) => attr.name === ":data-for",
@@ -58,7 +81,8 @@ export const forDirective: Directive = {
         const entry = entries[i];
 
         if (!entry) {
-          childrenArr.pop()?.el.remove();
+          const oldEl = childrenArr.pop()?.el
+          removeEl(oldEl);
           continue;
         }
 
@@ -73,9 +97,11 @@ export const forDirective: Directive = {
           childrenArr.push({ el: newEl, keyValue });
         } else {
           currentItem.el.replaceWith(newEl);
+          removeEl(currentItem.el);
         }
 
-        setup(
+        //  Handle destroying in setup?
+        const destroy = setup(
           {
             ...data,
             $index: i,
@@ -84,13 +110,18 @@ export const forDirective: Directive = {
           },
           { attach: newEl },
         );
+        addToDestroyMap(newEl, destroy);
       }
 
     };
 
     return cb;
   },
+  // Tidy up directive where we handle the createEffect
   destroyed: (el) => {
     console.log("destroyed", el);
+    // for (const cb of destroyedMap.get(el) ?? []) {
+    //   cb();
+    // }
   },
 };
