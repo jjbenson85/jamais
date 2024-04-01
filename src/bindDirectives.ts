@@ -9,11 +9,10 @@ export function bindDirectives(
   directives: Directive[],
 ) {
   const destroyArr: (() => void)[] = [];
-  console.log({ el });
-  const allElems = [
-    el,
-    ...(el.querySelectorAll<HTMLElement>("*") ?? []),
-  ].filter((e) => e.attributes.length > 0);
+  
+  const allElems = [el, ...(el.querySelectorAll<HTMLElement>("*") ?? [])].filter(
+    (e) => e.attributes.length > 0,
+  );
 
   const errMsgScopeIsNotObject = (
     el: HTMLElement,
@@ -49,13 +48,7 @@ export function bindDirectives(
     for (const attr of el.attributes) {
       for (const directive of directives) {
         if (!directive.matcher(attr)) continue;
-        const cb = directive.mounted(
-          el,
-          attr.name,
-          attr.value,
-          scope,
-          directives,
-        );
+        const cb = directive.mounted(el, attr.name, attr.value, scope);
         if (cb) {
           const effect = createEffect(cb, directive.name);
           destroyArr.push(effect.destroy);

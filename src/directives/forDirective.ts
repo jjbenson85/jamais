@@ -29,7 +29,7 @@ const removeEl = (el?: HTMLElement) => {
 export const forDirective: Directive = {
   name: "forDirective",
   matcher: (attr: Attr) => attr.name === ":data-for",
-  mounted: (el, _attrName, attrValue, data, directives) => {
+  mounted: (el, _attrName, attrValue, data) => {
     const [_itemName, itemsName] = attrValue.split(" in ").map((s) => s.trim());
 
     const useEntries = _itemName.match(/^\[.*\]$/g)?.length;
@@ -68,8 +68,8 @@ export const forDirective: Directive = {
         console.error(`:data-for expects an object, array or a number or a function that returns an object, array or number\n\n${
           el.outerHTML
         }
-  
-          ${itemsName} is of type ${typeof items}
+        
+        ${itemsName} is of type ${typeof value}
         `);
         return [];
       }
@@ -79,7 +79,7 @@ export const forDirective: Directive = {
     };
 
     // Check type just on initial setup
-    const items = getItems();
+    // const items = getItems();
 
     const elCopy = el.cloneNode(true) as HTMLElement;
 
@@ -147,7 +147,7 @@ export const forDirective: Directive = {
             [indexName]: index,
             [itemName]: item,
           },
-          directives,
+          globalThis.window.$directives,
         );
         addToDestroyMap(newEl, destroy);
       }
