@@ -1,10 +1,16 @@
+import { MyComponent } from "./MyComponent";
+import { MyPTag } from "./MyPTag";
+import { MyTable } from "./MyTable";
+// import { TestComponent } from "./defineComponent";
 import { setup, computed, signal } from "./jamais";
 import { computedSync } from "./signal";
 
 const count = signal(100);
 
-const increment = (amount = 1) => count.set(count.get() + amount, "increment");
-const decrement = (amount = 1) => count.set(count.get() - amount, "decrement");
+// const increment = (amount = "1") =>
+//   count.set(count.get() + parseInt(amount), "increment");
+// const decrement = (amount = "1") =>
+//   count.set(count.get() - parseInt(amount), "decrement");
 
 // const specialClass = computed(() => ({
 //   "bg-green-500": count.get() > 0,
@@ -46,69 +52,91 @@ const allItems = Array.from({ length: 1000 }, (_, i) => ({
   shoeSize: i,
   height: i,
   weight: i,
-  class: "",
-  // [
-  //   "bg-red-500/20",
-  //   "bg-green-500/20",
-  //   "bg-blue-500/20",
-  //   "bg-orange-500/20",
-  // ][Math.round(Math.random() * 3)],
+  class: [
+    "bg-red-500/20",
+    "bg-green-500/20",
+    "bg-blue-500/20",
+    "bg-orange-500/20",
+  ][Math.round(Math.random() * 3)],
 }));
+
 const items = computedSync(() => {
   return allItems.slice(0, Math.abs(count.get()));
 }, "items computedSync");
 
 // const items = signal(allItems.slice(0, 20));
 
-function arrayMove<T>(arr: T[], fromIndex: number, toIndex: number) {
-  if (toIndex < 0) return arr;
-  if (toIndex >= arr.length) return arr;
+// function arrayMove<T>(arr: T[], fromIndex: number, toIndex: number) {
+//   if (toIndex < 0) return arr;
+//   if (toIndex >= arr.length) return arr;
 
-  const copy = arr.slice();
-  const element = copy[fromIndex];
-  copy.splice(fromIndex, 1);
-  copy.splice(toIndex, 0, element);
-  return copy;
-}
+//   const copy = arr.slice();
+//   const element = copy[fromIndex];
+//   copy.splice(fromIndex, 1);
+//   copy.splice(toIndex, 0, element);
+//   return copy;
+// }
 
-const raise = (i: string) => {
-  const index = parseInt(i);
-  const itms = items.get();
-  items.set(arrayMove(itms, index, index - 1));
-};
+// const raise = (i: string) => {
+//   const index = parseInt(i);
+//   const itms = items.get();
+//   items.set(arrayMove(itms, index, index - 1));
+// };
 
-const lower = (i: string) => {
-  const index = parseInt(i);
-  const itms = items.get();
-  const newItems = arrayMove(itms, index, index + 1);
-  items.set(newItems);
-};
+// const lower = (i: string) => {
+//   const index = parseInt(i);
+//   const itms = items.get();
+//   const newItems = arrayMove(itms, index, index + 1);
+//   items.set(newItems);
+// };
+
+// const specialColor = signal("green");
+// const setColor = (str: string) => specialColor.set(str);
+
+// const people = signal([
+//   { name: "John", age: 20 },
+//   { name: "Jane", age: 21 },
+//   { name: "Joe", age: 22 },
+// ]);
+
+const specialMessage = signal("Hello World");
 
 console.time();
 setup(
   {
+    specialMessage,
     columns,
     items,
-    raise,
-    lower,
-    // caseValue,
-    // aFunction,
+    // raise,
+    // lower,
+    // // caseValue,
+    // // aFunction,
     // showIf,
     // toggleShowIf,
     // showIfElse,
     // toggleShowIfElse,
     // showIfElse2,
-    // // message,
+    // // // message,
     count,
-    increment,
-    decrement,
-    // specialClass,
-    // console,
-    // getResult,
+    // increment,
+    // decrement,
+    // specialColor,
+    // setColor,
+    // // specialClass,
+    // // console,
+    // // getResult,
+    // people,
   },
   {
     attach: "#app",
     debug: false,
+    components: {
+      // 'my-component': () => new MyComponent() as any,
+      // 'test-component': TestComponent,
+      "my-table": MyTable,
+      "my-component": MyComponent,
+      // "my-p-tag": MyPTag,
+    },
   },
 );
 console.timeEnd();

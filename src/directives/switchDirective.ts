@@ -68,10 +68,10 @@ export const switchDirective: Directive = {
       const dynamicValues = dynmaicCases.map((el) => {
         const attrValue = el.getAttribute(":data-case");
         if (!attrValue) return undefined;
-        return evaluateExpression(attrValue, data);
+        return evaluateExpression(attrValue, data, ":data-case");
       });
 
-      const unknownValue = evaluateExpression(attrValue, data);
+      const unknownValue = evaluateExpression(attrValue, data, ":data-switch");
       const values = [...staticValues, ...dynamicValues, true];
 
       if (isSignal(unknownValue)) {

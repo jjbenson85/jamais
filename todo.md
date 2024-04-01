@@ -1,5 +1,8 @@
 # TODO
 
+## IF should remove elements
+[]
+
 ## Rectivity
 [*] Try Solid signals with get and set functions
 [] Deep signals?

@@ -1,6 +1,6 @@
 import "./styles.css";
 
-import { DEBUG, createEffect } from "./signal";
+import { DEBUG } from "./signal";
 import type { Directive } from "./types";
 import { ifDirective } from "./directives/ifDirective";
 import { textDirective } from "./directives/textDirective";
@@ -9,33 +9,25 @@ import { modelDirective } from "./directives/modelDirective";
 import { bindDirective } from "./directives/bindDirective";
 import { eventDirective } from "./directives/eventDirective";
 import { switchDirective } from "./directives/switchDirective";
-import { evaluateExpression } from "./helpers/evaluateExpression";
 import { forDirective } from "./directives/forDirective";
 import { scopeDirective } from "./directives/scopeDirective";
 import { keyDirective } from "./directives/keyDirective";
-import { isObject } from "./helpers/assert";
+import { bindDirectives } from "./bindDirectives";
+import { defineComponent } from "./JComponent";
+import { setupComponents } from "./setupComponents";
 
-function getClosestAncestorWithScope(el: HTMLElement, selector: string) {
-  let ancestor = el.parentElement;
-  while (ancestor) {
-    if (ancestor.hasAttribute(selector)) {
-      return ancestor;
-    }
-    ancestor = ancestor.parentElement;
+// declare globalThis directives
+declare global {
+  interface Window {
+    $directives: Directive[];
   }
-  return undefined;
 }
-
-export const mergedScopeMap = new WeakMap<
-  HTMLElement,
-  Record<string, unknown>
->();
 
 export function setup(
   data: Record<string, unknown>,
   options: {
     attach: string | HTMLElement;
-    //   components?: Record<string, Component>;
+    components?: Record<string, ReturnType<typeof defineComponent>>;
     directives?: Directive[];
     debug?: boolean;
   },
@@ -58,6 +50,8 @@ export function setup(
     keyDirective,
     bindDirective,
   ];
+
+  globalThis.window.$directives = directives;
   const el =
     typeof options.attach === "string"
       ? _document.querySelector<HTMLElement>(options.attach)
@@ -65,63 +59,32 @@ export function setup(
 
   if (!el) throw new Error("No element found");
 
-  const allElems = [el, ...el.querySelectorAll<HTMLElement>("*")].filter(
-    (e) => e.attributes.length > 0,
-  );
-  const destroyArr: (() => void)[] = [];
+  const destroyMap = new WeakMap<HTMLElement, () => void>();
+  // const observer = new MutationObserver((mutations, observer) => {
+  //   for (const mutation of mutations) {
+  //     for (const node of mutation.addedNodes) {
+  //       if (node instanceof HTMLElement) {
+  //         const destroy = mount(node);
+  //         destroyMap.set(node, destroy);
+  //       }
+  //     }
+  //     for (const node of mutation.removedNodes) {
+  //       if (node instanceof HTMLElement) {
+  //         const destroy = destroyMap.get(node);
+  //         if (destroy) {
+  //           destroy();
+  //           destroyMap.delete(node);
+  //         }
+  //       }
+  //     }
+  //   }
+  // });
 
-  const errMsgScopeIsNotObject = (
-    el: HTMLElement,
-    scopeStr: string | null,
-    scope: unknown,
-  ) => {
-    console.error(`Scope must be an object. 
-      
-  ${el.outerHTML}
+  // observer.observe(el, { childList: true, subtree: true });
 
-  ${scopeStr} is of type ${typeof scope}`);
-  };
-
-  // Create the scope map for all elements
-  for (const el of allElems) {
-    const parentWithScope = getClosestAncestorWithScope(el, ":data-scope");
-    const parentScope =
-      (parentWithScope && mergedScopeMap.get(parentWithScope)) ?? data;
-
-    const scopeStr = el.getAttribute(":data-scope");
-    const thisScope = scopeStr
-      ? evaluateExpression(scopeStr, parentScope)
-      : undefined;
-
-    // Might not need to merge in data here
-    const scope = Object.assign({}, data, parentScope, thisScope);
-
-    if (!isObject(scope)) {
-      errMsgScopeIsNotObject(el, scopeStr, scope);
-      continue;
-    }
-    mergedScopeMap.set(el, scope);
-
-    for (const attr of el.attributes) {
-      for (const directive of directives) {
-        if (!directive.matcher(attr)) continue;
-        const cb = directive.mounted(el, attr.name, attr.value, scope);
-        if (cb) {
-          createEffect(cb, directive.name);
-        }
-        break;
-      }
-      if (!el.parentElement) {
-        // El may have been removed in directive
-        mergedScopeMap.delete(el);
-        break;
-      }
-    }
-  }
-
-  return () => {
-    for (const d of destroyArr) {
-      d();
-    }
-  };
+  const components = options.components ?? {};
+  setupComponents(components);
+  const mount = (el: HTMLElement) => bindDirectives(el, data, directives);
+  const destroy = mount(el);
+  destroyMap.set(el, destroy);
 }

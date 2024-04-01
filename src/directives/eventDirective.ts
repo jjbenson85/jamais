@@ -7,9 +7,15 @@ export const eventDirective: Directive = {
   mounted: (el, attrName, attrValue, data) => {
     const eventName = attrName.slice(1);
     el.addEventListener(eventName, (event) => {
-      const expr = evaluateExpression(attrValue, { ...data, $event: event });
-      // call action if it hasn't already been called in expression
-      expr?.();
+      const expr = evaluateExpression(
+        attrValue,
+        { ...data, $event: event },
+        `@${eventName}`,
+      );
+      if (typeof expr === "function") {
+        // call action if it hasn't already been called in expression
+        expr();
+      }
     });
     return undefined;
   },

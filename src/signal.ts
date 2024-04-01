@@ -31,8 +31,7 @@ export class Signal<T> {
   };
 
   set = (newValue: T, msg?: string) => {
-    DEBUG.value &&
-      console.info({ setter: msg, is_changed: newValue !== this.value });
+    DEBUG.value && console.info("set", { msg, newValue }, this);
 
     if (newValue === this.value) return;
 
@@ -70,9 +69,9 @@ export class Effect {
 
   run = () => {
     const { effect, sync, msg } = this;
+    DEBUG.value && console.info("run", this);
     switch (sync) {
       case "sync": {
-        DEBUG.value && console.info("call", { sync, msg });
         effect();
         return;
       }
@@ -90,7 +89,6 @@ export class Effect {
 
   destroy = () => {
     for (const signal of this.subscriptions) {
-      console.log("unsub", this, { signal });
       signal.removeSubscriber(this);
     }
   };

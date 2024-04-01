@@ -8,6 +8,7 @@ export type Directive = {
     attrName: string,
     attrValue: string,
     data: Record<string, unknown>,
+    directives: Directive[],
   ) => Cb | undefined;
   destroyed?: (el: HTMLElement) => void;
 };

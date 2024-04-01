@@ -6,7 +6,12 @@ import { setup } from "../setup";
 import { wait } from "./utils";
 import { signal } from "../signal";
 
-global.document = new JSDOM().window.document;
+globalThis.window = new JSDOM("<!doctype html><html><body></body></html>")
+  .window as unknown as Window & typeof globalThis;
+globalThis.document = globalThis.window.document;
+globalThis.navigator = globalThis.window.navigator;
+globalThis.HTMLElement = globalThis.window.HTMLElement;
+
 describe("setup", () => {
   it("should create a setup", async () => {
     const message = signal("test");

@@ -6,7 +6,7 @@ export const modelDirective: Directive = {
   name: "modelDirective",
   matcher: (attr: Attr) => attr.name === ":data-model",
   mounted: (el, attrName, attrValue, data) => {
-    const signal = evaluateExpression(attrValue, data);
+    const signal = evaluateExpression(attrValue, data, attrName);
 
     if (!isSignal(signal)) {
       let str = `Can only bind signals with ${attrName}.\n\n${el.outerHTML}`;
@@ -21,12 +21,15 @@ export const modelDirective: Directive = {
     }
 
     const toOriginalValue =
-      signal.get() === "number"
+      typeof signal.get() === "number"
         ? (value: string) => Number(value)
         : (value: string) => value;
 
     el.addEventListener("input", (e: Event) => {
-      signal.set(toOriginalValue((e.target as HTMLInputElement).value));
+      signal.set(
+        toOriginalValue((e.target as HTMLInputElement).value),
+        "modelDirective",
+      );
     });
 
     return () => {

@@ -1,21 +1,69 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <link rel="icon" type="image/svg+xml" href="/vite.svg" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <script type="module" src="/src/main.ts"></script>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <title>Jamais</title>
-  </head>
 
-  <body>
-    <div id="app" class="p-16 min-h-screen bg-stone-800 text-white">
-      <input :data-model="count" type="range" min="0" max="1000">
-      <h1 :data-text="count.get()" class="text-4xl"></h1>
+<head>
+  <meta charset="UTF-8" />
+  <link rel="icon" type="image/svg+xml" href="/vite.svg" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <script type="module" src="/src/main.ts"></script>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <title>Jamais</title>
+</head>
+
+<body>
+  <div id="app" class="p-16 min-h-screen bg-stone-800 text-white">
+  <!-- <p is="my-p-tag" data-for="[key, column] in columns.get()" :message="signal(column)"></p> -->
+  <!-- <p is="my-p-tag" :message="specialMessage"></p> -->
+  <input :data-model="specialMessage" type="text" class="text-black" />
+  <!-- <p is="my-p-tag"></p> -->
+  <my-component :message="specialMessage"></my-component>
+  <input :data-model="count" type="range" min="0" max="1000">
+  <h1 :data-text="count" class="text-4xl"></h1>
+  <div :data-for="i in specialMessage.get().split('')" :data-text="i">TEST</div>
+  <my-table :columns="columns" :items="items"></my-table>
+  <!-- <my-component color="red" size="100">
+                                                  <div slot="bottom">FOOT</div>
+                                                  <div slot="top">HEAD</div>
+                                                  <div>
+                                                    BODY
+                                                  </div>
+                                                </my-component>
+                                                
+                                                <my-component color="blue" size="80">
+                                                  <div slot="top">James</div>
+                                                  <div>
+                                                    John
+                                                  </div>
+                                                  <div slot="bottom">Benson</div>
+                                                </my-component>
+                                                 -->
+  <!-- <test-component-2></test-component-2>
+                                                  
+                                                
+                                                <my-brand-new-elem>JAMES</my-brand-new-elem> -->
+  <!-- <input :data-model="count" type="range" min="0" max="1000">
+                                              <h1 :data-text="count.get()" class="text-4xl"></h1> -->
+  <!-- 
       <button @click="increment(1)" class="px-2 py-2 m-2 rounded bg-blue-600 hover:bg-blue-800 transition">increment</button>
       <button @click="decrement(1)" class="px-2 py-2 m-2 rounded bg-blue-600 hover:bg-blue-800 transition">decrement</button>
-            <hr />
+      <my-table :columns="columns" :items="items"></my-table>
+      
+      <hr>
+      
+      <button @click="setColor('green')">Green</button>
+      <button @click="setColor('red')">Red</button>
+      <button @click="setColor('blue')">Blue</button>
+      <div slot="top" :data-text="specialColor.get()">James</div>
+      <test-component :color="specialColor.get()">
+        <div slot="top" :data-text="specialColor.get()">James</div>
+        <div>
+          John
+        </div>
+        <div slot="bottom">Benson</div>
+      </test-component>
+      -->
+      
+      <!--         <hr />
       <table 
       class="w-48"
       :data-scope="{}"
@@ -33,7 +81,7 @@
             :class="[item.class,{'bg-green-500': $index === 0, 'bg-red-600': $index === items.get().length-1}]" 
             class="border-b border-gray-400/20"
           >
-            <td  :data-for="[index, column] in columns" :data-text="count.get()" :data-key="column" class="p-2 text-center" ></td>
+            <td :data-for="[colIndex, column] in columns" :data-text="$index" :data-key="column" class="p-2 text-center"></td>
             <td>
               <div class="flex">
                 <button @click="raise(index)" class="px-2 py-2 m-2 rounded bg-blue-600 hover:bg-blue-800 transition">raise</button>
@@ -42,11 +90,26 @@
             </td>
           </tr>
         </tbody>
-      </table>
-    </main>
-    </div>
-    <!-- prettier-ignore biome-ignore -->
-    <!-- <div class="here" :data-scope="{newCount: signal(0)}">
+      </table> -->
+      <hr />
+      <!-- <button @click="toggleShowIf()" class="px-2 py-2 m-2 rounded bg-blue-600 hover:bg-blue-800 transition ">
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      TOGGLE IF
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    </button>
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    <button @click="toggleShowIfElse()" class="px-2 py-2 m-2 rounded bg-blue-600 hover:bg-blue-800 transition">
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      TOGGLE IF ELSE
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    </button> -->
+      
+      <!-- <article>
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        <div :data-if="showIf.get()">IF</div>
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        <! -- <div :data-else-if="showIfElse2(count.get())">IF ELSE 2</div> -->
+      <!-- <my-component color="red" size="lg" :data-if="showIf.get()">IF</my-component> - ->
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        <div :data-else-if="showIfElse.get()">IF ELSE 1</div>
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        <div :data-else-if="showIfElse.get()">IF ELSE 3</div>
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        <div :data-else>ELSE</div>
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      </article> -->
+      <!-- </div> -->
+      <!-- prettier-ignore biome-ignore -->
+      <!-- <div class="here" :data-scope="{newCount: signal(0)}">
         <div :data-scope="{doubleCount: computed(()=>newCount.get()*2)}">
           <h1 class="text-4xl" :data-text="newCount.get()"></h1>
           <h1 class="text-4xl" :data-text="doubleCount.get()"></h1>
@@ -56,25 +119,12 @@
             class="px-2 py-2 m-2 rounded bg-blue-600 hover:bg-blue-800 transition">decrement</button>
         </div>
       </div> -->
-    <!-- <h1 class="text-4xl" :data-text="aFunction(count.get())"></h1> -->
-    <!-- <button @click="increment(10)" class="px-2 py-2 m-2 rounded bg-blue-600 hover:bg-blue-800 transition">increment</button>
+  <!-- <h1 class="text-4xl" :data-text="aFunction(count.get())"></h1> -->
+  <!-- <button @click="increment(10)" class="px-2 py-2 m-2 rounded bg-blue-600 hover:bg-blue-800 transition">increment</button>
                                                                                                                                     <button @click="decrement(10)" class="px-2 py-2 m-2 rounded bg-blue-600 hover:bg-blue-800 transition">decrement</button>
                                                                                                                                     <div :class="specialClass.get()" class="text-lg px-8 rounded mx-2 transition" :data-text="count.get()">0</div>
                                                                                                                                     <input :data-model="count" type="range" min="-100" max="100" />
-      <hr />
-        <button @click="toggleShowIf()" class="px-2 py-2 m-2 rounded bg-blue-600 hover:bg-blue-800 transition ">
-          TOGGLE IF
-        </button>
-      <button @click="toggleShowIfElse()" class="px-2 py-2 m-2 rounded bg-blue-600 hover:bg-blue-800 transition">
-        TOGGLE IF ELSE
-      </button>
-      <article>
-        <div :data-if="showIfElse2(count.get())">IF</div>
-        <div :data-else-if="showIfElse.get()">IF ELSE 1</div>
-        <div :data-else-if="showIf.get()">IF ELSE 2</div>
-        <div :data-else-if="showIfElse.get()">IF ELSE 3</div>
-        <div :data-else>ELSE</div>
-      </article>
+    
       <div
       :aria-label="count.get()"
         class="text-lg px-8 rounded m-4"
@@ -95,8 +145,9 @@
       </div>
       </div> -->
 
-    <!-- <div :data-for="item in items">
+  <!-- <div :data-for="item in items">
 
     </div> -->
-  </body>
+</body>
+
 </html>
