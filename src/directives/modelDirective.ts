@@ -14,9 +14,9 @@ export const modelDirective: Directive = {
       if (suffix) {
         str += `\n\nTry removing ${suffix} on ${attrValue}\n\n`;
       } else {
-        str += `\nn${attrValue} is not a signal\n`;
+        str += `\n${attrValue} is not a signal`;
       }
-      console.error(Error(str));
+      console.error(str);
       return;
     }
 
