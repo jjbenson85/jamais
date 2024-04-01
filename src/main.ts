@@ -100,13 +100,14 @@ const items = computedSync(() => {
 // ]);
 
 const specialMessage = signal("Hello World");
-
+const deep = signal({ message: "TEST" });
 console.time();
 setup(
   {
     specialMessage,
     columns,
     items,
+    deep,
     // raise,
     // lower,
     // // caseValue,

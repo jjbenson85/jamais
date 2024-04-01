@@ -12,15 +12,16 @@
 
 <body>
   <div id="app" class="p-16 min-h-screen bg-stone-800 text-white">
+    <div :data-text="deep.get().message"></div>
   <!-- <p is="my-p-tag" data-for="[key, column] in columns.get()" :message="signal(column)"></p> -->
   <!-- <p is="my-p-tag" :message="specialMessage"></p> -->
-  <input :data-model="specialMessage" type="text" class="text-black" />
+  <!-- <input :data-model="specialMessage" type="text" class="text-black" /> -->
   <!-- <p is="my-p-tag"></p> -->
-  <my-component :message="specialMessage"></my-component>
+  <!-- <my-component :message="specialMessage"></my-component>
   <input :data-model="count" type="range" min="0" max="1000">
   <h1 :data-text="count" class="text-4xl"></h1>
   <div :data-for="i in specialMessage.get().split('')" :data-text="i">TEST</div>
-  <my-table :columns="columns" :items="items"></my-table>
+  <my-table :columns="columns" :items="items"></my-table> -->
   <!-- <my-component color="red" size="100">
                                                   <div slot="bottom">FOOT</div>
                                                   <div slot="top">HEAD</div>

@@ -1,6 +1,7 @@
 import { Directive } from "../types";
 import { evaluateExpression } from "../helpers/evaluateExpression";
 import { isSignal } from "../signal";
+import { getValue } from "../helpers/getValueFromUnknown";
 
 const getSiblings = (el: Element): Element[] => {
   const els: Element[] = [];
@@ -71,12 +72,10 @@ export const switchDirective: Directive = {
         return evaluateExpression(attrValue, data, ":data-case");
       });
 
-      const unknownValue = evaluateExpression(attrValue, data, ":data-switch");
+      const _unknownValue = evaluateExpression(attrValue, data, ":data-switch");
+      const unknownValue = getValue(_unknownValue);
       const values = [...staticValues, ...dynamicValues, true];
-
-      if (isSignal(unknownValue)) {
-        console.error(createErrStr(el, ":data-switch").trim());
-      }
+      
 
       if (values.some(isSignal)) {
         values.forEach((_value, i) => {
