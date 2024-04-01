@@ -25,7 +25,7 @@ describe("ifDirective", () => {
     if (!el || !attr) throw new Error("No element found");
 
     const data = { show: signal(true) };
-    const cb = ifDirective.mounted(el, attr.name, attr.value, data, []);
+    const cb = ifDirective.mounted(el, attr.name, attr.value, data);
     cb && createEffect(cb);
 
     expect(el.style.display).toBe("unset");
@@ -42,7 +42,7 @@ describe("ifDirective", () => {
     const show = signal(true);
 
     const data = { show };
-    const cb = ifDirective.mounted(el, attr.name, attr.value, data, []);
+    const cb = ifDirective.mounted(el, attr.name, attr.value, data);
     cb && createEffect(cb, "ifDirective");
 
     show.set(false);
@@ -64,7 +64,7 @@ describe("ifDirective", () => {
     const show = signal(true);
 
     const data = { show };
-    const cb = ifDirective.mounted(el, attr.name, attr.value, data, []);
+    const cb = ifDirective.mounted(el, attr.name, attr.value, data);
     cb && createEffect(cb, "ifDirective");
 
     expect((parent.firstElementChild as HTMLElement).style.display).toBe(
@@ -87,7 +87,7 @@ describe("ifDirective", () => {
     const show = signal(false);
 
     const data = { show };
-    const cb = ifDirective.mounted(el, attr.name, attr.value, data, []);
+    const cb = ifDirective.mounted(el, attr.name, attr.value, data);
     cb && createEffect(cb, "ifDirective");
 
     expect((parent.firstElementChild as HTMLElement).style.display).toBe(
@@ -112,7 +112,7 @@ describe("ifDirective", () => {
     const show = signal(true);
 
     const data = { show };
-    const cb = ifDirective.mounted(el, attr.name, attr.value, data, []);
+    const cb = ifDirective.mounted(el, attr.name, attr.value, data);
     cb && createEffect(cb, "ifDirective");
 
     show.set(false);
@@ -139,7 +139,7 @@ describe("ifDirective", () => {
     const show = signal(false);
 
     const data = { show };
-    const cb = ifDirective.mounted(el, attr.name, attr.value, data, []);
+    const cb = ifDirective.mounted(el, attr.name, attr.value, data);
     cb && createEffect(cb, "ifDirective");
 
     show.set(true);
@@ -166,7 +166,7 @@ describe("ifDirective", () => {
     const showElseIf = signal(true);
 
     const data = { show, showElseIf };
-    const cb = ifDirective.mounted(el, attr.name, attr.value, data, []);
+    const cb = ifDirective.mounted(el, attr.name, attr.value, data);
     cb && createEffect(cb, "ifDirective");
 
     show.set(false);
@@ -194,7 +194,7 @@ describe("ifDirective", () => {
     const showElseIf = signal(true);
 
     const data = { show, showElseIf };
-    const cb = ifDirective.mounted(el, attr.name, attr.value, data, []);
+    const cb = ifDirective.mounted(el, attr.name, attr.value, data);
     cb && createEffect(cb, "ifDirective");
 
     showElseIf.set(false);
@@ -226,7 +226,7 @@ describe("ifDirective", () => {
     const showElseIf2 = signal(true);
 
     const data = { show, showElseIf, showElseIf2 };
-    const cb = ifDirective.mounted(el, attr.name, attr.value, data, []);
+    const cb = ifDirective.mounted(el, attr.name, attr.value, data);
     cb && createEffect(cb, "ifDirective");
 
     show.set(false);
