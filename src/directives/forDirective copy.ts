@@ -28,11 +28,11 @@ const removeEl = (el?: HTMLElement) => {
 
 export const forDirective: Directive = {
   name: "forDirective",
-  matcher: (attr: Attr) => attr.name === ":data-for",
+  matcher: (attr: Attr) => attr.name === "j-for",
   mounted: (el, _attrName, attrValue, data) => {
     if (!el.hasAttribute(":data-key")) {
       console.warn(
-        `:data-for must have a :data-key attribute\n\n${el.outerHTML}`,
+        `j-for must have a :data-key attribute\n\n${el.outerHTML}`,
       );
     }
 
@@ -54,16 +54,16 @@ export const forDirective: Directive = {
       itemName = _itemName;
     }
 
-    el.removeAttribute(":data-for");
+    el.removeAttribute("j-for");
 
     if (!el.parentElement) {
       console.error(
-        `:data-for must be a child of an element\n\n${el.outerHTML}`,
+        `j-for must be a child of an element\n\n${el.outerHTML}`,
       );
       return;
     }
     const getItems = () => {
-      const unknownValue = evaluateExpression(itemsName, data, ":data-for");
+      const unknownValue = evaluateExpression(itemsName, data, "j-for");
       const value = getValue(unknownValue);
 
       if (typeof value === "number") {
@@ -71,7 +71,7 @@ export const forDirective: Directive = {
       }
 
       if (typeof value !== "object") {
-        console.error(`:data-for expects an object, array or a number or a function that returns an object, array or number\n\n${
+        console.error(`j-for expects an object, array or a number or a function that returns an object, array or number\n\n${
           el.outerHTML
         }
 

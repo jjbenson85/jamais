@@ -20,42 +20,42 @@ const createErrStr = (el: Element, attrName: string) => {
 };
 
 const exampleString =
-  'eg:\n\n<div>\n\t<div :data-switch="greeting.get()" data-case="hello">Hello!</div>\n\t<div data-case="hi">Hi</div>\n\t<div :data-case="custom.get()" :data-text="custom.get()"></div>\n\t<div data-default>Howdy</div>\n</div>';
+  'eg:\n\n<div>\n\t<div j-switch="greeting.get()" j-case="hello">Hello!</div>\n\t<div j-case="hi">Hi</div>\n\t<div :j-case="custom.get()" j-text="custom.get()"></div>\n\t<div j-default>Howdy</div>\n</div>';
 
 export const switchDirective: Directive = {
   name: "switchDirective",
   matcher: (attr: Attr) =>
-    [":data-switch", "data-case", ":data-case", "data-default"].includes(
+    ["j-switch", "j-case", ":j-case", "j-default"].includes(
       attr.name,
     ),
   mounted: (el, attrName, attrValue, data) => {
     // skip theses as they are handled by the switch
-    if (["data-case", ":data-case", "data-default"].includes(attrName)) {
+    if (["j-case", ":j-case", "j-default"].includes(attrName)) {
       if (
         !(
-          el.hasAttribute(":data-switch") ||
-          el.previousElementSibling?.getAttribute(":data-switch") ||
-          el.previousElementSibling?.getAttribute(":data-case") ||
-          el.previousElementSibling?.getAttribute("data-case")
+          el.hasAttribute("j-switch") ||
+          el.previousElementSibling?.getAttribute("j-switch") ||
+          el.previousElementSibling?.getAttribute(":j-case") ||
+          el.previousElementSibling?.getAttribute("j-case")
         )
       ) {
         console.error(
-          `${attrName} must directly follow an element with :data-switch or :data-case.\n\nTry placing\n\n${el.outerHTML}\n\ndirectly after the :data-switch or :data-case.\n\n${exampleString}`,
+          `${attrName} must directly follow an element with j-switch or :j-case.\n\nTry placing\n\n${el.outerHTML}\n\ndirectly after the j-switch or :j-case.\n\n${exampleString}`,
         );
       }
       return;
     }
 
-    if (!el.hasAttribute(":data-case") && !el.hasAttribute("data-case")) {
+    if (!el.hasAttribute(":j-case") && !el.hasAttribute("j-case")) {
       console.error(
-        `:data-switch expects a data-case attribute\n\n${el.outerHTML}\n\n${exampleString}`,
+        `j-switch expects a j-case attribute\n\n${el.outerHTML}\n\n${exampleString}`,
       );
       return;
     }
     const siblings = [el, ...getSiblings(el)];
-    const staticCases = siblings.filter((e) => e.hasAttribute("data-case"));
-    const dynmaicCases = siblings.filter((e) => e.hasAttribute(":data-case"));
-    const defaultCase = siblings.find((e) => e.hasAttribute("data-default"));
+    const staticCases = siblings.filter((e) => e.hasAttribute("j-case"));
+    const dynmaicCases = siblings.filter((e) => e.hasAttribute(":j-case"));
+    const defaultCase = siblings.find((e) => e.hasAttribute("j-default"));
 
     const cases = [...staticCases, ...dynmaicCases, defaultCase].filter(
       (e): e is Element => Boolean(e),
@@ -63,16 +63,16 @@ export const switchDirective: Directive = {
 
     const effect = () => {
       const staticValues = staticCases.map((el) =>
-        el.getAttribute("data-case"),
+        el.getAttribute("j-case"),
       );
 
       const dynamicValues = dynmaicCases.map((el) => {
-        const attrValue = el.getAttribute(":data-case");
+        const attrValue = el.getAttribute(":j-case");
         if (!attrValue) return undefined;
-        return evaluateExpression(attrValue, data, ":data-case");
+        return evaluateExpression(attrValue, data, ":j-case");
       });
 
-      const _unknownValue = evaluateExpression(attrValue, data, ":data-switch");
+      const _unknownValue = evaluateExpression(attrValue, data, "j-switch");
       const unknownValue = getValue(_unknownValue);
       const values = [...staticValues, ...dynamicValues, true];
 
@@ -81,7 +81,7 @@ export const switchDirective: Directive = {
         values.forEach((_value, i) => {
           if (!isSignal(_value)) return;
           const el = cases[i];
-          el && console.error(createErrStr(el, ":data-case"));
+          el && console.error(createErrStr(el, ":j-case"));
         });
       }
 

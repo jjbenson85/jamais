@@ -13,9 +13,9 @@ const getSiblings = (el: HTMLElement): HTMLElement[] => {
 };
 
 const getClosestIf = (el: HTMLElement) => {
-  const closestIf = el.parentElement?.querySelector("[\\:data-if]");
+  const closestIf = el.parentElement?.querySelector("[\\j-if]");
   const closestElseIf = [
-    ...(el.parentElement?.querySelectorAll("[\\:data-else-if]") ?? []),
+    ...(el.parentElement?.querySelectorAll("[j-else-if]") ?? []),
   ].at(-1);
   return closestElseIf || closestIf;
 };
@@ -24,19 +24,19 @@ export const ifDirective: Directive = {
   name: "ifDirective",
   // Match with if-else and else so they are not caught by other directives
   matcher: (attr: Attr) =>
-    [":data-if", ":data-else-if", ":data-else"].includes(attr.name),
+    ["j-if", "j-else-if", "j-else"].includes(attr.name),
 
   mounted: (el, attrName, attrValue, data) => {
     // skip the else and else-if as they are handled by the if
-    if (attrName === ":data-else" || attrName === ":data-else-if") {
+    if (attrName === "j-else" || attrName === "j-else-if") {
       // TODO: LINTER
       // if (
       //   !(
-      //     el.previousSibling?.hasAttribute(":data-if") ||
-      //     el.previousSibling?.hasAttribute(":data-else-if")
+      //     el.previousSibling?.hasAttribute("j-if") ||
+      //     el.previousSibling?.hasAttribute("j-else-if")
       //   )
       // ) {
-      //   const str = `${attrName} must directly follow an element with data-if or data-else-if.`;
+      //   const str = `${attrName} must directly follow an element with j-if or j-else-if.`;
       //   console.error(str);
 
       //   const closest = getClosestIf(el);
@@ -51,25 +51,25 @@ export const ifDirective: Directive = {
 
     // LINTER
     if (!attrValue) {
-      console.error("data-if expects a value");
+      console.error("j-if expects a value");
       return;
     }
 
     const siblings = getSiblings(el);
-    const elses = siblings.filter((e) => e.hasAttribute(":data-else-if"));
-    const elseEl = siblings.find((e) => e.hasAttribute(":data-else"));
+    const elses = siblings.filter((e) => e.hasAttribute("j-else-if"));
+    const elseEl = siblings.find((e) => e.hasAttribute("j-else"));
     const els = [el, ...elses, elseEl].filter((e): e is HTMLElement =>
       Boolean(e),
     );
-    const comments = els.map((e) => document.createComment('data-if'));
+    const comments = els.map((e) => document.createComment('j-if'));
 
-    const elseAttrs = elses.map((e) => e.getAttribute(":data-else-if"));
+    const elseAttrs = elses.map((e) => e.getAttribute("j-else-if"));
 
     const parentEl = el.parentElement;
 
     // Should always be true
     if (!parentEl) {
-      console.warn("data-if must be a child of an element");
+      console.warn("j-if must be a child of an element");
       return;
     }
 

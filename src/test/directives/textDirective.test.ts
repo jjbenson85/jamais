@@ -1,14 +1,14 @@
-import "../extendMatchers";
+import "@/test/extendMatchers";
 
 import { JSDOM } from "jsdom";
 import { describe, expect, it } from "vitest";
-import { textDirective } from "../../directives/textDirective";
-import { createEffect, signal } from "../../signal";
-import { wait } from "../utils";
+import { textDirective } from "@/directives/textDirective";
+import { createEffect, signal } from "@/jamais";
+import { wait } from "@/test/utils";
 
 describe("textDirective", () => {
-  it("should match the data-text attribute", () => {
-    const el = JSDOM.fragment('<div :data-text="message"></div>')
+  it("should match the j-text attribute", () => {
+    const el = JSDOM.fragment('<div j-text="message"></div>')
       .firstChild as HTMLElement;
 
     const attr = el?.attributes.item(0);
@@ -17,9 +17,9 @@ describe("textDirective", () => {
 
     expect(textDirective.matcher(attr)).toBe(true);
   });
-  it("should apply this initial data-text", async () => {
+  it("should apply this initial j-text", async () => {
     const message = signal("test");
-    const el = JSDOM.fragment('<div :data-text="message"></div>')
+    const el = JSDOM.fragment('<div j-text="message"></div>')
       .firstChild as HTMLElement;
 
     const attr = el?.attributes.item(0);
@@ -28,15 +28,15 @@ describe("textDirective", () => {
 
     const effect = textDirective.mounted(el, attr?.name, attr?.value, {
       message,
-    });
+    },{});
     effect && createEffect(effect);
 
     expect(el?.textContent).toBe("test");
   });
 
-  it("should update data-text when a ref value updates", async () => {
+  it("should update j-text when a ref value updates", async () => {
     const message = signal("test");
-    const el = JSDOM.fragment('<div :data-text="message"></div>')
+    const el = JSDOM.fragment('<div j-text="message"></div>')
       .firstChild as HTMLElement;
 
     const attr = el?.attributes.item(0);
@@ -45,7 +45,7 @@ describe("textDirective", () => {
 
     const effect = textDirective.mounted(el, attr?.name, attr?.value, {
       message,
-    });
+    },{});
     effect && createEffect(effect);
 
     message.set("new value");
@@ -55,9 +55,9 @@ describe("textDirective", () => {
     expect(el?.textContent).toBe("new value");
   });
 
-  it("should apply the initial deep data-text", () => {
+  it("should apply the initial deep j-text", () => {
     const message = signal({ deep: "test" });
-    const el = JSDOM.fragment('<div :data-text="message.get().deep"></div>')
+    const el = JSDOM.fragment('<div j-text="message.get().deep"></div>')
       .firstChild as HTMLElement;
 
     const attr = el?.attributes.item(0);
@@ -66,15 +66,15 @@ describe("textDirective", () => {
 
     const effect = textDirective.mounted(el, attr?.name, attr?.value, {
       message,
-    });
+    },{});
     effect && createEffect(effect);
 
     expect(el?.textContent).toBe("test");
   });
 
-  it("should update deep data-text when a ref value updates", async () => {
+  it("should update deep j-text when a ref value updates", async () => {
     const message = signal({ deep: "test" });
-    const el = JSDOM.fragment('<div :data-text="message.get().deep"></div>')
+    const el = JSDOM.fragment('<div j-text="message.get().deep"></div>')
       .firstChild as HTMLElement;
 
     const attr = el?.attributes.item(0);
@@ -83,7 +83,7 @@ describe("textDirective", () => {
 
     const effect = textDirective.mounted(el, attr?.name, attr?.value, {
       message,
-    });
+    },{});
     effect && createEffect(effect);
 
     message.set({ deep: "new value" });
@@ -96,7 +96,7 @@ describe("textDirective", () => {
   it("should work with other directives", () => {
     const message = signal("test");
     const el = JSDOM.fragment(
-      '<div :data-text="message" :class="message"></div>',
+      '<div j-text="message" :class="message"></div>',
     ).firstChild as HTMLElement;
 
     const attr = el?.attributes.item(0);
@@ -105,7 +105,7 @@ describe("textDirective", () => {
 
     const effect = textDirective.mounted(el, attr?.name, attr?.value, {
       message,
-    });
+    },{});
     effect && createEffect(effect);
 
     expect(el?.textContent).toBe("test");

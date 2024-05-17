@@ -1,10 +1,10 @@
-import "../extendMatchers";
+import "@/test/extendMatchers";
 
 import { JSDOM } from "jsdom";
 import { describe, expect, it } from "vitest";
-import { modelDirective } from "../../directives/modelDirective";
-import { spyConsoleError, wait } from "../utils";
-import { createEffect, signal } from "../../signal";
+import { modelDirective } from "@/directives/modelDirective";
+import { spyConsoleError, wait } from "@/test/utils";
+import { createEffect, signal } from "@/signal";
 
 const spyConsole = spyConsoleError();
 

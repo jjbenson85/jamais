@@ -28,7 +28,7 @@ type Opts<
 
 export type ComponentConstrucor = (
   el: HTMLElement,
-  scope: Record<string, any>,
+  scope: Record<string, unknown>,
   components: Record<string, ComponentConstrucor>,
 ) => HTMLElement;
 

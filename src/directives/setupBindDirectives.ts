@@ -31,11 +31,11 @@ export function setupBindDirectives(
   data: Record<string, unknown>,
   components: Record<string, ComponentConstrucor>,
 ) {
-  // Don't process children of elements with :data-for
+  // Don't process children of elements with j-for
   // This is because the forDirective will handle the children
   const allElems = [
     el,
-    ...(el.querySelectorAll<HTMLElement>("*:not([\\:data-for] *)") ?? []),
+    ...(el.querySelectorAll<HTMLElement>("*:not([j-for] *)") ?? []),
   ].filter((e) => e.attributes.length > 0);
 
   const errMsgScopeIsNotObject = (
@@ -53,15 +53,15 @@ export function setupBindDirectives(
   // Create the scope map for all elements
   for (let el of allElems) {
     const parentWithScope = el.parentElement?.closest(
-      "[\\:data-scope]",
+      "[j-scope]",
     ) as HTMLElement;
 
     const parentScope =
       (parentWithScope && mergedScopeMap.get(parentWithScope)) ?? data;
 
-    const scopeStr = el.getAttribute(":data-scope");
+    const scopeStr = el.getAttribute("j-scope");
     const thisScope = scopeStr
-      ? evaluateExpression(scopeStr, parentScope, ":data-scope")
+      ? evaluateExpression(scopeStr, parentScope, "j-scope")
       : undefined;
 
     // Might not need to merge in data here

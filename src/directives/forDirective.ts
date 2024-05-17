@@ -6,14 +6,8 @@ import { Directive } from "./types";
 
 export const forDirective: Directive = {
   name: "forDirective",
-  matcher: (attr: Attr) => attr.name === ":data-for",
+  matcher: (attr: Attr) => attr.name === "j-for",
   mounted: (el, _attrName, attrValue, data, components) => {
-    if (!el.hasAttribute(":data-key")) {
-      console.warn(
-        `:data-for must have a :data-key attribute\n\n${el.outerHTML}`,
-      );
-    }
-
     const [_itemName, itemsName] = attrValue.split(" in ").map((s) => s.trim());
 
     const useEntries = _itemName.match(/^\[.*\]$/g)?.length;
@@ -32,16 +26,16 @@ export const forDirective: Directive = {
       itemName = _itemName;
     }
 
-    el.removeAttribute(":data-for");
+    el.removeAttribute("j-for");
 
     if (!el.parentElement) {
       console.error(
-        `:data-for must be a child of an element\n\n${el.outerHTML}`,
+        `j-for must be a child of an element\n\n${el.outerHTML}`,
       );
       return;
     }
     const getItems = () => {
-      const unknownValue = evaluateExpression(itemsName, data, ":data-for");
+      const unknownValue = evaluateExpression(itemsName, data, "j-for");
       const value = getValue(unknownValue);
 
       if (typeof value === "number") {
@@ -49,7 +43,7 @@ export const forDirective: Directive = {
       }
 
       if (typeof value !== "object") {
-        console.error(`:data-for expects an object, array or a number or a function that returns an object, array or number\n\n${el.outerHTML
+        console.error(`j-for expects an object, array or a number or a function that returns an object, array or number\n\n${el.outerHTML
           }
 
         ${itemsName} is of type ${typeof value}

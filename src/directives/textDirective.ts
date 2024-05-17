@@ -4,7 +4,7 @@ import { getValue } from "../helpers/getValueFromUnknown";
 
 export const textDirective: Directive = {
   name: "textDirective",
-  matcher: (attr: Attr) => attr.name === ":data-text",
+  matcher: (attr: Attr) => attr.name === "j-text",
   mounted: (el, _attrName, attrValue, data) => {
     return () => {
       const unknownValue = evaluateExpression(attrValue, data, el.outerHTML);

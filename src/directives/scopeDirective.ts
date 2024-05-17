@@ -3,7 +3,7 @@ import { Directive } from "./types";
 
 export const scopeDirective: Directive = {
   name: "scopeDirective",
-  matcher: (attr: Attr) => attr.name === ":data-scope",
+  matcher: (attr: Attr) => attr.name === "j-scope",
   mounted: (_el, _attrName, attrValue, data) => {
     return () => {
       // Add warning here

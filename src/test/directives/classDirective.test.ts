@@ -1,8 +1,8 @@
 import { JSDOM } from "jsdom";
 import { describe, expect, it } from "vitest";
-import { classDirective } from "../../directives/classDirective";
-import { createEffect, signal } from "../../signal";
-import { wait } from "../utils";
+import { classDirective } from "@/directives/classDirective";
+import { createEffect, signal } from "@/jamais";
+import { wait } from "@/test/utils";
 
 describe("classDirective", () => {
   it.each([
@@ -62,7 +62,7 @@ describe("classDirective", () => {
       const el = doc.querySelector("div");
       if (!el) throw new Error("No element found");
 
-      const effect = classDirective.mounted(el, ":class", attrValue, data);
+      const effect = classDirective.mounted(el, ":class", attrValue, data,{});
       effect && createEffect(effect);
 
       expect(el.classList).toContain(expected);
@@ -126,7 +126,7 @@ describe("classDirective", () => {
       const el = doc.querySelector("div");
       if (!el) throw new Error("No element found");
 
-      const effect = classDirective.mounted(el, ":class", attrValue, data);
+      const effect = classDirective.mounted(el, ":class", attrValue, data,{});
       effect && createEffect(effect);
 
       expect(el.classList).toContain("existing-class");
@@ -162,7 +162,7 @@ describe("classDirective", () => {
       const el = doc.querySelector("div");
       if (!el) throw new Error("No element found");
 
-      const effect = classDirective.mounted(el, ":class", attrValue, data);
+      const effect = classDirective.mounted(el, ":class", attrValue, data,{});
       effect && createEffect(effect);
 
       //@ts-ignore
