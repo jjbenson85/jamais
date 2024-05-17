@@ -38,9 +38,15 @@ describe("switchDirective", () => {
 
     if (!el || !attr) throw new Error("No element found");
 
-    const effect = switchDirective.mounted(el, attr.name, attr.value, {
-      state,
-    },{});
+    const effect = switchDirective.mounted(
+      el,
+      attr.name,
+      attr.value,
+      {
+        state,
+      },
+      {},
+    );
 
     effect && createEffect(effect);
 
@@ -70,9 +76,15 @@ describe("switchDirective", () => {
 
     if (!el || !attr) throw new Error("No element found");
 
-    const effect = switchDirective.mounted(el, attr.name, attr.value, {
-      state,
-    },{});
+    const effect = switchDirective.mounted(
+      el,
+      attr.name,
+      attr.value,
+      {
+        state,
+      },
+      {},
+    );
 
     effect && createEffect(effect);
 

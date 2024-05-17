@@ -29,9 +29,7 @@ export const forDirective: Directive = {
     el.removeAttribute("j-for");
 
     if (!el.parentElement) {
-      console.error(
-        `j-for must be a child of an element\n\n${el.outerHTML}`,
-      );
+      console.error(`j-for must be a child of an element\n\n${el.outerHTML}`);
       return;
     }
     const getItems = () => {
@@ -43,8 +41,9 @@ export const forDirective: Directive = {
       }
 
       if (typeof value !== "object") {
-        console.error(`j-for expects an object, array or a number or a function that returns an object, array or number\n\n${el.outerHTML
-          }
+        console.error(`j-for expects an object, array or a number or a function that returns an object, array or number\n\n${
+          el.outerHTML
+        }
 
         ${itemsName} is of type ${typeof value}
         `);

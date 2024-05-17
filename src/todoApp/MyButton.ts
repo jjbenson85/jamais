@@ -5,7 +5,7 @@ export const myButton = defineComponent({
   name: "myButton",
   template: `
   <button
-    :data-text="text"
+    j-text="text"
     class="hover:text-gray-800 hover:bg-white rounded border px-2 m-2 text-white bg-gray-800 transition-colors"
     :class="{
                 'pointer-events-none text-gray-400 bg-gray-700':disabled.get(),

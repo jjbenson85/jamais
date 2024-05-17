@@ -31,9 +31,7 @@ export const forDirective: Directive = {
   matcher: (attr: Attr) => attr.name === "j-for",
   mounted: (el, _attrName, attrValue, data) => {
     if (!el.hasAttribute(":data-key")) {
-      console.warn(
-        `j-for must have a :data-key attribute\n\n${el.outerHTML}`,
-      );
+      console.warn(`j-for must have a :data-key attribute\n\n${el.outerHTML}`);
     }
 
     const [_itemName, itemsName] = attrValue.split(" in ").map((s) => s.trim());
@@ -57,9 +55,7 @@ export const forDirective: Directive = {
     el.removeAttribute("j-for");
 
     if (!el.parentElement) {
-      console.error(
-        `j-for must be a child of an element\n\n${el.outerHTML}`,
-      );
+      console.error(`j-for must be a child of an element\n\n${el.outerHTML}`);
       return;
     }
     const getItems = () => {

@@ -26,9 +26,15 @@ describe("textDirective", () => {
 
     if (!el || !attr) throw new Error("No element found");
 
-    const effect = textDirective.mounted(el, attr?.name, attr?.value, {
-      message,
-    },{});
+    const effect = textDirective.mounted(
+      el,
+      attr?.name,
+      attr?.value,
+      {
+        message,
+      },
+      {},
+    );
     effect && createEffect(effect);
 
     expect(el?.textContent).toBe("test");
@@ -43,9 +49,15 @@ describe("textDirective", () => {
 
     if (!el || !attr) throw new Error("No element found");
 
-    const effect = textDirective.mounted(el, attr?.name, attr?.value, {
-      message,
-    },{});
+    const effect = textDirective.mounted(
+      el,
+      attr?.name,
+      attr?.value,
+      {
+        message,
+      },
+      {},
+    );
     effect && createEffect(effect);
 
     message.set("new value");
@@ -64,9 +76,15 @@ describe("textDirective", () => {
 
     if (!el || !attr) throw new Error("No element found");
 
-    const effect = textDirective.mounted(el, attr?.name, attr?.value, {
-      message,
-    },{});
+    const effect = textDirective.mounted(
+      el,
+      attr?.name,
+      attr?.value,
+      {
+        message,
+      },
+      {},
+    );
     effect && createEffect(effect);
 
     expect(el?.textContent).toBe("test");
@@ -81,9 +99,15 @@ describe("textDirective", () => {
 
     if (!el || !attr) throw new Error("No element found");
 
-    const effect = textDirective.mounted(el, attr?.name, attr?.value, {
-      message,
-    },{});
+    const effect = textDirective.mounted(
+      el,
+      attr?.name,
+      attr?.value,
+      {
+        message,
+      },
+      {},
+    );
     effect && createEffect(effect);
 
     message.set({ deep: "new value" });
@@ -95,17 +119,22 @@ describe("textDirective", () => {
 
   it("should work with other directives", () => {
     const message = signal("test");
-    const el = JSDOM.fragment(
-      '<div j-text="message" :class="message"></div>',
-    ).firstChild as HTMLElement;
+    const el = JSDOM.fragment('<div j-text="message" :class="message"></div>')
+      .firstChild as HTMLElement;
 
     const attr = el?.attributes.item(0);
 
     if (!el || !attr) throw new Error("No element found");
 
-    const effect = textDirective.mounted(el, attr?.name, attr?.value, {
-      message,
-    },{});
+    const effect = textDirective.mounted(
+      el,
+      attr?.name,
+      attr?.value,
+      {
+        message,
+      },
+      {},
+    );
     effect && createEffect(effect);
 
     expect(el?.textContent).toBe("test");

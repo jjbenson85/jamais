@@ -17,8 +17,7 @@ export function setup(
   },
   _document: Document = document,
 ) {
-
-  DEBUG.value = !!options.debug
+  DEBUG.value = !!options.debug;
 
   const el =
     typeof options.attach === "string"

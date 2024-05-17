@@ -75,6 +75,7 @@ export function setupBindDirectives(
 
     const tagName = el.tagName.toLowerCase();
     if (tagName in components) {
+      console.log({ tagName, el, scope, components });
       el = components[tagName](el, scope, components);
     }
 

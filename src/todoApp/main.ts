@@ -1,8 +1,10 @@
 import { computed, setup, signal } from "../jamais";
 import type { Signal } from "../jamais";
 import { myButton } from "./MyButton";
+import { todoItem } from "./TodoItem";
 
-type Todo = {
+console.log(defineComponent2)
+export type Todo = {
   message: string;
   isComplete: Signal<boolean>;
 };
@@ -76,6 +78,7 @@ setup(
     debug: false,
     components: {
       "my-button": myButton,
+      "todo-item": todoItem,
     },
   },
 );

@@ -23,8 +23,7 @@ const getClosestIf = (el: HTMLElement) => {
 export const ifDirective: Directive = {
   name: "ifDirective",
   // Match with if-else and else so they are not caught by other directives
-  matcher: (attr: Attr) =>
-    ["j-if", "j-else-if", "j-else"].includes(attr.name),
+  matcher: (attr: Attr) => ["j-if", "j-else-if", "j-else"].includes(attr.name),
 
   mounted: (el, attrName, attrValue, data) => {
     // skip the else and else-if as they are handled by the if
@@ -61,7 +60,7 @@ export const ifDirective: Directive = {
     const els = [el, ...elses, elseEl].filter((e): e is HTMLElement =>
       Boolean(e),
     );
-    const comments = els.map((e) => document.createComment('j-if'));
+    const comments = els.map((e) => document.createComment("j-if"));
 
     const elseAttrs = elses.map((e) => e.getAttribute("j-else-if"));
 

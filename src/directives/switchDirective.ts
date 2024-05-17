@@ -25,9 +25,7 @@ const exampleString =
 export const switchDirective: Directive = {
   name: "switchDirective",
   matcher: (attr: Attr) =>
-    ["j-switch", "j-case", ":j-case", "j-default"].includes(
-      attr.name,
-    ),
+    ["j-switch", "j-case", ":j-case", "j-default"].includes(attr.name),
   mounted: (el, attrName, attrValue, data) => {
     // skip theses as they are handled by the switch
     if (["j-case", ":j-case", "j-default"].includes(attrName)) {
@@ -62,9 +60,7 @@ export const switchDirective: Directive = {
     );
 
     const effect = () => {
-      const staticValues = staticCases.map((el) =>
-        el.getAttribute("j-case"),
-      );
+      const staticValues = staticCases.map((el) => el.getAttribute("j-case"));
 
       const dynamicValues = dynmaicCases.map((el) => {
         const attrValue = el.getAttribute(":j-case");
@@ -75,7 +71,6 @@ export const switchDirective: Directive = {
       const _unknownValue = evaluateExpression(attrValue, data, "j-switch");
       const unknownValue = getValue(_unknownValue);
       const values = [...staticValues, ...dynamicValues, true];
-
 
       if (values.some(isSignal)) {
         values.forEach((_value, i) => {

@@ -26,7 +26,7 @@ describe("forDirective", () => {
     if (!parent) throw new Error("No parent found");
 
     const data = { items: ["a", "b", "c"] };
-    const cb = forDirective.mounted(el, "j-for", "item in items", data,{});
+    const cb = forDirective.mounted(el, "j-for", "item in items", data, {});
     cb && createEffect(cb);
 
     const snapshot = `
