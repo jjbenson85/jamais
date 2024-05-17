@@ -16,7 +16,7 @@ describe("ifDirective", () => {
     expect(ifDirective.matcher(attr)).toBe(true);
   });
 
-  it.only("should apply the initial data-if", () => {
+  it("should apply the initial data-if", () => {
     globalThis.document.body.innerHTML =
       '<div :data-if="show.get()">Test</div>';
     const el = document.querySelector<HTMLElement>("div");
