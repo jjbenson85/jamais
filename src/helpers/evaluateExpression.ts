@@ -5,18 +5,11 @@ export function evaluateExpression(
   data: Record<string, unknown>,
   msg = "Error evaluating expression",
 ): unknown {
-  const keys = Object.keys(data);
-  // keys.push("signal");
-  // keys.push("computed");
-  // keys.push("createEffect");
-  // keys.push("createSyncEffect");
-  const values = Object.values(data);
-  // values.push(signal);
-  // values.push(computed);
-  // values.push(createEffect);
-  // values.push(createSyncEffect);
+  const newData = { ...data, computed, signal, createEffect, createSyncEffect };
   try {
-    return new Function(...keys, `return ${expression}`)(...values);
+    return new Function(...Object.keys(newData), `return ${expression}`)(
+      ...Object.values(newData),
+    );
   } catch (err) {
     const message = msg ? `\n\n${msg}` : "";
     console.error(

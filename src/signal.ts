@@ -40,6 +40,14 @@ export class Signal<T> {
     for (const effect of this.subscribers.values()) {
       effect.run();
     }
+    return this.value;
+  };
+
+  valueOf = () => this.value;
+
+  update = (fn: (prev: T) => T, msg?: string) => {
+    this.set(fn(this.value), msg);
+    return this.value;
   };
 
   removeSubscriber = (effect: Effect) => {
@@ -124,7 +132,6 @@ export const createEffect = (cb: () => void, msg = "createEffect") =>
  */
 export const createPostEffect = (cb: () => void, msg = "createPostEffect") =>
   new Effect(cb, "post", msg);
-
 
 /**
  * Will run the callback immediately and then every time the signals used in the callback change

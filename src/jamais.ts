@@ -1,4 +1,3 @@
-
 export {
   signal,
   isSignal,
@@ -10,4 +9,4 @@ export {
 } from "./signal";
 export { setup } from "./setup";
 export { cls } from "./helpers/cls";
-export type { Directive } from "./types";
+export { defineComponent } from "./defineComponent";

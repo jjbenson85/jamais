@@ -2,33 +2,61 @@ import { isObject } from "./helpers/assert";
 import { evaluateExpression } from "./helpers/evaluateExpression";
 import { createEffect } from "./signal";
 import { Directive } from "./types";
+import { ifDirective } from "./directives/ifDirective";
+import { textDirective } from "./directives/textDirective";
+import { classDirective } from "./directives/classDirective";
+import { modelDirective } from "./directives/modelDirective";
+// import { bindDirective } from "./directives/bindDirective";
+import { eventDirective } from "./directives/eventDirective";
+import { switchDirective } from "./directives/switchDirective";
+import { forDirective } from "./directives/forDirective";
+import { scopeDirective } from "./directives/scopeDirective";
+import { keyDirective } from "./directives/keyDirective";
+import { ComponentConstrucor } from "./defineComponent";
+
+const directives: Directive[] = [
+  scopeDirective,
+  forDirective,
+  eventDirective,
+  ifDirective,
+  switchDirective,
+  textDirective,
+  classDirective,
+  modelDirective,
+  keyDirective,
+  // bindDirective,
+] as const;
 
 export function bindDirectives(
   el: HTMLElement,
   data: Record<string, unknown>,
-  directives: Directive[],
+  components: Record<string, ComponentConstrucor>,
 ) {
-  const destroyArr: (() => void)[] = [];
-  
-  const allElems = [el, ...(el.querySelectorAll<HTMLElement>("*") ?? [])].filter(
-    (e) => e.attributes.length > 0,
-  );
+  // Don't process children of elements with :data-for
+  // This is because the forDirective will handle the children
+  const allElems = [
+    el,
+    ...(el.querySelectorAll<HTMLElement>("*:not([\\:data-for] *)") ?? []),
+  ].filter((e) => e.attributes.length > 0);
 
   const errMsgScopeIsNotObject = (
     el: HTMLElement,
     scopeStr: string | null,
     scope: unknown,
   ) => {
-    console.error(`Scope must be an object. 
-                    
+    console.error(`Scope must be an object.
+
                     ${el.outerHTML}
-                    
+
                     ${scopeStr} is of type ${typeof scope}`);
   };
 
   // Create the scope map for all elements
-  for (const el of allElems) {
-    const parentWithScope = getClosestAncestorWithScope(el, ":data-scope");
+  for (let el of allElems) {
+    const parentWithScope = el.parentElement?.closest(
+      "[\\:data-scope]",
+    ) as HTMLElement;
+
     const parentScope =
       (parentWithScope && mergedScopeMap.get(parentWithScope)) ?? data;
 
@@ -45,14 +73,23 @@ export function bindDirectives(
       continue;
     }
     mergedScopeMap.set(el, scope);
+
+    const tagName = el.tagName.toLowerCase();
+    if (tagName in components) {
+      el = components[tagName](el, scope, components);
+    }
+
     for (const attr of el.attributes) {
       for (const directive of directives) {
         if (!directive.matcher(attr)) continue;
-        const cb = directive.mounted(el, attr.name, attr.value, scope);
-        if (cb) {
-          const effect = createEffect(cb, directive.name);
-          destroyArr.push(effect.destroy);
-        }
+        const cb = directive.mounted(
+          el,
+          attr.name,
+          attr.value,
+          scope,
+          components,
+        );
+        if (cb) createEffect(cb, directive.name);
         break;
       }
       if (!el.parentElement) {
@@ -62,23 +99,6 @@ export function bindDirectives(
       }
     }
   }
-
-  return () => {
-    for (const d of destroyArr) {
-      d();
-    }
-  };
-}
-
-function getClosestAncestorWithScope(el: HTMLElement, selector: string) {
-  let ancestor = el.parentElement;
-  while (ancestor) {
-    if (ancestor.hasAttribute(selector)) {
-      return ancestor;
-    }
-    ancestor = ancestor.parentElement;
-  }
-  return undefined;
 }
 
 export const mergedScopeMap = new WeakMap<

@@ -29,25 +29,27 @@ export const ifDirective: Directive = {
   mounted: (el, attrName, attrValue, data) => {
     // skip the else and else-if as they are handled by the if
     if (attrName === ":data-else" || attrName === ":data-else-if") {
-      if (
-        !(
-          el.previousElementSibling?.hasAttribute(":data-if") ||
-          el.previousElementSibling?.hasAttribute(":data-else-if")
-        )
-      ) {
-        const str = `${attrName} must directly follow an element with data-if or data-else-if.`;
-        console.error(str);
+      // TODO: LINTER
+      // if (
+      //   !(
+      //     el.previousSibling?.hasAttribute(":data-if") ||
+      //     el.previousSibling?.hasAttribute(":data-else-if")
+      //   )
+      // ) {
+      //   const str = `${attrName} must directly follow an element with data-if or data-else-if.`;
+      //   console.error(str);
 
-        const closest = getClosestIf(el);
-        if (closest) {
-          console.info(
-            `Try moving \t\t${el.outerHTML}\n\nbelow\t\t${closest.outerHTML}`,
-          );
-        }
-      }
+      //   const closest = getClosestIf(el);
+      //   if (closest) {
+      //     console.info(
+      //       `Try moving \t\t${el.outerHTML}\n\nbelow\t\t${closest.outerHTML}`,
+      //     );
+      //   }
+      // }
       return;
     }
 
+    // LINTER
     if (!attrValue) {
       console.error("data-if expects a value");
       return;
@@ -59,8 +61,17 @@ export const ifDirective: Directive = {
     const els = [el, ...elses, elseEl].filter((e): e is HTMLElement =>
       Boolean(e),
     );
+    const comments = els.map((e) => document.createComment('data-if'));
 
     const elseAttrs = elses.map((e) => e.getAttribute(":data-else-if"));
+
+    const parentEl = el.parentElement;
+
+    // Should always be true
+    if (!parentEl) {
+      console.warn("data-if must be a child of an element");
+      return;
+    }
 
     // Called inside createEffect to register with the signals
     const effect = () => {
@@ -70,18 +81,29 @@ export const ifDirective: Directive = {
       );
       const getValues = [elValue, ...elseValues, true];
 
+      // TODO: LINTER
       //TODO: IF a value is a signal creata a console.warning and suggest calling get
       if (getValues.some(isSignal)) {
         console.warn("Signals should be called with .get() in the template");
       }
 
-      //Hide all elements
-      for (const el of els) el.style.display = "none";
-
       //Display the first element that is true
       const elToDisplay = els.find((_, i) => getValues[i]);
-      if (elToDisplay === undefined) return;
-      elToDisplay.style.display = "unset";
+
+      //Hide all elements
+      for (let i = 0; i < els.length; i++) {
+        const el = els[i];
+        const comment = comments[i];
+
+        if (el === elToDisplay) {
+          parentEl.appendChild(el);
+          comment.remove();
+          continue;
+        }
+
+        el.remove();
+        parentEl.appendChild(comment);
+      }
     };
 
     return effect;

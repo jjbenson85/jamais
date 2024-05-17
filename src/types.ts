@@ -1,3 +1,5 @@
+import { ComponentConstrucor } from "./defineComponent";
+
 type Cb = () => void;
 
 export type Directive = {
@@ -8,6 +10,7 @@ export type Directive = {
     attrName: string,
     attrValue: string,
     data: Record<string, unknown>,
+    components: Record<string, ComponentConstrucor>,
   ) => Cb | undefined;
   destroyed?: (el: HTMLElement) => void;
 };
