@@ -1,6 +1,6 @@
 import { describe, it, expect, vi } from "vitest";
-import { ProcessQueue } from "./processQueue";
-import { wait } from "./test/utils";
+import { ProcessQueue } from "../processQueue";
+import { wait } from "./utils";
 
 describe("ProcessQueue", () => {
   it("should create a ProcessQueue", () => {
