@@ -1,8 +1,8 @@
-import { bindDirectives } from "../bindDirectives";
-import { evaluateExpression } from "../helpers/evaluateExpression";
-import { getValue } from "../helpers/getValueFromUnknown";
+import { getValue } from "@/helpers/getValueFromUnknown";
+import { evaluateExpression } from "@helpers/evaluateExpression";
+import { setupBindDirectives } from "./setupBindDirectives";
 
-import { Directive } from "../types";
+import { Directive } from "./types";
 
 export const forDirective: Directive = {
   name: "forDirective",
@@ -49,9 +49,8 @@ export const forDirective: Directive = {
       }
 
       if (typeof value !== "object") {
-        console.error(`:data-for expects an object, array or a number or a function that returns an object, array or number\n\n${
-          el.outerHTML
-        }
+        console.error(`:data-for expects an object, array or a number or a function that returns an object, array or number\n\n${el.outerHTML
+          }
 
         ${itemsName} is of type ${typeof value}
         `);
@@ -73,7 +72,7 @@ export const forDirective: Directive = {
         const newEl = el.cloneNode(true) as HTMLElement;
         parentEl.appendChild(newEl);
 
-        bindDirectives(
+        setupBindDirectives(
           newEl,
           {
             ...data,

@@ -1,5 +1,5 @@
 import { evaluateExpression } from "../helpers/evaluateExpression";
-import { Directive } from "../types";
+import { Directive } from "./types";
 import { isSignal } from "../signal";
 
 const getSiblings = (el: HTMLElement): HTMLElement[] => {

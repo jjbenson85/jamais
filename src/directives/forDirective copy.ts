@@ -2,7 +2,7 @@ import { bindDirectives } from "../bindDirectives";
 import { evaluateExpression } from "../helpers/evaluateExpression";
 import { getValue } from "../helpers/getValueFromUnknown";
 
-import { Directive } from "../types";
+import { Directive } from "./types";
 
 const destroyMap = new WeakMap<HTMLElement, (() => void)[]>();
 

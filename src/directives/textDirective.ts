@@ -1,5 +1,5 @@
 import { evaluateExpression } from "../helpers/evaluateExpression";
-import { Directive } from "../types";
+import { Directive } from "./types";
 import { getValue } from "../helpers/getValueFromUnknown";
 
 export const textDirective: Directive = {

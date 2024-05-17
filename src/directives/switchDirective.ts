@@ -1,4 +1,4 @@
-import { Directive } from "../types";
+import { Directive } from "./types";
 import { evaluateExpression } from "../helpers/evaluateExpression";
 import { isSignal } from "../signal";
 import { getValue } from "../helpers/getValueFromUnknown";
@@ -75,7 +75,7 @@ export const switchDirective: Directive = {
       const _unknownValue = evaluateExpression(attrValue, data, ":data-switch");
       const unknownValue = getValue(_unknownValue);
       const values = [...staticValues, ...dynamicValues, true];
-      
+
 
       if (values.some(isSignal)) {
         values.forEach((_value, i) => {

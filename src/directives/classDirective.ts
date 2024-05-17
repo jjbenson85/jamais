@@ -1,7 +1,7 @@
-import { cls } from "../helpers/cls";
-import { evaluateExpression } from "../helpers/evaluateExpression";
-import { getValue } from "../helpers/getValueFromUnknown";
-import { Directive } from "../types";
+import { cls } from "@helpers/cls";
+import { evaluateExpression } from "@helpers/evaluateExpression";
+import { getValue } from "@helpers/getValueFromUnknown";
+import { Directive } from "./types";
 
 export const classDirective: Directive = {
   name: "classDirective",

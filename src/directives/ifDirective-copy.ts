@@ -1,5 +1,5 @@
 import { evaluateExpression } from "../helpers/evaluateExpression";
-import { Directive } from "../types";
+import { Directive } from "./types";
 import { isSignal } from "../signal";
 
 const getSiblings = (el: HTMLElement): HTMLElement[] => {
@@ -36,7 +36,7 @@ export const ifDirective: Directive = {
         )
       ) {
         const str = `${attrName} must directly follow an element with data-if or data-else-if.
-        
+
         ${el.previousElementSibling?.outerHTML} is not a valid element to follow.`;
         console.error(str);
 

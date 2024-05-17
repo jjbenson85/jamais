@@ -1,8 +1,8 @@
 import "./styles.css";
 
-import { DEBUG } from "./signal";
-import { bindDirectives } from "./bindDirectives";
 import { ComponentConstrucor } from "./defineComponent";
+import { setupBindDirectives } from "./directives/setupBindDirectives";
+import { DEBUG } from "./signal";
 
 export type GlobalContext = {
   components: Record<string, ComponentConstrucor>;
@@ -17,9 +17,8 @@ export function setup(
   },
   _document: Document = document,
 ) {
-  if (options.debug) {
-    DEBUG.value = true;
-  }
+
+  DEBUG.value = !!options.debug
 
   const el =
     typeof options.attach === "string"
@@ -28,5 +27,5 @@ export function setup(
 
   if (!el) throw new Error("No element found");
 
-  bindDirectives(el, data, options.components ?? {});
+  setupBindDirectives(el, data, options.components ?? {});
 }

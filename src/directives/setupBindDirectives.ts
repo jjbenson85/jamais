@@ -1,18 +1,17 @@
-import { isObject } from "./helpers/assert";
-import { evaluateExpression } from "./helpers/evaluateExpression";
-import { createEffect } from "./signal";
+import { isObject } from "@/helpers/assert";
+import { ComponentConstrucor, createEffect } from "@/jamais";
+import { evaluateExpression } from "@helpers/evaluateExpression";
+import { classDirective } from "./classDirective";
+// import { bindDirective } from "./bindDirective";
+import { eventDirective } from "./eventDirective";
+import { forDirective } from "./forDirective";
+import { ifDirective } from "./ifDirective";
+import { keyDirective } from "./keyDirective";
+import { modelDirective } from "./modelDirective";
+import { scopeDirective } from "./scopeDirective";
+import { switchDirective } from "./switchDirective";
+import { textDirective } from "./textDirective";
 import { Directive } from "./types";
-import { ifDirective } from "./directives/ifDirective";
-import { textDirective } from "./directives/textDirective";
-import { classDirective } from "./directives/classDirective";
-import { modelDirective } from "./directives/modelDirective";
-// import { bindDirective } from "./directives/bindDirective";
-import { eventDirective } from "./directives/eventDirective";
-import { switchDirective } from "./directives/switchDirective";
-import { forDirective } from "./directives/forDirective";
-import { scopeDirective } from "./directives/scopeDirective";
-import { keyDirective } from "./directives/keyDirective";
-import { ComponentConstrucor } from "./defineComponent";
 
 const directives: Directive[] = [
   scopeDirective,
@@ -27,7 +26,7 @@ const directives: Directive[] = [
   // bindDirective,
 ] as const;
 
-export function bindDirectives(
+export function setupBindDirectives(
   el: HTMLElement,
   data: Record<string, unknown>,
   components: Record<string, ComponentConstrucor>,

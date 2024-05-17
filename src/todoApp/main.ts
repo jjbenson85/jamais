@@ -1,14 +1,12 @@
+import { computed, setup, signal } from "../jamais";
+import type { Signal } from "../jamais";
 import { myButton } from "./MyButton";
-// import { MyComponent } from "./MyComponent";
-// import { MyPTag } from "./MyPTag";
-// import { MyTable } from "./MyTable";
-import { setup, computed, signal } from "./jamais";
-import { Signal } from "./signal";
 
 type Todo = {
   message: string;
   isComplete: Signal<boolean>;
 };
+
 const todos = signal<Todo[]>([
   {
     message: "Learn Jamais",
@@ -52,6 +50,16 @@ const disableAddBtn = computed(
   "disableAddBtn",
 );
 
+// const isNumber = (e: number) => typeof e === "number";
+// const isString = (e: string) => typeof e === "string";
+// const isBoolean = (e: boolean) => typeof e === "boolean";
+// const isObject = (e: object) => typeof e === "object" && e !== null;
+
+// const a = signal(1, isNumber);
+// const b = signal(2, isString);
+
+// a.set("5")
+// console.log(a.get(), b.get())
 setup(
   {
     todos,
@@ -67,8 +75,6 @@ setup(
     attach: "#app",
     debug: false,
     components: {
-      // "my-table": MyTable,
-      // "my-component": MyComponent,
       "my-button": myButton,
     },
   },

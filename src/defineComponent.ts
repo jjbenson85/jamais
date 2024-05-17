@@ -1,8 +1,8 @@
-import { bindDirectives } from "./bindDirectives";
+import { setupBindDirectives } from "./directives/setupBindDirectives";
 import { evaluateExpression } from "./helpers/evaluateExpression";
 
 interface Constructable {
-  new (...args: never[]): unknown;
+  new(...args: never[]): unknown;
 }
 
 type Opts<
@@ -35,7 +35,7 @@ export type ComponentConstrucor = (
 export const defineComponent = (options: Opts): ComponentConstrucor => {
   return (el, _scope, _components) => {
     el.innerHTML = options.template;
-    let props: Record<string, any> = {};
+    const props: Record<string, unknown> = {};
 
     for (const key in options.props) {
       const prop = options.props[key];
@@ -66,7 +66,7 @@ export const defineComponent = (options: Opts): ComponentConstrucor => {
 
     const child = el.firstElementChild as HTMLElement | null;
     if (child) {
-      bindDirectives(child, data, { ..._components, ...options.components });
+      setupBindDirectives(child, data, { ..._components, ...options.components });
     }
 
     // if (options.style) {

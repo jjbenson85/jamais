@@ -1,5 +1,5 @@
-import { evaluateExpression } from "../helpers/evaluateExpression";
-import { Directive } from "../types";
+import { evaluateExpression } from "@/helpers/evaluateExpression";
+import { Directive } from "./types";
 
 export const eventDirective: Directive = {
   name: "eventDirective",

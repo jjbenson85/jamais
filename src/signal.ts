@@ -16,10 +16,21 @@ export const DEBUG = {
 
 export class Signal<T> {
   value: T;
+  validator: (value: T) => boolean;
   subscribers = new Set<Effect>();
 
-  constructor(initialValue: T) {
+  constructor(initialValue: T, validator: (value: T) => boolean) {
+    this.validator = validator;
+    this.validate(initialValue )
     this.value = initialValue;
+  }
+
+  validate = (newValue: T)=> {
+    if(!this.validator(newValue)){
+      console.error(`Signal set to an invalid value: ${newValue}.
+
+        Validator: ${this.validator.name || this.validator.toString()}`);
+    }
   }
 
   get = () => {
@@ -35,6 +46,7 @@ export class Signal<T> {
 
     if (newValue === this.value) return;
 
+    this.validate(newValue)
     this.value = newValue;
 
     for (const effect of this.subscribers.values()) {
@@ -43,7 +55,13 @@ export class Signal<T> {
     return this.value;
   };
 
-  valueOf = () => this.value;
+  valueOf = () => {
+    const error = new Error();
+    console.warn(`Directly using the value of a Signal is not recommended. Use .get() instead.
+
+     ${error.stack?.split("\n")[2]}`)
+   return this.value;
+  }
 
   update = (fn: (prev: T) => T, msg?: string) => {
     this.set(fn(this.value), msg);
@@ -92,7 +110,6 @@ export class Effect {
         return;
       }
     }
-    sync satisfies never;
   };
 
   destroy = () => {
@@ -107,7 +124,7 @@ export class Effect {
  * @param initialValue
  * @returns
  */
-export const signal = <T>(initialValue: T) => new Signal<T>(initialValue);
+export const signal = <T>(initialValue: T, validator: (value:T)=>boolean = ()=>true) => new Signal<T>(initialValue, validator);
 
 /**
  * Check if a value is a signal

@@ -1,9 +1,10 @@
-import { defineComponent } from "./defineComponent";
-import { Signal, signal } from "./signal";
+import { defineComponent } from "../defineComponent";
+import { Signal, signal } from "../signal";
 
 export const myButton = defineComponent({
   name: "myButton",
-  template: `<button
+  template: `
+  <button
     :data-text="text"
     class="hover:text-gray-800 hover:bg-white rounded border px-2 m-2 text-white bg-gray-800 transition-colors"
     :class="{
@@ -11,10 +12,11 @@ export const myButton = defineComponent({
                 'hover:text-gray-800 hover:bg-white':!disabled.get()
             }"
     @click="onClick"
-  ></button>`,
+  ></button>
+  `,
   props: {
     text: { required: true, type: String },
-    disabled: Signal<Boolean>,
+    disabled: Signal<boolean>,
     onClick: Function,
   },
   setup(props) {
