@@ -1,10 +1,11 @@
 import "@/test/extendMatchers";
 
+import { textDirective } from "@/directives/textDirective";
+import { HTMLElementWithParent } from "@/directives/types";
+import { wait } from "@/test/utils";
+import { createEffect, signal } from "@jamais";
 import { JSDOM } from "jsdom";
 import { describe, expect, it } from "vitest";
-import { textDirective } from "@/directives/textDirective";
-import { createEffect, signal } from "@";
-import { wait } from "@/test/utils";
 
 describe("textDirective", () => {
   it("should match the j-text attribute", () => {
@@ -20,7 +21,7 @@ describe("textDirective", () => {
   it("should apply this initial j-text", async () => {
     const message = signal("test");
     const el = JSDOM.fragment('<div j-text="message"></div>')
-      .firstChild as HTMLElement;
+      .firstChild as HTMLElementWithParent;
 
     const attr = el?.attributes.item(0);
 
@@ -43,7 +44,7 @@ describe("textDirective", () => {
   it("should update j-text when a ref value updates", async () => {
     const message = signal("test");
     const el = JSDOM.fragment('<div j-text="message"></div>')
-      .firstChild as HTMLElement;
+      .firstChild as HTMLElementWithParent;
 
     const attr = el?.attributes.item(0);
 
@@ -70,7 +71,7 @@ describe("textDirective", () => {
   it("should apply the initial deep j-text", () => {
     const message = signal({ deep: "test" });
     const el = JSDOM.fragment('<div j-text="message.get().deep"></div>')
-      .firstChild as HTMLElement;
+      .firstChild as HTMLElementWithParent;
 
     const attr = el?.attributes.item(0);
 
@@ -93,7 +94,7 @@ describe("textDirective", () => {
   it("should update deep j-text when a ref value updates", async () => {
     const message = signal({ deep: "test" });
     const el = JSDOM.fragment('<div j-text="message.get().deep"></div>')
-      .firstChild as HTMLElement;
+      .firstChild as HTMLElementWithParent;
 
     const attr = el?.attributes.item(0);
 
@@ -120,7 +121,7 @@ describe("textDirective", () => {
   it("should work with other directives", () => {
     const message = signal("test");
     const el = JSDOM.fragment('<div j-text="message" :class="message"></div>')
-      .firstChild as HTMLElement;
+      .firstChild as HTMLElementWithParent;
 
     const attr = el?.attributes.item(0);
 

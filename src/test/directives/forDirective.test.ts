@@ -1,16 +1,17 @@
 import "@/test/extendMatchers";
 
+import { forDirective } from "@/directives/forDirective";
+import { HTMLElementWithParent } from "@/directives/types";
+import { createEffect } from "@jamais";
 import { JSDOM } from "jsdom";
 import { describe, expect, it } from "vitest";
-import { forDirective } from "@/directives/forDirective";
-import { createEffect } from "@";
 
 globalThis.document = new JSDOM().window.document;
 
 describe("forDirective", () => {
   it("should match the j-for attribute", () => {
     globalThis.document.body.innerHTML = `<div j-for="item in items">text</div>`;
-    const el = document.querySelector<HTMLElement>("div");
+    const el = document.querySelector<HTMLElementWithParent>("div");
 
     if (!el) throw new Error("No element found");
 
@@ -20,7 +21,7 @@ describe("forDirective", () => {
   it("should loop over the j-for elements", () => {
     globalThis.document.body.innerHTML = `<main><div j-for="item in items">text</div></main>`;
     const parent = document.querySelector<HTMLElement>("main");
-    const el = document.querySelector<HTMLElement>("div");
+    const el = document.querySelector<HTMLElementWithParent>("div");
 
     if (!el) throw new Error("No element found");
     if (!parent) throw new Error("No parent found");

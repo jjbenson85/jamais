@@ -1,3 +1,4 @@
+import { HTMLElementWithParent } from "@/directives/types";
 import "../extendMatchers";
 
 import { ifDirective } from "@/directives/ifDirective";
@@ -9,7 +10,7 @@ globalThis.document = new JSDOM().window.document;
 describe("ifDirective", () => {
   it("should match the j-if attribute", () => {
     globalThis.document.body.innerHTML = '<div j-if="show"></div>';
-    const el = document.querySelector<HTMLElement>("div");
+    const el = document.querySelector<HTMLElementWithParent>("div");
     const attr = el?.attributes.item(0);
     if (!el || !attr) throw new Error("No element found");
 
@@ -18,7 +19,7 @@ describe("ifDirective", () => {
 
   it("should apply the initial j-if", () => {
     globalThis.document.body.innerHTML = '<div j-if="show.get()">Test</div>';
-    const el = document.querySelector<HTMLElement>("div");
+    const el = document.querySelector<HTMLElementWithParent>("div");
     const attr = el?.attributes.item(0);
 
     if (!el || !attr) throw new Error("No element found");
@@ -32,7 +33,7 @@ describe("ifDirective", () => {
 
   it("should remove the element when the value is false", async () => {
     globalThis.document.body.innerHTML = '<div j-if="show.get()">Test</div>';
-    const el = document.querySelector<HTMLElement>("div");
+    const el = document.querySelector<HTMLElementWithParent>("div");
     const attr = el?.attributes.item(0);
 
     if (!el || !attr) throw new Error("No element found");

@@ -1,6 +1,7 @@
 import "@/test/extendMatchers";
 
 import { modelDirective } from "@/directives/modelDirective";
+import { HTMLElementWithParent } from "@/directives/types";
 import { createEffect, signal } from "@/signal";
 import { spyConsoleError, wait } from "@/test/utils";
 import { JSDOM } from "jsdom";
@@ -28,7 +29,7 @@ describe("modelDirective", () => {
 
   it("should bind input to refs", async () => {
     const dom = new JSDOM(`<input j-model="message" />`);
-    const el = dom.window.document.querySelector('input') as HTMLInputElement & { parentElement: HTMLElement };
+    const el = dom.window.document.querySelector<HTMLElementWithParent<HTMLInputElement>>('input');
 
     const attr = el?.attributes.item(0);
 
@@ -51,7 +52,7 @@ describe("modelDirective", () => {
 
   it("should bind refs to inputs", async () => {
     const el = JSDOM.fragment('<input j-model="message" />')
-      .firstChild as HTMLInputElement & { parentElement: HTMLElement };
+      .firstChild as HTMLElementWithParent<HTMLInputElement>;
 
     const attr = el?.attributes.item(0);
 
@@ -73,7 +74,7 @@ describe("modelDirective", () => {
 
   it("should warn when trying to bind a non-signal to a model", () => {
     const el = JSDOM.fragment('<input j-model="message" />')
-      .firstChild as HTMLInputElement & { parentElement: HTMLElement };
+      .firstChild as HTMLElementWithParent<HTMLInputElement>;
 
     const attr = el?.attributes.item(0);
 

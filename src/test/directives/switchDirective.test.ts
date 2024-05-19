@@ -1,10 +1,11 @@
 import "@/test/extendMatchers";
 
+import { switchDirective } from "@/directives/switchDirective";
+import { HTMLElementWithParent } from "@/directives/types";
+import { wait } from "@/test/utils";
+import { createEffect, signal } from "@jamais";
 import { JSDOM } from "jsdom";
 import { describe, expect, it } from "vitest";
-import { switchDirective } from "@/directives/switchDirective";
-import { wait } from "@/test/utils";
-import { createEffect, signal } from "@";
 
 globalThis.window = new JSDOM("<!doctype html><html><body></body></html>")
   .window as unknown as Window & typeof globalThis;
@@ -33,7 +34,7 @@ describe("switchDirective", () => {
         <div j-case="Three">Three</div>
       </div>`,
     ).firstChild as HTMLElement;
-    const el = parent?.firstElementChild as HTMLElement;
+    const el = parent?.firstElementChild as HTMLElementWithParent;
     const attr = el?.attributes.item(0);
 
     if (!el || !attr) throw new Error("No element found");
@@ -52,13 +53,14 @@ describe("switchDirective", () => {
 
     await wait();
 
-    expect(parent?.outerHTML).toBeHTML(
-      `<div>
-          <div j-switch="state" j-case="One" style="display: unset;">One</div>
-          <div j-case="Two" style="display: none;">Two</div>
-          <div j-case="Three" style="display: none;">Three</div>
-      </div>`,
-    );
+    const elOne = parent.querySelector<HTMLElement>('[j-case="One"]')
+    const elTwo = parent.querySelector<HTMLElement>('[j-case="Two"]')
+    const elThree = parent.querySelector<HTMLElement>('[j-case="Three"]')
+
+    expect(elOne?.style.display).toBe("unset")
+    expect(elTwo?.style.display).toBe("none")
+    expect(elThree?.style.display).toBe("none")
+
   });
 
   it("should update the value", async () => {
@@ -71,7 +73,7 @@ describe("switchDirective", () => {
     </div>
     `,
     ).firstChild as HTMLElement;
-    const el = parent?.firstElementChild as HTMLElement;
+    const el = parent?.firstElementChild as HTMLElementWithParent;
     const attr = el?.attributes.item(0);
 
     if (!el || !attr) throw new Error("No element found");
@@ -92,12 +94,14 @@ describe("switchDirective", () => {
 
     await wait();
 
-    expect(parent?.outerHTML).toBeHTML(
-      `<div>
-        <div j-switch="state" j-case="One" style="display: none;">One</div>
-        <div j-case="Two" style="display: unset;">Two</div>
-        <div j-case="Three" style="display: none;">Three</div>
-      </div>`,
-    );
+
+    const elOne = parent.querySelector<HTMLElement>('[j-case="One"]')
+    const elTwo = parent.querySelector<HTMLElement>('[j-case="Two"]')
+    const elThree = parent.querySelector<HTMLElement>('[j-case="Three"]')
+
+    expect(elOne?.style.display).toBe("none")
+    expect(elTwo?.style.display).toBe("unset")
+    expect(elThree?.style.display).toBe("none")
+
   });
 });
