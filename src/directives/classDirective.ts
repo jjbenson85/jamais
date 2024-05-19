@@ -1,12 +1,13 @@
-import { cls } from "@helpers/cls";
-import { evaluateExpression } from "@helpers/evaluateExpression";
-import { getValue } from "@helpers/getValueFromUnknown";
+import { cls } from "@/helpers/cls";
+import { evaluateExpression } from "@/helpers/evaluateExpression";
+import { getValue } from "@/helpers/getValueFromUnknown";
 import { Directive } from "./types";
 
 export const classDirective: Directive = {
   name: "classDirective",
   matcher: (attr: Attr) => attr.name === ":class",
-  mounted: (el, _attrName, attrValue, data) => {
+  mounted: (el, _attrName, _attrValue, data) => {
+    const attrValue = el.getAttribute(":class") as string;
     let prevClasses: string[] = [];
     return () => {
       const prev = prevClasses;

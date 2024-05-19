@@ -4,7 +4,7 @@ import { JSDOM } from "jsdom";
 import { describe, expect, it } from "vitest";
 import { switchDirective } from "@/directives/switchDirective";
 import { wait } from "@/test/utils";
-import { createEffect, signal } from "@/jamais";
+import { createEffect, signal } from "@";
 
 globalThis.window = new JSDOM("<!doctype html><html><body></body></html>")
   .window as unknown as Window & typeof globalThis;

@@ -1,18 +1,15 @@
 import "./styles.css";
 
-import { ComponentConstrucor } from "./defineComponent";
+import { ComponentConstructor } from "./defineComponent";
 import { setupBindDirectives } from "./directives/setupBindDirectives";
 import { DEBUG } from "./signal";
 
-export type GlobalContext = {
-  components: Record<string, ComponentConstrucor>;
-};
-
-export function setup(
+export function createApp(
   data: Record<string, unknown>,
   options: {
     attach: string | HTMLElement;
-    components?: Record<string, ComponentConstrucor>;
+    onMounted?: () => void;
+    components?: Record<string, ComponentConstructor>;
     debug?: boolean;
   },
   _document: Document = document,
@@ -26,5 +23,8 @@ export function setup(
 
   if (!el) throw new Error("No element found");
 
-  setupBindDirectives(el, data, options.components ?? {});
+  setupBindDirectives(el, data, options.components);
+
+  options?.onMounted && document.addEventListener('DOMContentLoaded', options.onMounted);
+
 }

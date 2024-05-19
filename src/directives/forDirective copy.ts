@@ -1,35 +1,35 @@
-import { bindDirectives } from "../bindDirectives";
+import { setupBindDirectives } from "./setupBindDirectives";
 import { evaluateExpression } from "../helpers/evaluateExpression";
 import { getValue } from "../helpers/getValueFromUnknown";
 
 import { Directive } from "./types";
 
-const destroyMap = new WeakMap<HTMLElement, (() => void)[]>();
+// const destroyMap = new WeakMap<HTMLElement, (() => void)[]>();
 
-const addToDestroyMap = (el: HTMLElement, cb: () => void) => {
-  const arr = destroyMap.get(el);
-  if (!arr) {
-    destroyMap.set(el, [cb]);
-  } else {
-    arr.push(cb);
-  }
-};
+// const addToDestroyMap = (el: HTMLElement, cb: () => void) => {
+//   const arr = destroyMap.get(el);
+//   if (!arr) {
+//     destroyMap.set(el, [cb]);
+//   } else {
+//     arr.push(cb);
+//   }
+// };
 
-const removeEl = (el?: HTMLElement) => {
-  if (!el) return;
+// const removeEl = (el?: HTMLElement) => {
+//   if (!el) return;
 
-  const arr = destroyMap.get(el) ?? [];
-  for (const cb of arr) {
-    cb();
-  }
-  destroyMap.delete(el);
-  el.remove();
-};
+//   const arr = destroyMap.get(el) ?? [];
+//   for (const cb of arr) {
+//     cb();
+//   }
+//   destroyMap.delete(el);
+//   el.remove();
+// };
 
 export const forDirective: Directive = {
   name: "forDirective",
   matcher: (attr: Attr) => attr.name === "j-for",
-  mounted: (el, _attrName, attrValue, data) => {
+  mounted: (el, _attrName, attrValue, data, components) => {
     if (!el.hasAttribute(":data-key")) {
       console.warn(`j-for must have a :data-key attribute\n\n${el.outerHTML}`);
     }
@@ -89,21 +89,21 @@ export const forDirective: Directive = {
 
     el.remove();
 
-    const key = el.getAttribute(":data-key") ?? "index";
-    // Need to handle on destroyed?
-    const childrenArr: { el: HTMLElement; keyValue: string }[] = [];
+    // const key = el.getAttribute(":data-key") ?? "index";
+    // // Need to handle on destroyed?
+    // const childrenArr: { el: HTMLElement; keyValue: string }[] = [];
 
-    const getKeyValue = (key: string, index: string, item: unknown) => {
-      if (key === "index") return index;
-      return evaluateExpression(
-        key,
-        {
-          [indexName]: index,
-          [itemName]: item,
-        },
-        "getKeyValue",
-      );
-    };
+    // const getKeyValue = (key: string, index: string, item: unknown) => {
+    //   if (key === "index") return index;
+    //   return evaluateExpression(
+    //     key,
+    //     {
+    //       [indexName]: index,
+    //       [itemName]: item,
+    //     },
+    //     "getKeyValue",
+    //   );
+    // };
 
     const cb2 = () => {
       parentEl.innerHTML = "";
@@ -117,7 +117,7 @@ export const forDirective: Directive = {
           [itemName]: item,
         };
 
-        bindDirectives(newEl, newData, globalThis.window.$directives);
+        setupBindDirectives(newEl, newData, components);
       }
     };
 

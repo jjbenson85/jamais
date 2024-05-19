@@ -1,5 +1,5 @@
 import { getValue } from "@/helpers/getValueFromUnknown";
-import { evaluateExpression } from "@helpers/evaluateExpression";
+import { evaluateExpression } from "@/helpers/evaluateExpression";
 import { setupBindDirectives } from "./setupBindDirectives";
 
 import { Directive } from "./types";

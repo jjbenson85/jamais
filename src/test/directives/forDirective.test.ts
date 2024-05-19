@@ -3,7 +3,7 @@ import "@/test/extendMatchers";
 import { JSDOM } from "jsdom";
 import { describe, expect, it } from "vitest";
 import { forDirective } from "@/directives/forDirective";
-import { createEffect } from "@/jamais";
+import { createEffect } from "@";
 
 globalThis.document = new JSDOM().window.document;
 

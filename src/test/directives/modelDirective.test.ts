@@ -1,10 +1,10 @@
 import "@/test/extendMatchers";
 
+import { modelDirective } from "@/directives/modelDirective";
+import { createEffect, signal } from "@/signal";
+import { spyConsoleError, wait } from "@/test/utils";
 import { JSDOM } from "jsdom";
 import { describe, expect, it } from "vitest";
-import { modelDirective } from "@/directives/modelDirective";
-import { spyConsoleError, wait } from "@/test/utils";
-import { createEffect, signal } from "@/signal";
 
 const spyConsole = spyConsoleError();
 
@@ -16,7 +16,7 @@ globalThis.HTMLElement = globalThis.window.HTMLElement;
 
 describe("modelDirective", () => {
   it("should match the data-model attribute", () => {
-    const el = JSDOM.fragment('<input :data-model="message" />')
+    const el = JSDOM.fragment('<input j-model="message" />')
       .firstChild as HTMLElement;
 
     const attr = el?.attributes.item(0);
@@ -27,8 +27,8 @@ describe("modelDirective", () => {
   });
 
   it("should bind input to refs", async () => {
-    const el = JSDOM.fragment('<input :data-model="message" />')
-      .firstChild as HTMLInputElement;
+    const dom = new JSDOM(`<input j-model="message" />`);
+    const el = dom.window.document.querySelector('input') as HTMLInputElement & { parentElement: HTMLElement };
 
     const attr = el?.attributes.item(0);
 
@@ -37,14 +37,12 @@ describe("modelDirective", () => {
     const message = signal("");
     const effect = modelDirective.mounted(el, attr.name, attr.value, {
       message,
-    });
+    }, {});
     effect && createEffect(effect);
 
     el.value = "Test input";
 
-    const event = document.createEvent("Event");
-    event.initEvent("input", true, false);
-    el.dispatchEvent(event);
+    el.dispatchEvent(new dom.window.InputEvent('input'));
 
     await wait();
 
@@ -52,8 +50,8 @@ describe("modelDirective", () => {
   });
 
   it("should bind refs to inputs", async () => {
-    const el = JSDOM.fragment('<input :data-model="message" />')
-      .firstChild as HTMLInputElement;
+    const el = JSDOM.fragment('<input j-model="message" />')
+      .firstChild as HTMLInputElement & { parentElement: HTMLElement };
 
     const attr = el?.attributes.item(0);
 
@@ -65,7 +63,7 @@ describe("modelDirective", () => {
 
     const effect = modelDirective.mounted(el, attr.name, attr.value, {
       message,
-    });
+    }, {});
     effect && createEffect(effect);
 
     await wait();
@@ -74,8 +72,8 @@ describe("modelDirective", () => {
   });
 
   it("should warn when trying to bind a non-signal to a model", () => {
-    const el = JSDOM.fragment('<input :data-model="message" />')
-      .firstChild as HTMLInputElement;
+    const el = JSDOM.fragment('<input j-model="message" />')
+      .firstChild as HTMLInputElement & { parentElement: HTMLElement };
 
     const attr = el?.attributes.item(0);
 
@@ -85,13 +83,13 @@ describe("modelDirective", () => {
 
     const effect = modelDirective.mounted(el, attr.name, attr.value, {
       message,
-    });
+    }, {});
     effect && createEffect(effect);
 
     expect(spyConsole).toBeCalledWith(
-      "Can only bind signals with :data-model.\n\n" +
-        '<input :data-model="message">\n' +
-        "message is not a signal",
+      "Can only bind signals with j-model.\n\n" +
+      '<input j-model="message">\n' +
+      "message is not a signal",
     );
   });
 });

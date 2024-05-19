@@ -4,9 +4,9 @@
     "useDefineForClassFields": true,
     "module": "ESNext",
     "lib": [
-      "ES2022",
-      "DOM",
-      "DOM.Iterable"
+      "es2022",
+      "dom",
+      "dom.iterable"
     ],
     "skipLibCheck": true,
     /* Bundler mode */
@@ -23,13 +23,15 @@
     "types": [
       "vitest/importMeta"
     ],
-    "baseUrl": ".",
     "paths": {
       "@/*": [
         "src/*"
       ],
       "@helpers/*": [
         "src/helpers/*"
+      ],
+      "@jamais": [
+        "src/index.ts"
       ]
     }
   },
@@ -37,5 +39,8 @@
     "src/**/*.ts",
     "src/**/*.test.ts",
     "src/**/*.d.ts"
+  ],
+  "exclude": [
+    "node_modules"
   ]
 }

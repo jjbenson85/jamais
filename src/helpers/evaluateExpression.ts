@@ -5,9 +5,25 @@ export function evaluateExpression(
   data: Record<string, unknown>,
   msg = "Error evaluating expression",
 ): unknown {
+  return handler(`return ${expression}`, data, msg);
+}
+
+export function evaluateStatement(
+  statement: string,
+  data: Record<string, unknown>,
+  msg = "Error evaluating statement",
+): void {
+  handler(statement, data, msg);
+}
+
+function handler(
+  expression: string,
+  data: Record<string, unknown>,
+  msg = "Error evaluating expression",
+) {
   const newData = { ...data, computed, signal, createEffect, createSyncEffect };
   try {
-    return new Function(...Object.keys(newData), `return ${expression}`)(
+    return new Function(...Object.keys(newData), expression)(
       ...Object.values(newData),
     );
   } catch (err) {

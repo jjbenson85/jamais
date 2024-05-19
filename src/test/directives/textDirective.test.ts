@@ -3,7 +3,7 @@ import "@/test/extendMatchers";
 import { JSDOM } from "jsdom";
 import { describe, expect, it } from "vitest";
 import { textDirective } from "@/directives/textDirective";
-import { createEffect, signal } from "@/jamais";
+import { createEffect, signal } from "@";
 import { wait } from "@/test/utils";
 
 describe("textDirective", () => {

@@ -1,23 +1,43 @@
 import { evaluateExpression } from "../helpers/evaluateExpression";
-import { Directive } from "./types";
 import { isSignal } from "../signal";
+import { Directive } from "./types";
 
-const getSiblings = (el: HTMLElement): HTMLElement[] => {
-  const els: HTMLElement[] = [];
-  let nextEl = el.nextElementSibling as HTMLElement;
-  while (nextEl) {
-    els.push(nextEl);
-    nextEl = nextEl.nextElementSibling as HTMLElement;
+// const getClosestIf = (el: HTMLElement) => {
+//   const closestIf = el.parentElement?.querySelector("[\\j-if]");
+//   const closestElseIf = [
+//     ...(el.parentElement?.querySelectorAll("[j-else-if]") ?? []),
+//   ].at(-1);
+//   return closestElseIf || closestIf;
+// };
+
+const isValidSibling = (el: HTMLElement, attrName: string) => {
+  const prevNode = el.previousSibling;
+  const prevEl = el.previousElementSibling;
+  if (
+    !(
+      prevNode?.textContent === "j-if" ||
+      prevNode?.textContent === "j-else-if" ||
+      prevEl?.hasAttribute?.("j-if") ||
+      prevEl?.hasAttribute?.("j-else-if")
+    )
+  ) {
+    console.error(`${attrName} must directly follow an element with j-if or j-else-if.
+
+        ${el.outerHTML}
+    `);
   }
-  return els;
 };
 
-const getClosestIf = (el: HTMLElement) => {
-  const closestIf = el.parentElement?.querySelector("[\\j-if]");
-  const closestElseIf = [
-    ...(el.parentElement?.querySelectorAll("[j-else-if]") ?? []),
-  ].at(-1);
-  return closestElseIf || closestIf;
+const isValidAttrValue = (
+  el: HTMLElement,
+  attrName: string,
+  attrValue: string,
+) => {
+  if (attrName === "j-else-if" && !attrValue) {
+    console.warn(`j-else-if expects a value
+
+          ${el.outerHTML}`);
+  }
 };
 
 export const ifDirective: Directive = {
@@ -26,25 +46,10 @@ export const ifDirective: Directive = {
   matcher: (attr: Attr) => ["j-if", "j-else-if", "j-else"].includes(attr.name),
 
   mounted: (el, attrName, attrValue, data) => {
-    // skip the else and else-if as they are handled by the if
-    if (attrName === "j-else" || attrName === "j-else-if") {
-      // TODO: LINTER
-      // if (
-      //   !(
-      //     el.previousSibling?.hasAttribute("j-if") ||
-      //     el.previousSibling?.hasAttribute("j-else-if")
-      //   )
-      // ) {
-      //   const str = `${attrName} must directly follow an element with j-if or j-else-if.`;
-      //   console.error(str);
-
-      //   const closest = getClosestIf(el);
-      //   if (closest) {
-      //     console.info(
-      //       `Try moving \t\t${el.outerHTML}\n\nbelow\t\t${closest.outerHTML}`,
-      //     );
-      //   }
-      // }
+    if (["j-else-if", "j-else"].includes(attrName)) {
+      isValidAttrValue(el, attrName, attrValue);
+      isValidSibling(el, attrName);
+      // skip the else and else-if as they are handled by the if
       return;
     }
 
@@ -54,23 +59,23 @@ export const ifDirective: Directive = {
       return;
     }
 
-    const siblings = getSiblings(el);
-    const elses = siblings.filter((e) => e.hasAttribute("j-else-if"));
+    const siblings = Array.from(el.parentElement?.children ?? []);
+
+    const elseIfEls = siblings.filter((e) => e.hasAttribute("j-else-if"));
     const elseEl = siblings.find((e) => e.hasAttribute("j-else"));
-    const els = [el, ...elses, elseEl].filter((e): e is HTMLElement =>
+    const els = [el, ...elseIfEls, elseEl].filter((e): e is HTMLElement =>
       Boolean(e),
     );
-    const comments = els.map((e) => document.createComment("j-if"));
+    const comments = [
+      document.createComment("j-if"),
+      ...elseIfEls.map(() => document.createComment("j-else-if")),
+      document.createComment("j-else"),
+    ];
 
-    const elseAttrs = elses.map((e) => e.getAttribute("j-else-if"));
+    const elseAttrs = elseIfEls.map((e) => e.getAttribute("j-else-if"));
 
+    // Checked in setupBindDirectives
     const parentEl = el.parentElement;
-
-    // Should always be true
-    if (!parentEl) {
-      console.warn("j-if must be a child of an element");
-      return;
-    }
 
     // Called inside createEffect to register with the signals
     const effect = () => {

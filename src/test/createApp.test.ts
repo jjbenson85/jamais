@@ -2,7 +2,7 @@ import "./extendMatchers";
 
 import { JSDOM } from "jsdom";
 import { describe, expect, it, vi } from "vitest";
-import { setup } from "../setup";
+import { createApp } from "../createApp";
 import { wait } from "./utils";
 import { signal } from "../signal";
 
@@ -18,7 +18,7 @@ describe("setup", () => {
     document.body.innerHTML =
       '<div id="app"><div j-text="message.get()"></div></div>';
 
-    setup({ message }, { attach: "#app" }, document);
+    createApp({ message }, { attach: "#app" }, document);
 
     await wait();
 

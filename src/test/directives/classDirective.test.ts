@@ -1,7 +1,7 @@
 import { JSDOM } from "jsdom";
 import { describe, expect, it } from "vitest";
 import { classDirective } from "@/directives/classDirective";
-import { createEffect, signal } from "@/jamais";
+import { createEffect, signal } from "@";
 import { wait } from "@/test/utils";
 
 describe("classDirective", () => {

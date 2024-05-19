@@ -1,0 +1,220 @@
+<link rel="stylesheet" href="https://unpkg.com/todomvc-app-css@2.4.1/index.css" />
+<style>
+  .hidden {
+    display: none;
+  }
+</style>
+
+<script type="module">
+  import { computed, createApp, signal, defineComponent, isSignal, Signal } from "../src";
+
+  const STORAGE_KEY = 'todos-jamais';
+
+  let storageUuid = 0;
+  function getStorage() {
+    const todos = JSON.parse(localStorage.getItem(STORAGE_KEY) || '[]')
+    todos.forEach((todo, index) => { todo.id = index })
+    storageUuid = todos.length
+    return todos
+  }
+
+  function setStorage(todos) {
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(todos))
+  }
+
+  const todoStorage = {
+    fetch() {
+      const todos = JSON.parse(localStorage.getItem(STORAGE_KEY) || '[]')
+      todos.forEach((todo, index) => {
+        todo.id = index
+      })
+      todoStorage.uid = todos.length
+      return todos
+    },
+    save(todos) {
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(todos
+      ))
+    }
+  }
+
+  const todos = signal(getStorage(), Array, 'todos');
+  const test = signal([])
+  computed(() => {
+    console.info('saving to local storage....')
+    setStorage(todos.get())
+  }, {
+    watch: [todos],
+    immediate: false
+  })
+
+  const activeTodos = computed(() => todos.get().filter((todo) => !todo.completed));
+  const remaining = computed(() => activeTodos.get().length)
+
+  const completedTodos = computed(() => todos.get().filter((todo) => todo.completed));
+
+  const visibility = signal('all');
+  const filteredTodos = computed(() => {
+    switch (visibility.get()) {
+      case 'active':
+        return activeTodos.get();
+      case 'completed':
+        return completedTodos.get();
+      default:
+        return todos.get();
+    }
+  })
+
+  // Setup routing
+  function onHashChange() {
+    const _visibility = window.location.hash.replace(/#\/?/, '');
+    if (['all', 'active', 'completed'].includes(_visibility)) {
+      visibility.set(_visibility)
+    } else {
+      window.location.hash = ''
+      visibility.set('all')
+    }
+  }
+
+  const newTodo = signal('New Todo', String, 'newTodo');
+  const allDone = signal(false, Boolean, 'allDone');
+
+  computed(() => {
+    const setCompleted = (todo) => ({...todo, completed:allDone.get()})
+    todos.update(e => e.map(setCompleted))
+  }, { watch: [allDone], name: 'setAllCompleted', immediate: false })
+
+  function addTodo() {
+    const value = newTodo.get() && newTodo.get().trim()
+    if (!value) return
+
+    todos.update(t => [...t,{
+        id: storageUuid++,
+        title: value,
+        completed: false
+      }]);
+    newTodo.set('');
+  }
+
+  const editedTodo = signal(null);
+
+  const newTitle = signal('')
+
+  function doneEdit(todo) {
+    if (!editedTodo.get()) return
+
+    editedTodo.set(null)
+
+    const title = newTitle.update(e => e.trim())
+
+    if (!title) {
+      removeTodo(todo)
+    } else {
+      todos.update(t => t.map(e => e === todo ? { ...e, title } : e));
+    }
+    newTitle.set('')
+  }
+
+  function removeTodo(todo) {
+    todos.update(t => t.filter(e => e !== todo));
+  }
+
+  function toggleComplete(todo) {
+    // todo.completed.set(!todo.completed.get())
+    todos.update(e => e.map(e => e === todo ? { ...e, completed: !e.completed } : e))
+  }
+
+  function editTodo(todo) {
+    newTitle.set(todo.title)
+    editedTodo.set(todo)
+  }
+
+  function cancelEdit(todo) {
+    editedTodo.set(null)
+  }
+
+  function removeCompleted() {
+    todos.set(activeTodos.get().slice())
+  }
+
+  const pluralize = (n) => n === 1 ? 'item' : 'items';
+
+  const isReady = signal(false, Boolean, 'isReady')
+  function onMounted() {
+    window.addEventListener('hashchange', onHashChange)
+    onHashChange()
+    isReady.set(true)
+  }
+
+  createApp({
+    todos,
+    newTodo,
+    newTitle,
+    editedTodo,
+    visibility,
+    filteredTodos,
+    addTodo,
+    allDone,
+    // save,
+    toggleComplete,
+    removeTodo,
+    doneEdit,
+    editTodo,
+    cancelEdit,
+    remaining,
+    removeCompleted,
+    pluralize,
+    isReady
+  }, {
+    attach: "#app",
+    onMounted,
+  })
+</script>
+
+<!-- <div id="app" v-effect="save()" v-cloak> -->
+<div id="app" :class="{hidden: !isReady.get()}">
+  <section class="todoapp">
+    <header class="header">
+      <h1>todos</h1>
+          <!-- j-model="newTodo" -->
+      <input class="new-todo" autofocus autocomplete="off" placeholder="What needs to be done?"
+        @keyup.enter="addTodo" @input="console.log($event)"/>
+    </header>
+    <section class="main" v-show="todos.get().length">
+      <input id="toggle-all" class="toggle-all" type="checkbox" j-model="allDone" />
+      <label for="toggle-all">Mark all as complete</label>
+      <ul class="todo-list">
+        <li j-for="todo in filteredTodos" class="todo" :key="todo.id"
+          :class="{ completed: todo.completed, editing: todo === editedTodo.get() }">
+          <div class="view">
+            <input class="toggle" j-effect="$el.checked = todo.completed" type="checkbox"
+              @click="toggleComplete(todo)" />
+            <label @dblclick="editTodo(todo)" j-text="todo.title"></label>
+            <button class="destroy" @click="removeTodo(todo)"></button>
+          </div>
+          <input class="edit" type="text" j-model="newTitle" @blur="doneEdit(todo)" @keyup.enter="doneEdit(todo)"
+            @keyup.escape="cancelEdit(todo)" j-effect="if(todo === editedTodo.get()) $el.focus();" />
+        </li>
+      </ul>
+    </section>
+    <footer class="footer" j-if="todos.get().length">
+      <span class="todo-count">
+        <strong j-text="remaining.get()"></strong>
+        <span j-text="pluralize(remaining.get())"></span> left
+      </span>
+      <ul class="filters">
+        <li>
+          <a href="#/all" :class="{ selected: visibility.get() === 'all' }">All</a>
+        </li>
+        <li>
+          <a href="#/active" :class="{ selected: visibility.get() === 'active' }">Active</a>
+        </li>
+        <li>
+          <a href="#/completed" :class="{ selected: visibility.get() === 'completed' }">Completed</a>
+        </li>
+      </ul>
+      <button class="clear-completed" @click="removeCompleted" j-if="todos.get().length > remaining.get()">
+        Clear completed
+      </button>
+    </footer>
+  </section>
+</div>

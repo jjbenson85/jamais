@@ -1,39 +1,44 @@
 import { setupBindDirectives } from "./directives/setupBindDirectives";
 import { evaluateExpression } from "./helpers/evaluateExpression";
-
 interface Constructable {
-  new(...args: never[]): unknown;
+  new (...args: never[]): unknown;
 }
 
 type PType = { required: boolean; type: Constructable };
-type Opts<PropNames extends string, Props extends Record<PropNames, any>, PropConstructor extends Record<PropNames, PType>> = {
+type Opts<
+  PropNames extends string,
+  Props extends Record<PropNames, any>,
+  PropConstructor extends Record<PropNames, PType>,
+> = {
   name: string;
   template: string;
   style?: string;
   props?: PropConstructor;
   setup?: (props: Props) => Record<string, unknown>;
-  components?: Record<string, ComponentConstrucor>;
+  components?: Record<string, ComponentConstructor>;
   onMounted?: () => void;
-  onUnmounted?: () => void;
 };
 
-export type ComponentConstrucor = (
+export type ComponentConstructor = (
   el: HTMLElement,
   scope: Record<string, unknown>,
-  components: Record<string, ComponentConstrucor>,
+  components: Record<string, ComponentConstructor>,
 ) => HTMLElement;
 
-export const defineComponent = <PropNames extends string, Props extends Record<PropNames, any> , PropConstructor extends Record<PropNames, PType>>(
+export const defineComponent = <
+  PropNames extends string,
+  Props extends Record<PropNames, any>,
+  PropConstructor extends Record<PropNames, PType>,
+>(
   options: Opts<PropNames, Props, PropConstructor>,
-): ComponentConstrucor => {
+): ComponentConstructor => {
   return (el, _scope, _components) => {
-    console.log(el, _scope, _components);
     el.innerHTML = options.template;
     const scopeFromProps = {} as Props;
 
     const ps = options.props;
     for (const _key in ps) {
-      const key = _key as unknown as keyof PropConstructor;
+      const key = _key as unknown as keyof PropConstructor & string;
       const prop = ps[key];
       const constr = "type" in prop ? prop.type : prop;
       const required = "required" in prop ? prop.required : false;
@@ -42,7 +47,9 @@ export const defineComponent = <PropNames extends string, Props extends Record<P
       if (keyValue) {
         const key = _key as unknown as keyof Props;
         if (constr.name !== "String") {
-          console.warn(`Prop ${key as string} is not a string\n\n${el.outerHTML}`);
+          console.warn(
+            `Prop ${key as string} is not a string\n\n${el.outerHTML}`,
+          );
         }
 
         scopeFromProps[key] = keyValue as Props[keyof Props];
@@ -69,6 +76,8 @@ export const defineComponent = <PropNames extends string, Props extends Record<P
         ...options.components,
       });
     }
+
+    options.onMounted?.();
 
     // if (options.style) {
     //   const style = document.createElement("style");

@@ -1,9 +1,9 @@
-import "@/extendMatchers";
+import "../extendMatchers";
 
-import { JSDOM } from "jsdom";
-import { describe, expect, it } from "vitest";
 import { ifDirective } from "@/directives/ifDirective";
 import { createEffect, signal } from "@/signal";
+import { JSDOM } from "jsdom";
+import { describe, expect, it } from "vitest";
 
 globalThis.document = new JSDOM().window.document;
 describe("ifDirective", () => {
@@ -41,7 +41,7 @@ describe("ifDirective", () => {
 
     const data = { show };
     const cb = ifDirective.mounted(el, attr.name, attr.value, data, {});
-    cb && createEffect(cb, "ifDirective");
+    cb && createEffect(cb, [], "ifDirective");
 
     show.set(false);
 
@@ -54,7 +54,7 @@ describe("ifDirective", () => {
           <div j-else>Else</div>
       </div>`;
     const parent = document.body.firstChild as HTMLElement;
-    const el = parent.querySelector<HTMLElement>("[j-if]");
+    const el = parent.querySelector<HTMLElement & { parentElement: HTMLElement }>("[j-if]");
     const attr = el?.attributes.item(0);
 
     if (!el || !attr) throw new Error("No element found");
@@ -63,7 +63,7 @@ describe("ifDirective", () => {
 
     const data = { show };
     const cb = ifDirective.mounted(el, attr.name, attr.value, data, {});
-    cb && createEffect(cb, "ifDirective");
+    cb && createEffect(cb, [], "ifDirective");
 
     expect(document.querySelector("[j-else]")).toBeFalsy();
     expect(document.querySelector("[j-if]")).toBeTruthy();
@@ -75,7 +75,7 @@ describe("ifDirective", () => {
           <div j-else>Else</div>
       </div>`;
     const parent = document.body.firstChild as HTMLElement;
-    const el = parent.querySelector<HTMLElement>("[j-if]");
+    const el = parent.querySelector<HTMLElement & { parentElement: HTMLElement }>("[j-if]");
     const attr = el?.attributes.item(0);
 
     if (!el || !attr) throw new Error("No element found");
@@ -84,7 +84,7 @@ describe("ifDirective", () => {
 
     const data = { show };
     const cb = ifDirective.mounted(el, attr.name, attr.value, data, {});
-    cb && createEffect(cb, "ifDirective");
+    cb && createEffect(cb, [], "ifDirective");
 
     expect(document.querySelector("[j-if]")).toBeFalsy();
     expect(document.querySelector("[j-else]")).toBeTruthy();
@@ -96,7 +96,7 @@ describe("ifDirective", () => {
           <div j-else>Else</div>
       </div>`;
     const parent = document.body.firstChild as HTMLElement;
-    const el = parent.querySelector<HTMLElement>("[j-if]");
+    const el = parent.querySelector<HTMLElement & { parentElement: HTMLElement }>("[j-if]");
     const attr = el?.attributes.item(0);
 
     if (!el || !attr) throw new Error("No element found");
@@ -105,7 +105,7 @@ describe("ifDirective", () => {
 
     const data = { show };
     const cb = ifDirective.mounted(el, attr.name, attr.value, data, {});
-    cb && createEffect(cb, "ifDirective");
+    cb && createEffect(cb, [], "ifDirective");
 
     show.set(false);
 
@@ -119,7 +119,7 @@ describe("ifDirective", () => {
           <div j-else>Else</div>
       </div>`;
     const parent = document.body.firstChild as HTMLElement;
-    const el = parent.querySelector<HTMLElement>("[j-if]");
+    const el = parent.querySelector<HTMLElement & { parentElement: HTMLElement }>("[j-if]");
     const attr = el?.attributes.item(0);
 
     if (!el || !attr) throw new Error("No element found");
@@ -128,7 +128,7 @@ describe("ifDirective", () => {
 
     const data = { show };
     const cb = ifDirective.mounted(el, attr.name, attr.value, data, {});
-    cb && createEffect(cb, "ifDirective");
+    cb && createEffect(cb, [], "ifDirective");
 
     show.set(true);
 
@@ -143,7 +143,7 @@ describe("ifDirective", () => {
           <div j-else>Else</div>
       </div>`;
     const parent = document.body.firstChild as HTMLElement;
-    const el = parent.querySelector<HTMLElement>("[j-if]");
+    const el = parent.querySelector<HTMLElement & { parentElement: HTMLElement }>("[j-if]");
     const attr = el?.attributes.item(0);
 
     if (!el || !attr) throw new Error("No element found");
@@ -153,7 +153,7 @@ describe("ifDirective", () => {
 
     const data = { show, showElseIf };
     const cb = ifDirective.mounted(el, attr.name, attr.value, data, {});
-    cb && createEffect(cb, "ifDirective");
+    cb && createEffect(cb, [], "ifDirective");
 
     show.set(false);
 
@@ -169,7 +169,7 @@ describe("ifDirective", () => {
           <div j-else>Else</div>
       </div>`;
     const parent = document.body.firstChild as HTMLElement;
-    const el = parent.querySelector<HTMLElement>("[j-if]");
+    const el = parent.querySelector<HTMLElement & { parentElement: HTMLElement }>("[j-if]");
     const attr = el?.attributes.item(0);
 
     if (!el || !attr) throw new Error("No element found");
@@ -179,7 +179,7 @@ describe("ifDirective", () => {
 
     const data = { show, showElseIf };
     const cb = ifDirective.mounted(el, attr.name, attr.value, data, {});
-    cb && createEffect(cb, "ifDirective");
+    cb && createEffect(cb, [], "ifDirective");
 
     showElseIf.set(false);
 
@@ -196,7 +196,7 @@ describe("ifDirective", () => {
           <div j-else>Else</div>
       </div>`;
     const parent = document.body.firstChild as HTMLElement;
-    const el = parent.querySelector<HTMLElement>("[j-if]");
+    const el = parent.querySelector<HTMLElement & { parentElement: HTMLElement }>("[j-if]");
     const attr = el?.attributes.item(0);
 
     if (!el || !attr) throw new Error("No element found");
@@ -207,7 +207,7 @@ describe("ifDirective", () => {
 
     const data = { show, showElseIf, showElseIf2 };
     const cb = ifDirective.mounted(el, attr.name, attr.value, data, {});
-    cb && createEffect(cb, "ifDirective");
+    cb && createEffect(cb, [], "ifDirective");
 
     show.set(false);
 

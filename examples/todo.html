@@ -1,0 +1,176 @@
+<!doctype html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <link rel="icon" type="image/svg+xml" href="/vite.svg" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <script src="https://cdn.tailwindcss.com"></script>
+        <title>Jamais</title>
+        <script type="module">
+        import { computed, createApp, signal, defineComponent, Signal } from "../src";
+
+        const myButton = defineComponent({
+          name: "myButton",
+          template: `
+          <button
+            j-text="text"
+            class="hover:text-gray-800 hover:bg-white rounded border px-2 m-2 text-white bg-gray-800 transition-colors"
+            :class="{
+                        'pointer-events-none text-gray-400 bg-gray-700':disabled.get(),
+                        'hover:text-gray-800 hover:bg-white':!disabled.get()
+                    }"
+            @click="onClick"
+          ></button>
+          `,
+          props: {
+            text: { required: true, type: String },
+            disabled: { required: false, type: Signal },
+            onClick: { required: true, type: Function },
+          },
+          setup(props) {
+            return {
+              disabled: signal(false),
+              ...props,
+            };
+          },
+        });
+
+        const todoItem = defineComponent({
+          name: "todoItem",
+          template: `
+          <li
+              j-for="todo in todos.get()"
+              class="flex mr-4 my-1 py-2 px-1 border border-black hover:border-white rounded transition-colors"
+          >
+              <button
+                  type="checkbox"
+                  @click="toggleComplete(todo)"
+                  class="w-[100%] text-left"
+              >
+                  <span
+                      j-text="todo.message"
+                      class="mx-2 w-[100%]"
+                      :class="{'line-through':todo.isComplete.get()}"
+                  ></span>
+              </button>
+              <my-button
+                  text="Remove"
+                  :onClick="()=>removeTodo(todo)"
+                  class="ml-auto mr-2"
+              ></my-button>
+          </li>
+          `,
+          components: {
+            "my-button": myButton,
+          },
+          props: {
+            todos: { required: true, type: Signal },
+          },
+          setup(props) {
+            const removeTodo = (todo) => {
+              props.todos.set(props.todos.get().filter((t) => t !== todo));
+            };
+            const toggleComplete = (todo) => todo.isComplete.update((e) => !e);
+
+            return {
+              ...props,
+              removeTodo,
+              toggleComplete,
+            };
+          },
+        });
+
+
+        const todos = signal([
+          {
+            message: "Learn Jamais",
+            isComplete: signal(false),
+          },
+          {
+            message: "Build a project",
+            isComplete: signal(false),
+          },
+          {
+            message: "Profit",
+            isComplete: signal(false),
+          },
+        ]);
+
+        computed(() => console.log("todos", todos.get()));
+
+        const newTodo = signal("This is a new todo");
+
+        const addTodo = () => {
+          todos.update((prev) => [
+            ...prev,
+            {
+              message: newTodo.get(),
+              isComplete: signal(false),
+            },
+          ]);
+          newTodo.set("");
+        };
+
+        const removeTodo = (_todo) =>
+          todos.update((e) => e.filter((todo) => todo !== _todo));
+
+        const toggleComplete = (todo) => todo.isComplete.update((e) => !e);
+
+        const clearCompleted = () =>
+          todos.update((e) => e.filter((todo) => !todo.isComplete.get()));
+
+        const disableAddBtn = computed(
+          () => newTodo.get().length === 0,
+          {name: "disableAddBtn"},
+        );
+        createApp(
+          {
+            todos,
+            newTodo,
+            addTodo,
+            removeTodo,
+            toggleComplete,
+            clearCompleted,
+            disableAddBtn,
+            log: console.log,
+          },
+          {
+            attach: "#app",
+            debug: false,
+            components: {
+              myButton,
+              todoItem,
+            },
+          },
+        );
+
+        </script>
+    </head>
+    <body>
+        <div
+            id="app"
+            class="px-32 min-h-screen bg-black text-white flex flex-col"
+        >
+            <h1 class="text-4xl text-center mt-4 mb-6">My Todos</h1>
+            <div
+                class="flex focus-within:outline rounded transition-all mb-2"
+                j-scope="{isDisabled: computed(()=>newTodo.get().length === 0)}"
+            >
+                <input
+                    j-model="newTodo"
+                    class="white bg-black px-2 flex-1 outline-none"
+                    @keydown="!isDisabled.get() && $event.key === 'Enter' && addTodo"
+                />
+                <my-button
+                    text="Add"
+                    :onClick="addTodo"
+                    :disabled="isDisabled"
+                ></my-button>
+            </div>
+            <ul class="border-y">
+                <todo-item
+                    :todos="todos"
+                ></todo-item>
+            </ul>
+    </body>
+</html>
