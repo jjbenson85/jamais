@@ -1,7 +1,7 @@
-import { ComponentConstrucor } from "@";
+import { ComponentConstructor } from "@";
 import { camelToKebab } from "@/helpers/textTransform";
 
-type Components = Record<string, ComponentConstrucor>;
+type Components = Record<string, ComponentConstructor>;
 
 export const normaliseComponentNames = (components: Components = {}) => {
   const _comps: Components = {};

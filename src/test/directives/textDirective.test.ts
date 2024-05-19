@@ -3,7 +3,7 @@ import "@/test/extendMatchers";
 import { textDirective } from "@/directives/textDirective";
 import { HTMLElementWithParent } from "@/directives/types";
 import { wait } from "@/test/utils";
-import { createEffect, signal } from "@jamais";
+import { Effect, signal } from "@jamais";
 import { JSDOM } from "jsdom";
 import { describe, expect, it } from "vitest";
 
@@ -36,7 +36,7 @@ describe("textDirective", () => {
       },
       {},
     );
-    effect && createEffect(effect);
+    effect && new Effect(effect);
 
     expect(el?.textContent).toBe("test");
   });
@@ -59,7 +59,7 @@ describe("textDirective", () => {
       },
       {},
     );
-    effect && createEffect(effect);
+    effect && new Effect(effect);
 
     message.set("new value");
 
@@ -86,7 +86,7 @@ describe("textDirective", () => {
       },
       {},
     );
-    effect && createEffect(effect);
+    effect && new Effect(effect);
 
     expect(el?.textContent).toBe("test");
   });
@@ -109,7 +109,7 @@ describe("textDirective", () => {
       },
       {},
     );
-    effect && createEffect(effect);
+    effect && new Effect(effect);
 
     message.set({ deep: "new value" });
 
@@ -136,7 +136,7 @@ describe("textDirective", () => {
       },
       {},
     );
-    effect && createEffect(effect);
+    effect && new Effect(effect);
 
     expect(el?.textContent).toBe("test");
   });

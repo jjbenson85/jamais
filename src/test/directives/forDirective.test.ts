@@ -2,7 +2,7 @@ import "@/test/extendMatchers";
 
 import { forDirective } from "@/directives/forDirective";
 import { HTMLElementWithParent } from "@/directives/types";
-import { createEffect } from "@jamais";
+import { Effect } from "@jamais";
 import { JSDOM } from "jsdom";
 import { describe, expect, it } from "vitest";
 
@@ -28,7 +28,7 @@ describe("forDirective", () => {
 
     const data = { items: ["a", "b", "c"] };
     const cb = forDirective.mounted(el, "j-for", "item in items", data, {});
-    cb && createEffect(cb);
+    cb && new Effect(cb);
 
     const snapshot = `
 <main>

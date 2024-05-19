@@ -2,7 +2,7 @@ import "@/test/extendMatchers";
 
 import { modelDirective } from "@/directives/modelDirective";
 import { HTMLElementWithParent } from "@/directives/types";
-import { createEffect, signal } from "@/signal";
+import { Effect, signal } from "@/signal";
 import { spyConsoleError, wait } from "@/test/utils";
 import { JSDOM } from "jsdom";
 import { describe, expect, it } from "vitest";
@@ -29,21 +29,30 @@ describe("modelDirective", () => {
 
   it("should bind input to refs", async () => {
     const dom = new JSDOM(`<input j-model="message" />`);
-    const el = dom.window.document.querySelector<HTMLElementWithParent<HTMLInputElement>>('input');
+    const el =
+      dom.window.document.querySelector<
+        HTMLElementWithParent<HTMLInputElement>
+      >("input");
 
     const attr = el?.attributes.item(0);
 
     if (!el || !attr) throw new Error("No element found");
 
     const message = signal("");
-    const effect = modelDirective.mounted(el, attr.name, attr.value, {
-      message,
-    }, {});
-    effect && createEffect(effect);
+    const effect = modelDirective.mounted(
+      el,
+      attr.name,
+      attr.value,
+      {
+        message,
+      },
+      {},
+    );
+    effect && new Effect(effect);
 
     el.value = "Test input";
 
-    el.dispatchEvent(new dom.window.InputEvent('input'));
+    el.dispatchEvent(new dom.window.InputEvent("input"));
 
     await wait();
 
@@ -62,10 +71,16 @@ describe("modelDirective", () => {
 
     message.value = "Test message";
 
-    const effect = modelDirective.mounted(el, attr.name, attr.value, {
-      message,
-    }, {});
-    effect && createEffect(effect);
+    const effect = modelDirective.mounted(
+      el,
+      attr.name,
+      attr.value,
+      {
+        message,
+      },
+      {},
+    );
+    effect && new Effect(effect);
 
     await wait();
 
@@ -82,15 +97,21 @@ describe("modelDirective", () => {
 
     const message = "test";
 
-    const effect = modelDirective.mounted(el, attr.name, attr.value, {
-      message,
-    }, {});
-    effect && createEffect(effect);
+    const effect = modelDirective.mounted(
+      el,
+      attr.name,
+      attr.value,
+      {
+        message,
+      },
+      {},
+    );
+    effect && new Effect(effect);
 
     expect(spyConsole).toBeCalledWith(
       "Can only bind signals with j-model.\n\n" +
-      '<input j-model="message">\n' +
-      "message is not a signal",
+        '<input j-model="message">\n' +
+        "message is not a signal",
     );
   });
 });

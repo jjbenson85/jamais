@@ -1,10 +1,9 @@
 import { classDirective } from "@/directives/classDirective";
-import { createEffect, signal } from "@jamais";
+import { Effect, signal } from "@jamais";
 import { JSDOM } from "jsdom";
 import { describe, expect, it } from "vitest";
-
+import { HTMLElementWithParent } from "@/directives/types";
 import { wait } from "@/test/utils";
-import { HTMLElementWithParent } from "./types";
 
 describe("classDirective", () => {
   it.each([
@@ -65,7 +64,7 @@ describe("classDirective", () => {
       if (!el) throw new Error("No element found");
 
       const effect = classDirective.mounted(el, ":class", attrValue, data, {});
-      effect && createEffect(effect);
+      effect && new Effect(effect);
 
       expect(el.classList).toContain(expected);
     },
@@ -128,8 +127,14 @@ describe("classDirective", () => {
       const el = doc.querySelector("div");
       if (!el) throw new Error("No element found");
 
-      const effect = classDirective.mounted(el as HTMLElementWithParent, ":class", attrValue, data, {});
-      effect && createEffect(effect);
+      const effect = classDirective.mounted(
+        el as HTMLElementWithParent,
+        ":class",
+        attrValue,
+        data,
+        {},
+      );
+      effect && new Effect(effect);
 
       expect(el.classList).toContain("existing-class");
     },
@@ -161,11 +166,11 @@ describe("classDirective", () => {
     "should remove classes that are no longer bound %s",
     async (_id, data, html, attrValue, expected) => {
       const doc = new JSDOM(html).window.document;
-      const el = doc.querySelector("div");
+      const el = doc.querySelector<HTMLElementWithParent>("div");
       if (!el) throw new Error("No element found");
 
       const effect = classDirective.mounted(el, ":class", attrValue, data, {});
-      effect && createEffect(effect);
+      effect && new Effect(effect);
 
       //@ts-ignore
       data.testClass.set(undefined);

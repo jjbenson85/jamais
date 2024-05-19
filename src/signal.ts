@@ -48,7 +48,7 @@ export class Signal<T> {
     const isPrimitvive = ["String", "Number", "Boolean"].includes(
       this.validator.name,
     );
-    const name = this.validator.name.toLowerCase()
+    const name = this.validator.name.toLowerCase();
     const type = typeof newValue;
     const isValid = isPrimitvive
       ? type === name
@@ -74,13 +74,13 @@ export class Signal<T> {
     return this.previous;
   };
 
-  set = (newValue: T, options?: { force?: boolean, msg?: string }) => {
+  set = (newValue: T, options?: { force?: boolean; msg?: string }) => {
     DEBUG.value && console.info("set", { msg: options?.msg, newValue }, this);
 
     // const force = options?.force === true;
     // console.log({ force })
 
-    if (newValue === this.value) return
+    if (newValue === this.value) return;
     // if (!force && (newValue === this.value)) {
     //   console.log({
     //     msg: options?.msg,
@@ -99,7 +99,6 @@ export class Signal<T> {
     return this.value;
   };
 
-
   valueOf = () => {
     const error = new Error();
     console.warn(`Directly using the value of a Signal is not recommended. Use .get() instead.
@@ -108,7 +107,10 @@ export class Signal<T> {
     return this.value;
   };
 
-  update = (fn: (prev: T) => T, options?: { force?: boolean, msg?: string }) => {
+  update = (
+    fn: (prev: T) => T,
+    options?: { force?: boolean; msg?: string },
+  ) => {
     this.set(fn(this.value), { force: true, ...options });
     return this.value;
   };
@@ -118,6 +120,11 @@ export class Signal<T> {
   };
 }
 
+/**
+ * Will run the callback every time the signals used in the callback change
+ * To attach to a signal, the signals need to be called on the inital call or psdded to the watch array
+ * @param effect
+ */
 export class Effect {
   effect: () => void;
   sync: SyncType;
@@ -126,17 +133,19 @@ export class Effect {
 
   constructor(
     effect: () => void,
-    sync: SyncType,
-    msg: string,
-    watch?: Signal<any>[],
+    options?: {
+      sync?: SyncType;
+      msg?: string;
+      watch?: Signal<any>[];
+    },
   ) {
     this.effect = effect;
-    this.sync = sync;
-    this.msg = msg;
+    this.sync = options?.sync ?? "pre";
+    this.msg = options?.msg ?? "Effect";
 
     currentSubscriberEffect = this;
-    if (watch?.length) {
-      for (const signal of watch) {
+    if (options?.watch?.length) {
+      for (const signal of options.watch) {
         signal.get();
       }
     } else {
@@ -246,87 +255,64 @@ export const isSignal = <T>(
 ): maybeSignal is Signal<T> => maybeSignal instanceof Signal;
 
 /**
- * Will run the callback every time the signals used in the callback change
- * To attach to a signal, the signals need to be called on the inital call
- * @param effect
- */
-export const createEffect = (
-  cb: () => void,
-  watch?: Signal<any>[],
-  msg = "createEffect",
-) => new Effect(cb, "sync", msg, watch);
-
-/**
- * Will run the callback after all the createEffect callbacks have run
- * @param effect
- */
-export const createPostEffect = (
-  cb: () => void,
-  watch?: Signal<any>[],
-  msg = "createPostEffect",
-) => new Effect(cb, "post", msg, watch);
-
-/**
- * Will run the callback immediately and then every time the signals used in the callback change
- * @param effect
- */
-export const createSyncEffect = (
-  cb: () => void,
-  watch?: Signal<any>[],
-  msg = "createSyncEffect",
-) => new Effect(cb, "sync", msg, watch);
-
-/**
  * Returns a signal that will update before the dom is updated, when the signals used in the callback change
  * @param effect
  * @returns
  */
+type ComputedOptions<T> = {
+  watch?: [Signal<any>, ...Signal<any>[]];
+  name?: string;
+  validator?: (value: T) => boolean;
+  immediate?: boolean;
+  sync?: SyncType;
+};
+type ComputedOptionsImmediate<T> = ComputedOptions<T> & { immediate?: true };
+type ComputedOptionsDelayed<T> = ComputedOptions<T> & {
+  watch: [Signal<any>, ...Signal<any>[]];
+  immediate: false;
+};
 export function computed<T>(
   cb: () => T,
-  options?: {
-    watch?: Signal<any>[];
-    name?: string;
-    validator?: (value: T) => boolean;
-    immediate?: boolean;
-  },
+  options?: ComputedOptionsDelayed<T>,
+): Signal<T> | undefined;
+export function computed<T>(
+  cb: () => T,
+  options?: ComputedOptionsImmediate<T>,
+): Signal<T>;
+
+export function computed<T>(
+  cb: () => T,
+  options?: ComputedOptionsDelayed<T> | ComputedOptionsImmediate<T>,
 ) {
   const immediate = options?.immediate ?? true;
   const watchArr = options?.watch ?? [];
 
   if (!immediate && !watchArr.length) {
-    console.error("If immediate is set to false, watch must be set to an array of signals")
+    console.error(
+      "If immediate is set to false, watch must be set to an array of signals",
+    );
   }
 
   if (!immediate && watchArr.length) {
-    const newSignal = signal<T | undefined>(undefined)
+    const newSignal = signal<T | undefined>(undefined);
     for (const signal of watchArr) {
-      new DelayedEffect(signal, () => newSignal.set(cb()), "pre", options?.name ?? "computed");
+      new DelayedEffect(
+        signal,
+        () => newSignal.set(cb()),
+        "pre",
+        options?.name ?? "computed",
+      );
     }
-    return newSignal
+    return newSignal;
   }
   const newSignal = signal(cb(), options?.validator, options?.name);
-  createEffect(() => newSignal.set(cb()), options?.watch, options?.name);
+  new Effect(() => newSignal.set(cb()), { msg: "computed", ...options });
   return newSignal;
 }
 
-/**
- * Returns a signal that will immediately update after the signals used in the callback change
- * @param effect
- * @param msg
- * @returns
- */
-export function computedSync<T>(
-  cb: () => T,
-  watch?: Signal<any>[],
-  msg = "computedSync",
-) {
-  const newSignal = signal(cb());
-  createSyncEffect(
-    () => {
-      newSignal.set(cb(), { msg });
-    },
-    watch,
-    msg,
-  );
-  return newSignal;
-}
+const query = signal("");
+const test = computed(() => query.get(), {
+  // immediate: true,
+  // watch:[query]
+});
+console.log(test);

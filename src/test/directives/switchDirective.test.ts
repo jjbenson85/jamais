@@ -3,7 +3,7 @@ import "@/test/extendMatchers";
 import { switchDirective } from "@/directives/switchDirective";
 import { HTMLElementWithParent } from "@/directives/types";
 import { wait } from "@/test/utils";
-import { createEffect, signal } from "@jamais";
+import { Effect, signal } from "@jamais";
 import { JSDOM } from "jsdom";
 import { describe, expect, it } from "vitest";
 
@@ -49,18 +49,17 @@ describe("switchDirective", () => {
       {},
     );
 
-    effect && createEffect(effect);
+    effect && new Effect(effect);
 
     await wait();
 
-    const elOne = parent.querySelector<HTMLElement>('[j-case="One"]')
-    const elTwo = parent.querySelector<HTMLElement>('[j-case="Two"]')
-    const elThree = parent.querySelector<HTMLElement>('[j-case="Three"]')
+    const elOne = parent.querySelector<HTMLElement>('[j-case="One"]');
+    const elTwo = parent.querySelector<HTMLElement>('[j-case="Two"]');
+    const elThree = parent.querySelector<HTMLElement>('[j-case="Three"]');
 
-    expect(elOne?.style.display).toBe("unset")
-    expect(elTwo?.style.display).toBe("none")
-    expect(elThree?.style.display).toBe("none")
-
+    expect(elOne?.style.display).toBe("unset");
+    expect(elTwo?.style.display).toBe("none");
+    expect(elThree?.style.display).toBe("none");
   });
 
   it("should update the value", async () => {
@@ -88,20 +87,18 @@ describe("switchDirective", () => {
       {},
     );
 
-    effect && createEffect(effect);
+    effect && new Effect(effect);
 
     state.set("Two");
 
     await wait();
 
+    const elOne = parent.querySelector<HTMLElement>('[j-case="One"]');
+    const elTwo = parent.querySelector<HTMLElement>('[j-case="Two"]');
+    const elThree = parent.querySelector<HTMLElement>('[j-case="Three"]');
 
-    const elOne = parent.querySelector<HTMLElement>('[j-case="One"]')
-    const elTwo = parent.querySelector<HTMLElement>('[j-case="Two"]')
-    const elThree = parent.querySelector<HTMLElement>('[j-case="Three"]')
-
-    expect(elOne?.style.display).toBe("none")
-    expect(elTwo?.style.display).toBe("unset")
-    expect(elThree?.style.display).toBe("none")
-
+    expect(elOne?.style.display).toBe("none");
+    expect(elTwo?.style.display).toBe("unset");
+    expect(elThree?.style.display).toBe("none");
   });
 });

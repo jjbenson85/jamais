@@ -1,8 +1,10 @@
-import { ComponentConstrucor } from "@";
+import { ComponentConstructor } from "@jamais";
 
 type Cb = () => void;
 
-export type HTMLElementWithParent<T extends HTMLElement = HTMLElement> = T & { parentElement: HTMLElement };
+export type HTMLElementWithParent<T extends HTMLElement = HTMLElement> = T & {
+  parentElement: HTMLElement;
+};
 export type Directive = {
   name: string;
   matcher: (attr: Attr) => boolean;
@@ -11,7 +13,7 @@ export type Directive = {
     attrName: string,
     attrValue: string,
     data: Record<string, unknown>,
-    components: Record<string, ComponentConstrucor>,
+    components: Record<string, ComponentConstructor>,
   ) => Cb | undefined;
   destroyed?: (el: HTMLElement) => void;
 };

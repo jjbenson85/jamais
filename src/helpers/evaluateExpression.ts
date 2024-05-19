@@ -1,4 +1,4 @@
-import { computed, createEffect, createSyncEffect, signal } from "../signal";
+import { computed, signal } from "../signal";
 
 export function evaluateExpression(
   expression: string,
@@ -21,7 +21,7 @@ function handler(
   data: Record<string, unknown>,
   msg = "Error evaluating expression",
 ) {
-  const newData = { ...data, computed, signal, createEffect, createSyncEffect };
+  const newData = { ...data, computed, signal };
   try {
     return new Function(...Object.keys(newData), expression)(
       ...Object.values(newData),

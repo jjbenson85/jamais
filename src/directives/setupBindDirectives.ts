@@ -1,9 +1,6 @@
 import { isObject } from "@/helpers/assert";
 import { evaluateExpression } from "@/helpers/evaluateExpression";
-import {
-  ComponentConstrucor as ComponentConstructor,
-  createEffect,
-} from "@jamais";
+import { ComponentConstructor, Effect } from "@jamais";
 import { classDirective } from "./classDirective";
 // import { elseDirective } from "./elseDirective";
 // import { elseIfDirective } from "./elseIfDirective";
@@ -135,7 +132,7 @@ const applyDirectives =
         );
         if (cb) {
           // callBacks.push({cb, directive})
-          createEffect(cb, [], directive.name);
+          new Effect(cb, { msg: directive.name });
         }
         break;
       }

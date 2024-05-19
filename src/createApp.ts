@@ -25,6 +25,6 @@ export function createApp(
 
   setupBindDirectives(el, data, options.components);
 
-  options?.onMounted && document.addEventListener('DOMContentLoaded', options.onMounted);
-
+  options?.onMounted &&
+    document.addEventListener("DOMContentLoaded", options.onMounted);
 }
