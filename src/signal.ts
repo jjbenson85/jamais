@@ -92,8 +92,8 @@ export class Signal<T> {
     this.validate(newValue);
     this.previous = this.value;
     this.value = newValue;
-
     for (const effect of this.subscribers.values()) {
+      // batch
       effect.run();
     }
     return this.value;
@@ -142,6 +142,7 @@ export class Effect {
     this.effect = effect;
     this.sync = options?.sync ?? "pre";
     this.msg = options?.msg ?? "Effect";
+
 
     currentSubscriberEffect = this;
     if (options?.watch?.length) {
@@ -274,7 +275,7 @@ type ComputedOptionsDelayed<T> = ComputedOptions<T> & {
 export function computed<T>(
   cb: () => T,
   options?: ComputedOptionsDelayed<T>,
-): Signal<T> | undefined;
+): Signal<T> //| undefined;
 export function computed<T>(
   cb: () => T,
   options?: ComputedOptionsImmediate<T>,
@@ -305,7 +306,7 @@ export function computed<T>(
     }
     return newSignal;
   }
-  const newSignal = signal(cb(), options?.validator, options?.name);
+  const newSignal = signal(undefined as any, options?.validator, options?.name);
   new Effect(() => newSignal.set(cb()), { msg: "computed", ...options });
   return newSignal;
 }
@@ -315,4 +316,31 @@ const test = computed(() => query.get(), {
   // immediate: true,
   // watch:[query]
 });
-console.log(test);
+// console.log(test);
+
+const isName = signal(false);
+const name = signal('J');
+const age = signal(0);
+
+const derived = computed(() => {
+  // console.log('inside')
+  if (isName.get()) {
+    return name.get()
+  } else {
+    return age.get()
+  }
+})
+
+
+// computed(() => {
+//   console.log('derived', derived.get())
+// })
+
+name.set('JJ')
+name.set('JJJ')
+name.set('JJ')
+name.set('JJJ')
+name.set('JJ')
+name.set('JJJ')
+name.set('JJ')
+name.set('JJJ')

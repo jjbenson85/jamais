@@ -1,0 +1,599 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Document</title>
+  <script type="module">
+    //   import {
+    //     computed,
+    //     createApp,
+    //     signal,
+    //     defineComponent,
+    //     Signal,
+    //   } from "../src";
+    // import { updateObject } from "../src/newSignal";
+    import "../src/headwind";
+  </script>
+  <style>
+    /* .hover\:test:hover {
+      background-color: blue;
+    } */
+    .test {
+      transition: background-color 0.3s;
+      cursor: crosshair;
+    }
+
+    /* .md\:test {
+      background-color: red;
+    } */
+  </style>
+</head>
+
+<body class="bg:hover[red] bg[blue]">
+  <div class="px">
+    <h1 class="
+      bg:hover:focus[red-400@xs][blue-400@md]
+      sm@bg[red-200]
+      md@bg[red-300]
+      lg@bg[red-400]
+      xl@bg[red-500]
+      2xl@bg[red-600]
+      3xl@bg[red-700]
+      transition[background-color_0.3s] bo-radius[4] p-x[4] p-y[1] font-size[xl]">
+      Hello World
+    </h1>
+    <p class="hover-test cursor[pointer] m-t[-4px]">This is a paragraph</p>
+  </div>
+  <div class="flex[grow-1] text-xs text-sm text-md text-xl">
+    <h1 class="text-align[center]">Hello World</h1>
+  </div>
+
+  <h2>background-color</h2>
+  <div class="w[100vw] overflow[scroll]">
+    <div
+      class="display[flex] flex-wrap[wrap] align-items[center] column-gap[2] row-gap[1] w[320] justify-content[center]">
+      <div
+        class="hover:bg[red-100/75] cursor[pointer] transition[background-color_0.3s] bg[red-100] text-align[center] w[28] h[8] p[2] bo-radius[sm]">
+        bg[red-100]
+      </div>
+
+      <div
+        class="hover:bg[red-200/75] cursor[pointer] transition[background-color_0.3s] bg[red-200] text-align[center] w[28] h[8] p[2] bo-radius[sm]">
+        bg[red-200]
+      </div>
+
+      <div
+        class="hover:bg[red-300/75] cursor[pointer] transition[background-color_0.3s] bg[red-300] text-align[center] w[28] h[8] p[2] bo-radius[sm]">
+        bg[red-300]
+      </div>
+
+      <div
+        class="hover:bg[red-400/75] cursor[pointer] transition[background-color_0.3s] bg[red-400] text-align[center] w[28] h[8] p[2] bo-radius[sm]">
+        bg[red-400]
+      </div>
+
+      <div
+        class="hover:bg[red-500/75] cursor[pointer] transition[background-color_0.3s] bg[red-500] text-align[center] w[28] h[8] p[2] bo-radius[sm] color[white]">
+        bg[red-500]
+      </div>
+
+      <div
+        class="hover:bg[red-600/75] cursor[pointer] transition[background-color_0.3s] bg[red-600] text-align[center] w[28] h[8] p[2] bo-radius[sm] color[white]">
+        bg[red-600]
+      </div>
+
+      <div
+        class="hover:bg[red-700/75] cursor[pointer] transition[background-color_0.3s] bg[red-700] text-align[center] w[28] h[8] p[2] bo-radius[sm] color[white]">
+        bg[red-700]
+      </div>
+
+      <div
+        class="hover:bg[red-800/75] cursor[pointer] transition[background-color_0.3s] bg[red-800] text-align[center] w[28] h[8] p[2] bo-radius[sm] color[white]">
+        bg[red-800]
+      </div>
+
+      <div
+        class="hover:bg[red-900/75] cursor[pointer] transition[background-color_0.3s] bg[red-900] text-align[center] w[28] h[8] p[2] bo-radius[sm] color[white]">
+        bg[red-900]
+      </div>
+
+      <div
+        class="hover:bg[orange-100/75] cursor[pointer] transition[background-color_0.3s] bg[orange-100] text-align[center] w[28] h[8] p[2] bo-radius[sm]">
+        bg[orange-100]
+      </div>
+
+      <div
+        class="hover:bg[orange-200/75] cursor[pointer] transition[background-color_0.3s] bg[orange-200] text-align[center] w[28] h[8] p[2] bo-radius[sm]">
+        bg[orange-200]
+      </div>
+
+      <div
+        class="hover:bg[orange-300/75] cursor[pointer] transition[background-color_0.3s] bg[orange-300] text-align[center] w[28] h[8] p[2] bo-radius[sm]">
+        bg[orange-300]
+      </div>
+
+      <div
+        class="hover:bg[orange-400/75] cursor[pointer] transition[background-color_0.3s] bg[orange-400] text-align[center] w[28] h[8] p[2] bo-radius[sm]">
+        bg[orange-400]
+      </div>
+
+      <div
+        class="hover:bg[orange-500/75] cursor[pointer] transition[background-color_0.3s] bg[orange-500] text-align[center] w[28] h[8] p[2] bo-radius[sm] color[white]">
+        bg[orange-500]
+      </div>
+
+      <div
+        class="hover:bg[orange-600/75] cursor[pointer] transition[background-color_0.3s] bg[orange-600] text-align[center] w[28] h[8] p[2] bo-radius[sm] color[white]">
+        bg[orange-600]
+      </div>
+
+      <div
+        class="hover:bg[orange-700/75] cursor[pointer] transition[background-color_0.3s] bg[orange-700] text-align[center] w[28] h[8] p[2] bo-radius[sm] color[white]">
+        bg[orange-700]
+      </div>
+
+      <div
+        class="hover:bg[orange-800/75] cursor[pointer] transition[background-color_0.3s] bg[orange-800] text-align[center] w[28] h[8] p[2] bo-radius[sm] color[white]">
+        bg[orange-800]
+      </div>
+
+      <div
+        class="hover:bg[orange-900/75] cursor[pointer] transition[background-color_0.3s] bg[orange-900] text-align[center] w[28] h[8] p[2] bo-radius[sm] color[white]">
+        bg[orange-900]
+      </div>
+
+      <div
+        class="hover:bg[yellow-100/75] cursor[pointer] transition[background-color_0.3s] bg[yellow-100] text-align[center] w[28] h[8] p[2] bo-radius[sm]">
+        bg[yellow-100]
+      </div>
+
+      <div
+        class="hover:bg[yellow-200/75] cursor[pointer] transition[background-color_0.3s] bg[yellow-200] text-align[center] w[28] h[8] p[2] bo-radius[sm]">
+        bg[yellow-200]
+      </div>
+
+      <div
+        class="hover:bg[yellow-300/75] cursor[pointer] transition[background-color_0.3s] bg[yellow-300] text-align[center] w[28] h[8] p[2] bo-radius[sm]">
+        bg[yellow-300]
+      </div>
+
+      <div
+        class="hover:bg[yellow-400/75] cursor[pointer] transition[background-color_0.3s] bg[yellow-400] text-align[center] w[28] h[8] p[2] bo-radius[sm]">
+        bg[yellow-400]
+      </div>
+
+      <div
+        class="hover:bg[yellow-500/75] cursor[pointer] transition[background-color_0.3s] bg[yellow-500] text-align[center] w[28] h[8] p[2] bo-radius[sm] color[white]">
+        bg[yellow-500]
+      </div>
+
+      <div
+        class="hover:bg[yellow-600/75] cursor[pointer] transition[background-color_0.3s] bg[yellow-600] text-align[center] w[28] h[8] p[2] bo-radius[sm] color[white]">
+        bg[yellow-600]
+      </div>
+      <div
+        class="hover:bg[yellow-700/75] cursor[pointer] transition[background-color_0.3s] bg[yellow-700] text-align[center] w[28] h[8] p[2] bo-radius[sm] color[white]">
+        bg[yellow-700]
+      </div>
+      <div
+        class="hover:bg[yellow-800/75] cursor[pointer] transition[background-color_0.3s] bg[yellow-800] text-align[center] w[28] h[8] p[2] bo-radius[sm] color[white]">
+        bg[yellow-800]
+      </div>
+      <div
+        class="hover:bg[yellow-900/75] cursor[pointer] transition[background-color_0.3s] bg[yellow-900] text-align[center] w[28] h[8] p[2] bo-radius[sm] color[white]">
+        bg[yellow-900]
+      </div>
+
+      <div
+        class="hover:bg[lime-100/75] cursor[pointer] transition[background-color_0.3s] bg[lime-100] text-align[center] w[28] h[8] p[2] bo-radius[sm]">
+        bg[lime-100]
+      </div>
+      <div
+        class="hover:bg[lime-200/75] cursor[pointer] transition[background-color_0.3s] bg[lime-200] text-align[center] w[28] h[8] p[2] bo-radius[sm]">
+        bg[lime-200]
+      </div>
+      <div
+        class="hover:bg[lime-300/75] cursor[pointer] transition[background-color_0.3s] bg[lime-300] text-align[center] w[28] h[8] p[2] bo-radius[sm]">
+        bg[lime-300]
+      </div>
+      <div
+        class="hover:bg[lime-400/75] cursor[pointer] transition[background-color_0.3s] bg[lime-400] text-align[center] w[28] h[8] p[2] bo-radius[sm]">
+        bg[lime-400]
+      </div>
+      <div
+        class="hover:bg[lime-500/75] cursor[pointer] transition[background-color_0.3s] bg[lime-500] text-align[center] w[28] h[8] p[2] bo-radius[sm] color[white]">
+        bg[lime-500]
+      </div>
+      <div
+        class="hover:bg[lime-600/75] cursor[pointer] transition[background-color_0.3s] bg[lime-600] text-align[center] w[28] h[8] p[2] bo-radius[sm] color[white]">
+        bg[lime-600]
+      </div>
+      <div
+        class="hover:bg[lime-700/75] cursor[pointer] transition[background-color_0.3s] bg[lime-700] text-align[center] w[28] h[8] p[2] bo-radius[sm] color[white]">
+        bg[lime-700]
+      </div>
+      <div
+        class="hover:bg[lime-800/75] cursor[pointer] transition[background-color_0.3s] bg[lime-800] text-align[center] w[28] h[8] p[2] bo-radius[sm] color[white]">
+        bg[lime-800]
+      </div>
+      <div
+        class="hover:bg[lime-900/75] cursor[pointer] transition[background-color_0.3s] bg[lime-900] text-align[center] w[28] h[8] p[2] bo-radius[sm] color[white]">
+        bg[lime-900]
+      </div>
+
+      <div
+        class="hover:bg[green-100/75] cursor[pointer] transition[background-color_0.3s] bg[green-100] text-align[center] w[28] h[8] p[2] bo-radius[sm]">
+        bg[green-100]
+      </div>
+      <div
+        class="hover:bg[green-200/75] cursor[pointer] transition[background-color_0.3s] bg[green-200] text-align[center] w[28] h[8] p[2] bo-radius[sm]">
+        bg[green-200]
+      </div>
+      <div
+        class="hover:bg[green-300/75] cursor[pointer] transition[background-color_0.3s] bg[green-300] text-align[center] w[28] h[8] p[2] bo-radius[sm]">
+        bg[green-300]
+      </div>
+      <div
+        class="hover:bg[green-400/75] cursor[pointer] transition[background-color_0.3s] bg[green-400] text-align[center] w[28] h[8] p[2] bo-radius[sm]">
+        bg[green-400]
+      </div>
+      <div
+        class="hover:bg[green-500/75] cursor[pointer] transition[background-color_0.3s] bg[green-500] text-align[center] w[28] h[8] p[2] bo-radius[sm] color[white]">
+        bg[green-500]
+      </div>
+      <div
+        class="hover:bg[green-600/75] cursor[pointer] transition[background-color_0.3s] bg[green-600] text-align[center] w[28] h[8] p[2] bo-radius[sm] color[white]">
+        bg[green-600]
+      </div>
+      <div
+        class="hover:bg[green-700/75] cursor[pointer] transition[background-color_0.3s] bg[green-700] text-align[center] w[28] h[8] p[2] bo-radius[sm] color[white]">
+        bg[green-700]
+      </div>
+      <div
+        class="hover:bg[green-800/75] cursor[pointer] transition[background-color_0.3s] bg[green-800] text-align[center] w[28] h[8] p[2] bo-radius[sm] color[white]">
+        bg[green-800]
+      </div>
+      <div
+        class="hover:bg[green-900/75] cursor[pointer] transition[background-color_0.3s] bg[green-900] text-align[center] w[28] h[8] p[2] bo-radius[sm] color[white]">
+        bg[green-900]
+      </div>
+
+      <div
+        class="hover:bg[teal-100/75] cursor[pointer] transition[background-color_0.3s] bg[teal-100] text-align[center] w[28] h[8] p[2] bo-radius[sm]">
+        bg[teal-100]
+      </div>
+      <div
+        class="hover:bg[teal-200/75] cursor[pointer] transition[background-color_0.3s] bg[teal-200] text-align[center] w[28] h[8] p[2] bo-radius[sm]">
+        bg[teal-200]
+      </div>
+      <div
+        class="hover:bg[teal-300/75] cursor[pointer] transition[background-color_0.3s] bg[teal-300] text-align[center] w[28] h[8] p[2] bo-radius[sm]">
+        bg[teal-300]
+      </div>
+      <div
+        class="hover:bg[teal-400/75] cursor[pointer] transition[background-color_0.3s] bg[teal-400] text-align[center] w[28] h[8] p[2] bo-radius[sm]">
+        bg[teal-400]
+      </div>
+      <div
+        class="hover:bg[teal-500/75] cursor[pointer] transition[background-color_0.3s] bg[teal-500] text-align[center] w[28] h[8] p[2] bo-radius[sm] color[white]">
+        bg[teal-500]
+      </div>
+      <div
+        class="hover:bg[teal-600/75] cursor[pointer] transition[background-color_0.3s] bg[teal-600] text-align[center] w[28] h[8] p[2] bo-radius[sm] color[white]">
+        bg[teal-600]
+      </div>
+      <div
+        class="hover:bg[teal-700/75] cursor[pointer] transition[background-color_0.3s] bg[teal-700] text-align[center] w[28] h[8] p[2] bo-radius[sm] color[white]">
+        bg[teal-700]
+      </div>
+      <div
+        class="hover:bg[teal-800/75] cursor[pointer] transition[background-color_0.3s] bg[teal-800] text-align[center] w[28] h[8] p[2] bo-radius[sm] color[white]">
+        bg[teal-800]
+      </div>
+      <div
+        class="hover:bg[teal-900/75] cursor[pointer] transition[background-color_0.3s] bg[teal-900] text-align[center] w[28] h[8] p[2] bo-radius[sm] color[white]">
+        bg[teal-900]
+      </div>
+
+      <div
+        class="hover:bg[cyan-100/75] cursor[pointer] transition[background-color_0.3s] bg[cyan-100] text-align[center] w[28] h[8] p[2] bo-radius[sm]">
+        bg[cyan-100]
+      </div>
+      <div
+        class="hover:bg[cyan-200/75] cursor[pointer] transition[background-color_0.3s] bg[cyan-200] text-align[center] w[28] h[8] p[2] bo-radius[sm]">
+        bg[cyan-200]
+      </div>
+      <div
+        class="hover:bg[cyan-300/75] cursor[pointer] transition[background-color_0.3s] bg[cyan-300] text-align[center] w[28] h[8] p[2] bo-radius[sm]">
+        bg[cyan-300]
+      </div>
+      <div
+        class="hover:bg[cyan-400/75] cursor[pointer] transition[background-color_0.3s] bg[cyan-400] text-align[center] w[28] h[8] p[2] bo-radius[sm]">
+        bg[cyan-400]
+      </div>
+      <div
+        class="hover:bg[cyan-500/75] cursor[pointer] transition[background-color_0.3s] bg[cyan-500] text-align[center] w[28] h[8] p[2] bo-radius[sm] color[white]">
+        bg[cyan-500]
+      </div>
+      <div
+        class="hover:bg[cyan-600/75] cursor[pointer] transition[background-color_0.3s] bg[cyan-600] text-align[center] w[28] h[8] p[2] bo-radius[sm] color[white]">
+        bg[cyan-600]
+      </div>
+      <div
+        class="hover:bg[cyan-700/75] cursor[pointer] transition[background-color_0.3s] bg[cyan-700] text-align[center] w[28] h[8] p[2] bo-radius[sm] color[white]">
+        bg[cyan-700]
+      </div>
+      <div
+        class="hover:bg[cyan-800/75] cursor[pointer] transition[background-color_0.3s] bg[cyan-800] text-align[center] w[28] h[8] p[2] bo-radius[sm] color[white]">
+        bg[cyan-800]
+      </div>
+      <div
+        class="hover:bg[cyan-900/75] cursor[pointer] transition[background-color_0.3s] bg[cyan-900] text-align[center] w[28] h[8] p[2] bo-radius[sm] color[white]">
+        bg[cyan-900]
+      </div>
+
+      <div
+        class="hover:bg[azure-100/75] cursor[pointer] transition[background-color_0.3s] bg[azure-100] text-align[center] w[28] h[8] p[2] bo-radius[sm]">
+        bg[azure-100]
+      </div>
+      <div
+        class="hover:bg[azure-200/75] cursor[pointer] transition[background-color_0.3s] bg[azure-200] text-align[center] w[28] h[8] p[2] bo-radius[sm]">
+        bg[azure-200]
+      </div>
+      <div
+        class="hover:bg[azure-300/75] cursor[pointer] transition[background-color_0.3s] bg[azure-300] text-align[center] w[28] h[8] p[2] bo-radius[sm]">
+        bg[azure-300]
+      </div>
+      <div
+        class="hover:bg[azure-400/75] cursor[pointer] transition[background-color_0.3s] bg[azure-400] text-align[center] w[28] h[8] p[2] bo-radius[sm]">
+        bg[azure-400]
+      </div>
+      <div
+        class="hover:bg[azure-500/75] cursor[pointer] transition[background-color_0.3s] bg[azure-500] text-align[center] w[28] h[8] p[2] bo-radius[sm] color[white]">
+        bg[azure-500]
+      </div>
+      <div
+        class="hover:bg[azure-600/75] cursor[pointer] transition[background-color_0.3s] bg[azure-600] text-align[center] w[28] h[8] p[2] bo-radius[sm] color[white]">
+        bg[azure-600]
+      </div>
+      <div
+        class="hover:bg[azure-700/75] cursor[pointer] transition[background-color_0.3s] bg[azure-700] text-align[center] w[28] h[8] p[2] bo-radius[sm] color[white]">
+        bg[azure-700]
+      </div>
+      <div
+        class="hover:bg[azure-800/75] cursor[pointer] transition[background-color_0.3s] bg[azure-800] text-align[center] w[28] h[8] p[2] bo-radius[sm] color[white]">
+        bg[azure-800]
+      </div>
+      <div
+        class="hover:bg[azure-900/75] cursor[pointer] transition[background-color_0.3s] bg[azure-900] text-align[center] w[28] h[8] p[2] bo-radius[sm] color[white]">
+        bg[azure-900]
+      </div>
+
+      <div
+        class="hover:bg[blue-100/75] cursor[pointer] transition[background-color_0.3s] bg[blue-100] text-align[center] w[28] h[8] p[2] bo-radius[sm]">
+        bg[blue-100]
+      </div>
+      <div
+        class="hover:bg[blue-200/75] cursor[pointer] transition[background-color_0.3s] bg[blue-200] text-align[center] w[28] h[8] p[2] bo-radius[sm]">
+        bg[blue-200]
+      </div>
+      <div
+        class="hover:bg[blue-300/75] cursor[pointer] transition[background-color_0.3s] bg[blue-300] text-align[center] w[28] h[8] p[2] bo-radius[sm]">
+        bg[blue-300]
+      </div>
+      <div
+        class="hover:bg[blue-400/75] cursor[pointer] transition[background-color_0.3s] bg[blue-400] text-align[center] w[28] h[8] p[2] bo-radius[sm]">
+        bg[blue-400]
+      </div>
+      <div
+        class="hover:bg[blue-500/75] cursor[pointer] transition[background-color_0.3s] bg[blue-500] text-align[center] w[28] h[8] p[2] bo-radius[sm] color[white]">
+        bg[blue-500]
+      </div>
+      <div
+        class="hover:bg[blue-600/75] cursor[pointer] transition[background-color_0.3s] bg[blue-600] text-align[center] w[28] h[8] p[2] bo-radius[sm] color[white]">
+        bg[blue-600]
+      </div>
+      <div
+        class="hover:bg[blue-700/75] cursor[pointer] transition[background-color_0.3s] bg[blue-700] text-align[center] w[28] h[8] p[2] bo-radius[sm] color[white]">
+        bg[blue-700]
+      </div>
+      <div
+        class="hover:bg[blue-800/75] cursor[pointer] transition[background-color_0.3s] bg[blue-800] text-align[center] w[28] h[8] p[2] bo-radius[sm] color[white]">
+        bg[blue-800]
+      </div>
+      <div
+        class="hover:bg[blue-900/75] cursor[pointer] transition[background-color_0.3s] bg[blue-900] text-align[center] w[28] h[8] p[2] bo-radius[sm] color[white]">
+        bg[blue-900]
+      </div>
+
+      <div
+        class="hover:bg[purple-100/75] cursor[pointer] transition[background-color_0.3s] bg[purple-100] text-align[center] w[28] h[8] p[2] bo-radius[sm]">
+        bg[purple-100]
+      </div>
+      <div
+        class="hover:bg[purple-200/75] cursor[pointer] transition[background-color_0.3s] bg[purple-200] text-align[center] w[28] h[8] p[2] bo-radius[sm]">
+        bg[purple-200]
+      </div>
+      <div
+        class="hover:bg[purple-300/75] cursor[pointer] transition[background-color_0.3s] bg[purple-300] text-align[center] w[28] h[8] p[2] bo-radius[sm]">
+        bg[purple-300]
+      </div>
+      <div
+        class="hover:bg[purple-400/75] cursor[pointer] transition[background-color_0.3s] bg[purple-400] text-align[center] w[28] h[8] p[2] bo-radius[sm]">
+        bg[purple-400]
+      </div>
+      <div
+        class="hover:bg[purple-500/75] cursor[pointer] transition[background-color_0.3s] bg[purple-500] text-align[center] w[28] h[8] p[2] bo-radius[sm] color[white]">
+        bg[purple-500]
+      </div>
+      <div
+        class="hover:bg[purple-600/75] cursor[pointer] transition[background-color_0.3s] bg[purple-600] text-align[center] w[28] h[8] p[2] bo-radius[sm] color[white]">
+        bg[purple-600]
+      </div>
+      <div
+        class="hover:bg[purple-700/75] cursor[pointer] transition[background-color_0.3s] bg[purple-700] text-align[center] w[28] h[8] p[2] bo-radius[sm] color[white]">
+        bg[purple-700]
+      </div>
+      <div
+        class="hover:bg[purple-800/75] cursor[pointer] transition[background-color_0.3s] bg[purple-800] text-align[center] w[28] h[8] p[2] bo-radius[sm] color[white]">
+        bg[purple-800]
+      </div>
+      <div
+        class="hover:bg[purple-900/75] cursor[pointer] transition[background-color_0.3s] bg[purple-900] text-align[center] w[28] h[8] p[2] bo-radius[sm] color[white]">
+        bg[purple-900]
+      </div>
+    </div>
+  </div>
+  <div class="bg[grey-200]">
+    <div class="bg[grey-400] m[8]">
+      <div class="p[8] ">TEST</div>
+    </div>
+  </div>
+
+  <div>
+    <div class="font-size[xs]"> font-size[xs] </div>
+    <div class="font-size[sm]"> font-size[sm] </div>
+    <div class="font-size[md]"> font-size[md] </div>
+    <div class="font-size[lg]"> font-size[lg] </div>
+    <div class="font-size[xl]"> font-size[xl] </div>
+    <div class="font-size[2xl]"> font-size[2xl] </div>
+    <div class="font-size[3xl]"> font-size[3xl] </div>
+    <div class="font-size[4xl]"> font-size[4xl] </div>
+    <div class="font-size[5xl]"> font-size[5xl] </div>
+    <div class="font-size[6xl]"> font-size[6xl] </div>
+    <div class="font-size[7xl]"> font-size[7xl] </div>
+    <div class="font-size[8xl]"> font-size[8xl] </div>
+    <div class="font-size[9xl]"> font-size[9xl] </div>
+  </div>
+
+  <div class="display[flex] bg[grey-100] m-y[8] p-y[2] gap[1]">
+    <div class="w[12] max-h[4] p[2] bo-radius[sm] bg[gray-300] mx[1]">
+      mx[1]
+    </div>
+    <div class="w[12] max-h[4] p[2] bo-radius[sm] bg[gray-300] mx[1]">
+      mx[1]
+    </div>
+    <div class="w[12] max-h[4] p[2] bo-radius[sm] bg[gray-300] mx[1]">
+      mx[1]
+    </div>
+    <div class="w[12] max-h[4] p[2] bo-radius[sm] bg[gray-300] mx[1]">
+      mx[1]
+    </div>
+  </div>
+  <div class="display[flex] bg[grey-100] m-y[8] p-y[2] gap[2]">
+    <div class="w[12] max-h[4] p[2] bo-radius[sm] bg[gray-300] mx[2]">
+      mx[2]
+    </div>
+    <div class="w[12] max-h[4] p[2] bo-radius[sm] bg[gray-300] mx[2]">
+      mx[2]
+    </div>
+    <div class="w[12] max-h[4] p[2] bo-radius[sm] bg[gray-300] mx[2]">
+      mx[2]
+    </div>
+    <div class="w[12] max-h[4] p[2] bo-radius[sm] bg[gray-300] mx[2]">
+      mx[2]
+    </div>
+  </div>
+  <div class="display[flex] bg[grey-100] m-y[8] p-y[2] gap[4]">
+    <div class="w[12] max-h[4] p[2] bo-radius[sm] bg[gray-300] mx[4]">
+      mx[4]
+    </div>
+    <div class="w[12] max-h[4] p[2] bo-radius[sm] bg[gray-300] mx[4]">
+      mx[4]
+    </div>
+    <div class="w[12] max-h[4] p[2] bo-radius[sm] bg[gray-300] mx[4]">
+      mx[4]
+    </div>
+    <div class="w[12] max-h[4] p[2] bo-radius[sm] bg[gray-300] mx[4]">
+      mx[4]
+    </div>
+  </div>
+  <div class="display[flex] bg[grey-100] m-y[8] p-y[2] gap[5]">
+    <div class="w[12] max-h[4] p[2] bo-radius[sm] bg[gray-300] mx[5]">
+      mx[5]
+    </div>
+    <div class="w[12] max-h[4] p[2] bo-radius[sm] bg[gray-300] mx[5]">
+      mx[5]
+    </div>
+    <div class="w[12] max-h[4] p[2] bo-radius[sm] bg[gray-300] mx[5]">
+      mx[5]
+    </div>
+    <div class="w[12] max-h[4] p[2] bo-radius[sm] bg[gray-300] mx[5]">
+      mx[5]
+    </div>
+  </div>
+  <div class="display[flex] bg[grey-100] m-y[8] p-y[2] gap[6]">
+    <div class="w[12] max-h[4] p[2] bo-radius[sm] bg[gray-300] mx[6]">
+      mx[6]
+    </div>
+    <div class="w[12] max-h[4] p[2] bo-radius[sm] bg[gray-300] mx[6]">
+      mx[6]
+    </div>
+    <div class="w[12] max-h[4] p[2] bo-radius[sm] bg[gray-300] mx[6]">
+      mx[6]
+    </div>
+    <div class="w[12] max-h[4] p[2] bo-radius[sm] bg[gray-300] mx[6]">
+      mx[6]
+    </div>
+  </div>
+  <div class="display[flex] bg[grey-100] m-y[8] p-y[2] gap[7]">
+    <div class="w[12] max-h[4] p[2] bo-radius[sm] bg[gray-300] mx[7]">
+      mx[7]
+    </div>
+    <div class="w[12] max-h[4] p[2] bo-radius[sm] bg[gray-300] mx[7]">
+      mx[7]
+    </div>
+    <div class="w[12] max-h[4] p[2] bo-radius[sm] bg[gray-300] mx[7]">
+      mx[7]
+    </div>
+    <div class="w[12] max-h[4] p[2] bo-radius[sm] bg[gray-300] mx[7]">
+      mx[7]
+    </div>
+  </div>
+  <div class="display[flex] bg[grey-100] m-y[8] p-y[2] gap[8]">
+    <div class="w[12] max-h[4] p[2] bo-radius[sm] bg[gray-300] mx[8]">
+      mx[8]
+    </div>
+    <div class="w[12] max-h[4] p[2] bo-radius[sm] bg[gray-300] mx[8]">
+      mx[8]
+    </div>
+    <div class="w[12] max-h[4] p[2] bo-radius[sm] bg[gray-300] mx[8]">
+      mx[8]
+    </div>
+    <div class="w[12] max-h[4] p[2] bo-radius[sm] bg[gray-300] mx[8]">
+      mx[8]
+    </div>
+  </div>
+  <div class="display[flex] bg[grey-100] m-y[8] p-y[2] gap[9]">
+    <div class="w[12] max-h[4] p[2] bo-radius[sm] bg[gray-300] mx[9]">
+      mx[9]
+    </div>
+    <div class="w[12] max-h[4] p[2] bo-radius[sm] bg[gray-300] mx[9]">
+      mx[9]
+    </div>
+    <div class="w[12] max-h[4] p[2] bo-radius[sm] bg[gray-300] mx[9]">
+      mx[9]
+    </div>
+    <div class="w[12] max-h[4] p[2] bo-radius[sm] bg[gray-300] mx[9]">
+      mx[9]
+    </div>
+  </div>
+  <div class="display[flex] bg[grey-100] m-y[8] p-y[2] gap[10]">
+    <div class="w[12] max-h[4] p[2] bo-radius[sm] bg[gray-300] mx[10]">
+      mx[10]
+    </div>
+    <div class="w[12] max-h[4] p[2] bo-radius[sm] bg[gray-300] mx[10]">
+      mx[10]
+    </div>
+    <div class="w[12] max-h[4] p[2] bo-radius[sm] bg[gray-300] mx[10]">
+      mx[10]
+    </div>
+    <div class="w[12] max-h[4] p[2] bo-radius[sm] bg[gray-300] mx[10]">
+      mx[10]
+    </div>
+  </div>
+</body>
+
+</html>

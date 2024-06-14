@@ -10,6 +10,7 @@ export class ProcessQueue {
     DEBUG.value && console.info("add: ", { msg });
 
     this.queue.add(fn);
+
     if (this.queue.size === 1) {
       queueMicrotask(this.processQueue);
     }

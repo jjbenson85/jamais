@@ -6,9 +6,9 @@ import { defineConfig } from "vite";
 export default defineConfig({
   resolve: {
     alias: {
-      '@': fileURLToPath(new URL('./src', import.meta.url)),
-      '@jamais': fileURLToPath(new URL('./src/index', import.meta.url)),
-      '@helpers': fileURLToPath(new URL('./src/helpers', import.meta.url))
+      "@": fileURLToPath(new URL("./src", import.meta.url)),
+      "@jamais": fileURLToPath(new URL("./src/index", import.meta.url)),
+      "@helpers": fileURLToPath(new URL("./src/helpers", import.meta.url)),
     },
   },
   test: {
@@ -20,10 +20,11 @@ export default defineConfig({
   build: {
     lib: {
       // Could also be a dictionary or array of multiple entry points
-      entry: resolve(__dirname, 'src/index.ts'),
-      name: 'Jamais',
+      entry: resolve(__dirname, "src/index.ts"),
+      name: "Jamais",
+      formats: ["es"],
       // the proper extensions will be added
-      fileName: 'jamais',
+      fileName: "jamais",
     },
     // rollupOptions: {
     //   // make sure to externalize deps that shouldn't be bundled
